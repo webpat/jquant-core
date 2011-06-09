@@ -7,5 +7,6 @@ package org.jquant.provider;
  */
 public enum DataProviderEnum {
 	LOUXOR,
+	BLOOMBERG,
 	YAHOO;
 }
