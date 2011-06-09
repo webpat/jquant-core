@@ -1,0 +1,3 @@
+JQuant a Java Platform for simulation and backtesting :
+- jquant-core (core components and interface)
+- jquant-bloomberg (Bloomberg Data Provider Feed) 
