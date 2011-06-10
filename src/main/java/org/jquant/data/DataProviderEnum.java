@@ -1,4 +1,4 @@
-package org.jquant.provider;
+package org.jquant.data;
 
 /**
  * The JQUANT supported data providers 

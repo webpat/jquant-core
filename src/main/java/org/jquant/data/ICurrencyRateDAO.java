@@ -1,6 +1,4 @@
-package org.jquant.provider.louxor;
-
-import java.util.List;
+package org.jquant.data;
 
 import org.joda.time.DateTime;
 import org.jquant.core.Rate;
@@ -13,11 +11,8 @@ import org.jquant.time.TimeFrame;
 
 public interface ICurrencyRateDAO {
 
-	public List<Rate> fetchDepositAndSwapRates(Currency currency, DateTime onDate) throws DAOException;
-	
-	public List<Rate> fetchDepositRates(Currency currency, DateTime onDate) throws DAOException;
 	
 	public TermStructure fetchAllRate(Currency currency, TimeFrame pillar,RateType type) throws DAOException;
 	
-	public Rate fetchRate(Currency currency, DateTime onDate, TimeFrame pillar) throws DAOException;
+	public Rate fetchRate(Currency currency, DateTime onDate, TimeFrame pillar, RateType type) throws DAOException;
 }

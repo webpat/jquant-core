@@ -1,4 +1,4 @@
-package org.jquant.provider.louxor;
+package org.jquant.data;
 
 import org.joda.time.DateTime;
 import org.jquant.core.IInstrument;

@@ -1,4 +1,4 @@
-package org.jquant.provider.louxor;
+package org.jquant.data;
 
 import java.util.List;
 

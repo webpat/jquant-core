@@ -21,7 +21,7 @@
     homepage : http://www.activestocks.eu
 
 ****/
-package org.jquant.provider;
+package org.jquant.data;
 
 import org.jquant.core.Symbol;
 import org.jquant.model.MarketDataProvider;
