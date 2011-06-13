@@ -3,9 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 
 		http://maven.apache.org/xsd/settings-1.0.0.xsd">
-	<localRepository>C:\Java\maven\repository</localRepository>
+	<localRepository>C:\dev\repository</localRepository>
 
-	<mirrors>
+	<!--mirrors>
 		<mirror>
 			<id>mavenproxyCentral</id>
 			<name>DTSI proxy for central</name>
@@ -42,7 +42,7 @@
 			<url>http://maven-proxy.recif.nc/repository/openqa</url>
 			<mirrorOf>openqa</mirrorOf>
 		</mirror>
-	</mirrors>
+	</mirrors-->
 
 <profiles>
 	<profile>
@@ -56,7 +56,7 @@
 				<project.build.sourceEncoding>${project.outputEncoding}</project.build.sourceEncoding>
 				<project.reporting.outputEncoding>${project.outputEncoding}</project.reporting.outputEncoding>
 	</properties>
-			<repositories>
+			<!--repositories>
 				<repository>
 					<id>internal</id>
 					<name>DTSI internal repository</name>
@@ -131,7 +131,7 @@
 						<enabled>true</enabled>
 					</snapshots>
 				</pluginRepository>
-			</pluginRepositories>
+			</pluginRepositories-->
 	</profile>
 	
 	<profile>

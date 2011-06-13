@@ -1,6 +1,6 @@
 package org.jquant.time;
 
-public enum Frequency {
+public enum Periodicity {
     ONCE(0),             // zero coupon
     ANNUAL(1),           
     SEMI_ANNUAL(2),       
@@ -15,7 +15,7 @@ public enum Frequency {
     
     private final int value;
     
-    private Frequency(int value) {
+    private Periodicity(int value) {
 		this.value = value;
 	}
     public int getValue() {

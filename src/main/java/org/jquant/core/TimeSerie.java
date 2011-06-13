@@ -93,4 +93,11 @@ public abstract class TimeSerie<T> implements Iterable<T>  {
     
     public enum Variable{OPEN,HIGH,LOW,CLOSE,VOLUME,RETURN,NAV,QUOTE};
     
+    public enum SerieFrequency {
+
+    	DAILY,
+    	QUOTES,
+    	TRADE
+    	
+    }
 }

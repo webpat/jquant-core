@@ -119,12 +119,12 @@ public class TimeDeposit extends BaseInstrument {
 		while (t.compareTo(evaluationDate)<0) {
 			t = t.plusDays(1);
 			// recuperation de n'eonia en t
-			Candle candle = underlying.getPrices().getValue(t);
+			Candle candle = underlying.getCandles().getValue(t);
 			// no rate for this date
 			
 			//if no rate for the evaluation date : the rate is not in louxor
 			if (candle == null&&t.compareTo(evaluationDate)==0) {
-				throw new NotEnoughDataException("The rate "+underlying.getName()+" has no price for the "+t.toString());
+				throw new NotEnoughDataException("The rate  has no price for the "+t.toString());
 			}
 			
 			if (candle == null) {
@@ -148,7 +148,7 @@ public class TimeDeposit extends BaseInstrument {
 		DateTime nextDate = CalendarUtils.getLastWorkDay(t, underlyingPeriod, MICMarketPlace.NO_MIC);
 		double rate = 0.0;
 		while (nextDate.compareTo(evaluationDate)<=0) {
-			Candle candle = underlying.getPrices().getValue(t);
+			Candle candle = underlying.getCandles().getValue(t);
 			if (candle == null) {
 				
 			}

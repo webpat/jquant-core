@@ -9,7 +9,7 @@ import net.objectlab.kit.datecalc.joda.LocalDateKitCalculatorsFactory;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.jquant.core.MICMarketPlace;
-import org.jquant.time.Frequency;
+import org.jquant.time.Periodicity;
 import org.jquant.time.TimeFrame;
 import org.jquant.time.TimeUnit;
 
@@ -160,7 +160,7 @@ public final class CalendarUtils {
 	 *
 	 * @return Last array of DateTime
 	 */
-    public static ArrayList<DateTime> getScheduleWorkDayBeforeDate(DateTime endDate, int nbYears, Frequency frequency, MICMarketPlace marketPlace) {
+    public static ArrayList<DateTime> getScheduleWorkDayBeforeDate(DateTime endDate, int nbYears, Periodicity frequency, MICMarketPlace marketPlace) {
     	ArrayList<DateTime> schedule = new ArrayList<DateTime>();
 
     	int scheduleSize = nbYears*frequency.getValue();
@@ -177,7 +177,7 @@ public final class CalendarUtils {
 	 *
 	 * @return Last array of DateTime
 	 */
-    public static ArrayList<DateTime> getScheduleWorkDayAfterDate(DateTime startDate, int nbYears, Frequency frequency, MICMarketPlace marketPlace) {
+    public static ArrayList<DateTime> getScheduleWorkDayAfterDate(DateTime startDate, int nbYears, Periodicity frequency, MICMarketPlace marketPlace) {
     	ArrayList<DateTime> schedule = new ArrayList<DateTime>();
 
     	int scheduleSize = nbYears*frequency.getValue();
@@ -194,7 +194,7 @@ public final class CalendarUtils {
 	 *
 	 * @return DateTime
 	 */
-    public static DateTime getWorkDayBeforeStartDateFromEndDate(DateTime endDate, DateTime startDate, Frequency frequency, MICMarketPlace marketPlace) {
+    public static DateTime getWorkDayBeforeStartDateFromEndDate(DateTime endDate, DateTime startDate, Periodicity frequency, MICMarketPlace marketPlace) {
     	DateTime date = endDate;
     	int i = 1;
     	while (date.compareTo(startDate)>0) {

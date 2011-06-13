@@ -3,6 +3,7 @@ package org.jquant.instrument;
 import org.jquant.core.BaseInstrument;
 import org.jquant.core.MICMarketPlace;
 import org.jquant.core.Symbol;
+import org.jquant.data.DataProvider;
 import org.jquant.model.Currency;
 import org.jquant.model.MarketDataProvider;
 
@@ -34,7 +35,7 @@ public class Forex extends BaseInstrument {
 	 * @param exchangedCurrency La devise échangée (ex : EURUSD, EUR est la devise échangée)
 	 * @param priceCurrency La devise de réglement (ex : EURUSD, USD est la devise de réglement) 
 	 */
-	public Forex(MarketDataProvider provider, Currency exchangedCurrency, Currency priceCurrency) {
+	public Forex(DataProvider provider, Currency exchangedCurrency, Currency priceCurrency) {
 		super(new Symbol(provider, exchangedCurrency.name()+priceCurrency.name()),MICMarketPlace.NO_MIC);
 		
 		this.exchangedCurrency = exchangedCurrency;

@@ -23,11 +23,11 @@
 ****/
 package org.jquant.core;
 
-import org.jquant.model.MarketDataProvider;
+import org.jquant.data.DataProvider;
 
 
 /**
- * La paire provider!code reprÃ©sente un instrument de maniÃ¨re unique chez un provider.
+ * La paire provider!code représente un instrument de manière unique chez un provider.
  * This class is immutable.
  * <br>
  * <b>History:</b><br>
@@ -35,11 +35,11 @@ import org.jquant.model.MarketDataProvider;
  */
 public final class Symbol implements Comparable<Symbol> {
 	   
-    private final String name;
-    protected MarketDataProvider provider = MarketDataProvider.BLOOMBERG;
+    private final String id;
+    private final DataProvider provider;
     
-    public Symbol(MarketDataProvider provider, String name) {
-    	this.name = name;
+    public Symbol(DataProvider provider, String name) {
+    	this.id = name;
     	this.provider = provider;
     }
 
@@ -47,7 +47,7 @@ public final class Symbol implements Comparable<Symbol> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((provider == null) ? 0 : provider.hashCode());
 		return result;
 	}
@@ -61,27 +61,27 @@ public final class Symbol implements Comparable<Symbol> {
 		if (getClass() != obj.getClass())
 			return false;
 		Symbol other = (Symbol) obj;
-		if (name == null) {
-			if (other.name != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!id.equals(other.id))
 			return false;
 		if (provider != other.provider)
 			return false;
 		return true;
 	}
 
-	public String getName() {
-		return name;
+	public String getId() {
+		return id;
 	}
 
-	public MarketDataProvider getProvider() {
+	public DataProvider getProvider() {
 		return provider;
 	}
 
 	public int compareTo(Symbol o) {
 		
-		return (provider.compareTo(o.provider)+name.compareTo(o.name));
+		return (provider.compareTo(o.provider)+id.compareTo(o.id));
 	}
 
     

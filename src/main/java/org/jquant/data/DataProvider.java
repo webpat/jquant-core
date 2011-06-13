@@ -5,7 +5,7 @@ package org.jquant.data;
  * @author merhebp
  *
  */
-public enum DataProviderEnum {
+public enum DataProvider {
 	LOUXOR,
 	BLOOMBERG,
 	YAHOO;

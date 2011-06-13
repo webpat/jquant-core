@@ -1,9 +1,10 @@
 package com.sgam.jquant.instrument;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 
-
+@Ignore
 public class EquityTest {
 
 	@Test

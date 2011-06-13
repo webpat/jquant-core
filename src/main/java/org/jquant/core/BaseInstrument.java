@@ -17,7 +17,6 @@ import org.jquant.time.TimeFrame;
  * <p>For a given Data Provider a symbol/market tuple should be unique  
  * The volatility Map use an IdentityHashMap (use of the == operator instead of the equals Method)
  * </p>
- * This class is immutable.
  * <br/>
  * <b>History:</b><br>
  * @author patrick.merheb
@@ -29,8 +28,19 @@ public abstract class BaseInstrument implements IInstrument {
 	protected Symbol symbol = null;	
 	protected Currency currency;
 
+	/**
+	 * Daily prices {@link BaseInstrument#getCandles()}
+	 */
+	private CandleSerie candles;
 	
-	private CandleSerie prices;
+	/**
+	 * Intraday Quotes
+	 */
+	private QuoteSerie quotes;
+	
+	/**
+	 * Volatility Surface
+	 */
 	private Map<Integer,VolatilityTermStructure> volatilityMap; 
 	
 	
@@ -48,20 +58,17 @@ public abstract class BaseInstrument implements IInstrument {
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
+	
+	
 	public MICMarketPlace getMarket() {
 		return market;
-	}
-	
-		
+	}		
 	
 	public Symbol getSymbol() {
 		return symbol;
 	}
 	
 	
-	public String getName(){
-		return this.symbol.toString();
-	}
 	
 	
 	
@@ -74,17 +81,21 @@ public abstract class BaseInstrument implements IInstrument {
 		return hashcode;
 	}
 	
-	public CandleSerie getPrices(){	
-		return prices;
+	/**
+	 * 
+	 * @return Daily prices
+	 */
+	public CandleSerie getCandles(){	
+		return candles;
 		
 	}
 	
-	public void setPrices(CandleSerie prices) {
-		this.prices = prices;
+	public void setCandles(CandleSerie prices) {
+		this.candles = prices;
 	}
 	
 
-	public VolatilityTermStructure getImplicitVolatility(TimeFrame pillar) throws NotEnoughDataException{
+	protected VolatilityTermStructure getImplicitVolatility(TimeFrame pillar) throws NotEnoughDataException{
 		
 		VolatilityTermStructure volCurve = volatilityMap.get(pillar.toString());
 		
@@ -97,13 +108,12 @@ public abstract class BaseInstrument implements IInstrument {
 		
 	}
 	
-	public Candle getCandle(DateTime date) throws NotEnoughDataException{
-		if (prices == null){
-			throw new NotEnoughDataException("No prices, please fill your instrument.");
-			//TODO: TIme SERIE READER FETCH
+	protected Candle getCandle(DateTime date) throws NotEnoughDataException{
+		if (candles == null){
+			throw new NotEnoughDataException("No prices, please add this instrument to the market manager.");
 		}
 		
-		Candle result = prices.getValue(date);
+		Candle result = candles.getValue(date);
 		if (result == null )
 			throw new NotEnoughDataException("No Candle at: "+date);
 		return result;
@@ -116,7 +126,7 @@ public abstract class BaseInstrument implements IInstrument {
 	 * @return {@link Rate}
 	 * @throws NotEnoughDataException 
 	 */
-	public Rate getImplicitVolatility(TimeFrame pillar,DateTime date) throws NotEnoughDataException{
+	protected Rate getImplicitVolatility(TimeFrame pillar,DateTime date) throws NotEnoughDataException{
 		
 		TermStructure volCurve = volatilityMap.get(pillar.toString());
 		if (volCurve == null){
@@ -129,7 +139,7 @@ public abstract class BaseInstrument implements IInstrument {
 
 	
 
-	public void setVolatility(TimeFrame pillar,VolatilityTermStructure volCurve) {
+	protected void setVolatility(TimeFrame pillar,VolatilityTermStructure volCurve) {
 		
 		// Create the Map if it does not exist 
 		if (volatilityMap == null)
@@ -137,16 +147,19 @@ public abstract class BaseInstrument implements IInstrument {
 		
 		this.volatilityMap.put(pillar.hashCode(), volCurve);
 	}
-	
-	/**
-	 * get surface volatility OnDate 
-	 * @param date
-	 * @return
-	 */
-	public Map<Integer, VolatilityTermStructure> getSurfaceVolatility(DateTime date){
-		
-		return null;
-		
+
+
+
+	public void setQuotes(QuoteSerie quotes) {
+		this.quotes = quotes;
 	}
+
+
+
+	public QuoteSerie getQuotes() {
+		return quotes;
+	}
+	
+	
 	
 }
