@@ -1,4 +1,4 @@
-package org.jquant.core;
+package org.jquant.serie;
 
 
 import java.lang.reflect.Array;

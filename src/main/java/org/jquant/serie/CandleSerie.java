@@ -1,8 +1,9 @@
-package org.jquant.core;
+package org.jquant.serie;
 
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.jquant.core.Candle;
 
 /**
  * 
@@ -57,7 +58,7 @@ public class CandleSerie extends TimeSerie<Candle> {
 		for(Candle c:this){
 			if (c.getDate().compareTo(firstDate)<0) continue;
 			if (c.getDate().compareTo(lastDate)>0) break;
-			candleSerie.addValue(c.date, c);
+			candleSerie.addValue(c.getDate(), c);
 			//nbCandles++;
 		}
 		/*double[] array = new double[nbCandles];

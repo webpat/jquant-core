@@ -4,7 +4,7 @@
 package org.jquant.core;
 
 import org.joda.time.DateTime;
-import org.jquant.core.TimeSerie.Variable;
+import org.jquant.serie.TimeSerie.Variable;
 
 
 

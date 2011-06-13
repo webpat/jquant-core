@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.jquant.core.Candle;
-import org.jquant.core.CandleSerie;
 import org.jquant.exception.MarketDataReaderException;
+import org.jquant.serie.CandleSerie;
 
 
 public interface ICandleReader {

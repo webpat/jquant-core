@@ -1,6 +1,8 @@
-package org.jquant.core;
+package org.jquant.serie;
 
 import java.util.List;
+
+import org.jquant.core.Quote;
 
 /**
  * Time indexed Quote Structure

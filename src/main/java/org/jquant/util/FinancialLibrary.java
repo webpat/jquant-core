@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jquant.core.CandleSerie;
 import org.jquant.exception.NotEnoughDataException;
+import org.jquant.serie.CandleSerie;
 
 
 

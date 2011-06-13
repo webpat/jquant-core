@@ -1,7 +1,8 @@
-package org.jquant.core;
+package org.jquant.serie;
 
 import java.util.List;
 
+import org.jquant.core.Rate;
 import org.jquant.time.TimeFrame;
 
 

@@ -6,6 +6,10 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import org.jquant.exception.NotEnoughDataException;
 import org.jquant.model.Currency;
+import org.jquant.serie.CandleSerie;
+import org.jquant.serie.QuoteSerie;
+import org.jquant.serie.TermStructure;
+import org.jquant.serie.VolatilityTermStructure;
 import org.jquant.time.TimeFrame;
 
 

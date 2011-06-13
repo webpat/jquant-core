@@ -18,5 +18,11 @@
 	<classpathentry kind="var" path="M2_REPO/net/objectlab/kit/datecalc-common/1.2.0/datecalc-common-1.2.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/net/objectlab/kit/datecalc-joda/1.2.0/datecalc-joda-1.2.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-math/2.2/commons-math-2.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/junit-addons/junit-addons/1.4/junit-addons-1.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/easymock/easymock/2.5/easymock-2.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/easymock/easymockclassextension/2.3/easymockclassextension-2.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/dbunit/dbunit/2.2.2/dbunit-2.2.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/unitils/unitils/2.3/unitils-2.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/2.5.6/spring-test-2.5.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

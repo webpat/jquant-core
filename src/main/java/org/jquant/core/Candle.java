@@ -3,7 +3,7 @@
  */
 package org.jquant.core;
 
-import org.jquant.core.TimeSerie.Variable;
+import org.jquant.serie.TimeSerie.Variable;
 
 
 
