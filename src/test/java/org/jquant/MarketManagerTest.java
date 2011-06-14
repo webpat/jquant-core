@@ -1,4 +1,4 @@
-package com.sgam.jquant;
+package org.jquant;
 
 
 import org.easymock.EasyMock;
