@@ -12,7 +12,7 @@ import org.unitils.easymock.annotation.Mock;
 import org.unitils.inject.annotation.TestedObject;
 import org.unitils.spring.annotation.SpringApplicationContext;
 
-@SpringApplicationContext(value="jquant-test.xml")
+@SpringApplicationContext(value="jquant-test-context.xml")
 public class MarketManagerTest {
 
 	@Mock
