@@ -25,5 +25,10 @@
 	<classpathentry kind="var" path="M2_REPO/org/dbunit/dbunit/2.2.2/dbunit-2.2.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/unitils/unitils/2.3/unitils-2.3.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-test/2.5.6/spring-test-2.5.6.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.1/commons-logging-1.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.4/commons-lang-2.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/cglib/cglib/2.1_3/cglib-2.1_3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/asm/asm/1.5.3/asm-1.5.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/ognl/ognl/2.6.9/ognl-2.6.9.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -241,4 +241,12 @@ class WeeklyCalendar implements IReportingDayCalendar {
 		current = from;
 		
 	}
+
+	@Override
+	public String toString() {
+		return "WeeklyCalendar [from=" + from + ", to=" + to + ", current="
+				+ current + "]";
+	}
+	
+	
 }

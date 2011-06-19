@@ -3,6 +3,7 @@
  */
 package org.jquant.core;
 
+import org.joda.time.DateTime;
 import org.jquant.serie.TimeSerie.Variable;
 
 
@@ -49,8 +50,9 @@ public class Candle extends TimeValue {
      * @param low
      * @param close
      */
-    public Candle(double open, double high, double low, double close,double volume) {
+    public Candle(DateTime timestamp,double open, double high, double low, double close,double volume) {
         super();
+        this.date = timestamp;
         this.open = open;
         this.high = high;
         this.low = low;
@@ -137,4 +139,12 @@ public class Candle extends TimeValue {
 		return clone;
 	}
 
+	@Override
+	public String toString() {
+		return "Candle [open=" + open + ", high=" + high + ", low=" + low
+				+ ", close=" + close + ", volume=" + volume + "]";
+	}
+
+	
+	
 }

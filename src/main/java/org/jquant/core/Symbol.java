@@ -61,6 +61,11 @@ public final class Symbol implements Comparable<Symbol> {
 		return (provider.compareTo(o.provider)+id.compareTo(o.id));
 	}
 
+	@Override
+	public String toString() {
+		return "Symbol [" + provider + "!"+id+"]";
+	}
+
     
    
 }

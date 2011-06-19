@@ -71,5 +71,10 @@ public class CandleSerie extends TimeSerie<Candle> {
 		return candleSerie;
 	}
 	
+	@Override
+	public String toString() {
+		return "CandleSerie [size()=" + size() + "]";
+	}
+	
 
 }

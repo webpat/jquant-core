@@ -140,4 +140,12 @@ class DailyCalendar implements IReportingDayCalendar {
 		current = from;
 		
 	}
+
+	@Override
+	public String toString() {
+		return "DailyCalendar [from=" + from + ", to=" + to + ", current="
+				+ current + "]";
+	}
+	
+	
 }
