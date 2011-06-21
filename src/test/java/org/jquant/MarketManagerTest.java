@@ -62,14 +62,14 @@ public class MarketManagerTest {
 	}
 	
 	@Test
-	public void testAddInstrument() throws MarketDataReaderException{
+	public void testReadCandle() throws MarketDataReaderException{
 		
 		EasyMock.expect(readerFactory.getCandleReader(null)).andReturn(candleReader);
 		EasyMock.expect(candleReader.fetchAllCandle(Symbols.ALCATEL.getId())).andReturn(candleSerie);
 		EasyMockUnitils.replay();
 		
-		// Daily 
 		Equity alcatel = new Equity(Symbols.ALCATEL, MICMarketPlace.XFRA);
+		
 		marketMgr.addInstrument(alcatel, SerieFrequency.DAILY);
 		
 		
