@@ -2,9 +2,9 @@ package org.jquant.serie;
 
 import java.util.List;
 
+import org.joda.time.Period;
 import org.jquant.core.Rate;
 import org.jquant.model.OptionType;
-import org.jquant.time.TimeFrame;
 
 
 
@@ -19,8 +19,8 @@ public class VolatilityTermStructure extends TermStructure {
 	private final Double strike;
 	
 	
-	public VolatilityTermStructure(List<Rate> list,TimeFrame pillar,OptionType type,Double strike){
-		super(list,pillar);
+	public VolatilityTermStructure(List<Rate> list,Period term,OptionType type,Double strike){
+		super(list,term);
 		this.type = type;
 		this.strike = strike;
 	}

@@ -1,8 +1,8 @@
 package org.jquant.instrument.rate;
 
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.jquant.model.Currency;
-import org.jquant.time.TimeFrame;
 
 
 /**
@@ -12,7 +12,7 @@ import org.jquant.time.TimeFrame;
  */
 public class SwapRateIndex extends InterestRateIndex{
 
-	public SwapRateIndex(DateTime fixingDate, double rate, Currency currency, TimeFrame timeFrame) {
+	public SwapRateIndex(DateTime fixingDate, double rate, Currency currency, Period timeFrame) {
 		super(fixingDate, rate, currency, timeFrame);
 		
 	}
@@ -21,8 +21,11 @@ public class SwapRateIndex extends InterestRateIndex{
 		return RateType.SWAP;
 	}
 	
+	/**
+	 * (T-t) Time to Maturity in days 
+	 */
 	public double getTimeToMaturity() {
-		return this.timeFrame.length;
+		return getTerm().getDays();
 	}
 	
 

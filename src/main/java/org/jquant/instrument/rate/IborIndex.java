@@ -1,11 +1,10 @@
 package org.jquant.instrument.rate;
 
 import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Period;
 import org.jquant.core.MICMarketPlace;
 import org.jquant.model.Currency;
-import org.jquant.time.TimeFrame;
-import org.jquant.time.TimeUnit;
-import org.jquant.time.calendar.CalendarUtils;
 import org.jquant.time.daycounter.Actual365Fixed;
 import org.jquant.time.daycounter.DayCounter;
 
@@ -18,8 +17,8 @@ public abstract class IborIndex extends InterestRateIndex{
 	
 	// ajouter en arg:
 	//	calendar
-	public IborIndex(DateTime fixingDate, double rate, Currency currency, TimeFrame timeFrame, DayCounter dayCounter, int nbSettlementDays) {
-		super(fixingDate, rate, currency, timeFrame);
+	public IborIndex(DateTime fixingDate, double rate, Currency currency, Period term, DayCounter dayCounter, int nbSettlementDays) {
+		super(fixingDate, rate, currency, term);
 		this.dayCounter = dayCounter;
 		this.nbSettlementDays = nbSettlementDays;
 	}
@@ -53,13 +52,13 @@ public abstract class IborIndex extends InterestRateIndex{
 	}
 	
 	public DateTime getMaturityDate(final DateTime valueDate) {
-		DateTime maturityDate=CalendarUtils.getLastWorkDay(valueDate,this.timeFrame,getMICMarketPlace());
+		DateTime maturityDate= valueDate.plus(term);// CalendarUtils.getLastWorkDay(valueDate,this.timeFrame,getMICMarketPlace());
 		return maturityDate;
 	}
 	
 	public DateTime getValueDate(final DateTime fixingDate) {
-		TimeFrame timeFrame = new TimeFrame(this.nbSettlementDays,TimeUnit.DAY);
-		DateTime valueDate=CalendarUtils.getLastWorkDay(fixingDate,timeFrame,getMICMarketPlace());
+		Period term = Days.days(nbSettlementDays).toPeriod();
+		DateTime valueDate= fixingDate.plus(term);//CalendarUtils.getLastWorkDay(fixingDate,term,getMICMarketPlace());
 		return valueDate;		
 	}
 	

@@ -1,7 +1,7 @@
 package org.jquant.instrument;
 
 import org.joda.time.DateTime;
-import org.joda.time.Days;
+import org.joda.time.Period;
 import org.jquant.core.BaseInstrument;
 import org.jquant.core.Candle;
 import org.jquant.core.MICMarketPlace;
@@ -11,8 +11,6 @@ import org.jquant.exception.NotEnoughDataException;
 import org.jquant.instrument.rate.InterestCalculation;
 import org.jquant.instrument.rate.InterestType;
 import org.jquant.serie.QuoteSerie;
-import org.jquant.time.TimeFrame;
-import org.jquant.time.calendar.CalendarUtils;
 import org.jquant.time.daycounter.DayCounter;
 
 
@@ -32,7 +30,7 @@ public class TimeDeposit extends BaseInstrument {
 	private InterestType interestType;
 	private RateIndex underlying;
 	private Double spread;
-	private TimeFrame underlyingPeriod;
+	private Period underlyingPeriod;
 
 	public TimeDeposit(Symbol symbol, DateTime expirationDate, 
 			DayCounter dayCount, InterestCalculation interestCalculation) {
@@ -89,7 +87,7 @@ public class TimeDeposit extends BaseInstrument {
 			markToMarket = getMTMforVariableInterest(evaluationDate);
 			break;
 		case REVISABLE:
-			markToMarket = getMTMforRevisableInterest(evaluationDate);
+//			markToMarket = getMTMforRevisableInterest(evaluationDate);
 			break;
 		}
 		
@@ -141,31 +139,31 @@ public class TimeDeposit extends BaseInstrument {
 		return markToMarket;
 	}
 	
-	private double getMTMforRevisableInterest(DateTime evaluationDate) {
-		double markToMarket = nominal;
-		
-		DateTime t = startDate;
-		DateTime nextDate = CalendarUtils.getLastWorkDay(t, underlyingPeriod, MICMarketPlace.NO_MIC);
-		double rate = 0.0;
-		while (nextDate.compareTo(evaluationDate)<=0) {
-			Candle candle = underlying.getCandles().getValue(t);
-			if (candle == null) {
-				
-			}
-			else {
-				rate = candle.getValue();
-			}
-			int nbDaysToNextDate = Days.daysBetween(t, nextDate).getDays()-1;
-			markToMarket *= 1+(rate+spread)*nbDaysToNextDate/360.;
-			t = nextDate;
-			nextDate = CalendarUtils.getLastWorkDay(t, underlyingPeriod, MICMarketPlace.NO_MIC);
-		}
-		if (t.compareTo(evaluationDate)!=0) {
-			int nbDaysToNextDate = Days.daysBetween(t, evaluationDate).getDays()-1;
-			markToMarket *= 1+(rate+spread)*nbDaysToNextDate/360.;
-		}
-		return markToMarket;	
-	}
+//	private double getMTMforRevisableInterest(DateTime evaluationDate) {
+//		double markToMarket = nominal;
+//		
+//		DateTime t = startDate;
+////		DateTime nextDate = CalendarUtils.getLastWorkDay(t, underlyingPeriod, MICMarketPlace.NO_MIC);
+//		double rate = 0.0;
+//		while (nextDate.compareTo(evaluationDate)<=0) {
+//			Candle candle = underlying.getCandles().getValue(t);
+//			if (candle == null) {
+//				
+//			}
+//			else {
+//				rate = candle.getValue();
+//			}
+//			int nbDaysToNextDate = Days.daysBetween(t, nextDate).getDays()-1;
+//			markToMarket *= 1+(rate+spread)*nbDaysToNextDate/360.;
+//			t = nextDate;
+//			nextDate = CalendarUtils.getLastWorkDay(t, underlyingPeriod, MICMarketPlace.NO_MIC);
+//		}
+//		if (t.compareTo(evaluationDate)!=0) {
+//			int nbDaysToNextDate = Days.daysBetween(t, evaluationDate).getDays()-1;
+//			markToMarket *= 1+(rate+spread)*nbDaysToNextDate/360.;
+//		}
+//		return markToMarket;	
+//	}
 	
 	//TODO Renvoyer une exception si interet n'est pas fix�
 	public QuoteSerie getAllMarkToMarket() throws NotEnoughDataException {

@@ -4,13 +4,13 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.jquant.exception.NotEnoughDataException;
 import org.jquant.model.Currency;
 import org.jquant.serie.CandleSerie;
 import org.jquant.serie.QuoteSerie;
 import org.jquant.serie.TermStructure;
 import org.jquant.serie.VolatilityTermStructure;
-import org.jquant.time.TimeFrame;
 
 
 
@@ -99,13 +99,13 @@ public abstract class BaseInstrument implements IInstrument {
 	}
 	
 
-	protected VolatilityTermStructure getImplicitVolatility(TimeFrame pillar) throws NotEnoughDataException{
+	protected VolatilityTermStructure getImplicitVolatility(Period term) throws NotEnoughDataException{
 		
-		VolatilityTermStructure volCurve = volatilityMap.get(pillar.toString());
+		VolatilityTermStructure volCurve = volatilityMap.get(term);
 		
 		if (volCurve == null){
 			
-			throw new NotEnoughDataException("No volatilities for pillar:"+pillar.toString());
+			throw new NotEnoughDataException("No volatilities for term"+ term);
 		}
 		
 		return volCurve;
@@ -130,7 +130,7 @@ public abstract class BaseInstrument implements IInstrument {
 	 * @return {@link Rate}
 	 * @throws NotEnoughDataException 
 	 */
-	protected Rate getImplicitVolatility(TimeFrame pillar,DateTime date) throws NotEnoughDataException{
+	protected Rate getImplicitVolatility(Period pillar,DateTime date) throws NotEnoughDataException{
 		
 		TermStructure volCurve = volatilityMap.get(pillar.toString());
 		if (volCurve == null){
@@ -143,7 +143,7 @@ public abstract class BaseInstrument implements IInstrument {
 
 	
 
-	protected void setVolatility(TimeFrame pillar,VolatilityTermStructure volCurve) {
+	protected void setVolatility(Period pillar,VolatilityTermStructure volCurve) {
 		
 		// Create the Map if it does not exist 
 		if (volatilityMap == null)

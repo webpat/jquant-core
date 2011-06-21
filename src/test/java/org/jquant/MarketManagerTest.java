@@ -2,17 +2,14 @@ package org.jquant;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggerFactory;
 import org.easymock.EasyMock;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.jquant.core.Candle;
 import org.jquant.core.MICMarketPlace;
-import org.jquant.data.DataProvider;
 import org.jquant.data.ProviderAdapterFactory;
 import org.jquant.data.Symbols;
 import org.jquant.data.reader.ICandleReader;
@@ -65,14 +62,14 @@ public class MarketManagerTest {
 	}
 	
 	@Test
-	public void testReadCandle() throws MarketDataReaderException{
+	public void testAddInstrument() throws MarketDataReaderException{
 		
 		EasyMock.expect(readerFactory.getCandleReader(null)).andReturn(candleReader);
 		EasyMock.expect(candleReader.fetchAllCandle(Symbols.ALCATEL.getId())).andReturn(candleSerie);
 		EasyMockUnitils.replay();
 		
+		// Daily 
 		Equity alcatel = new Equity(Symbols.ALCATEL, MICMarketPlace.XFRA);
-		
 		marketMgr.addInstrument(alcatel, SerieFrequency.DAILY);
 		
 		

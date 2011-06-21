@@ -16,7 +16,16 @@ import org.jquant.serie.TimeSerie.Variable;
 public class Candle extends TimeValue {
 
     
-    private double open;
+	/**
+	 * Le chandelier est-il INTRADAY,DAILY,WEEKLY,MONTHLY
+	 * @author patrick.merheb
+	 *
+	 */
+    public enum CandleType {
+    	INTRADAY,DAILY,WEEKLY,MONTHLY,YEARLY
+	}
+
+	private double open;
     private double high;
     private double low;
     private double close;
@@ -37,22 +46,25 @@ public class Candle extends TimeValue {
 	 */
 	private Candle(Candle candle) 
 	{
-	    this.open = candle.open;
-	    this.high = candle.high;
-	    this.low = candle.low;
-	    this.close = candle.close;
-	    this.volume = candle.volume;
+		this.date = candle.date;
+        this.open = candle.open;
+        this.high = candle.high;
+        this.low = candle.low;
+        this.close = candle.close;
+        this.volume = candle.volume;
 	}
 
 	/**
-     * @param open
-     * @param high
-     * @param low
-     * @param close
+     * @param start 
+	 * @param open Valeur à l'ouverture 
+     * @param high Valeur haute
+     * @param low Valeur basse
+     * @param close Valeur à la fermeture  
+	 * @param volume Volume des transactions pendant la période donnée 
      */
-    public Candle(DateTime timestamp,double open, double high, double low, double close,double volume) {
+    public Candle(DateTime start,double open, double high, double low, double close,double volume) {
         super();
-        this.date = timestamp;
+        this.date = start;
         this.open = open;
         this.high = high;
         this.low = low;

@@ -2,20 +2,20 @@ package org.jquant.serie;
 
 import java.util.List;
 
+import org.joda.time.Period;
 import org.jquant.core.Rate;
-import org.jquant.time.TimeFrame;
 
 
 /**
  * The Rate Serie structure, holds rates for a given TIME-FRAME(pillar)
- * @see TimeFrame 
+ * @see Term 
  * @see Rate
  * @author JQUANT TEAM 
  *
  */
 public class TermStructure extends TimeSerie<Rate>{
 
-	protected TimeFrame pillar;
+	protected Period term;
 	
 	/**
 	 * Blank Constructor
@@ -36,12 +36,11 @@ public class TermStructure extends TimeSerie<Rate>{
 		}
 	}
 	
-	public TermStructure(List<Rate> list,TimeFrame pillar){
+	public TermStructure(List<Rate> list,Period term){
 		super();
-		this.setPillar(pillar);
+		this.setTerm(term);
 		//indexes the QuotesVector and make it a TimeSerie
 		for(Rate r:list){
-//			r.setPillar(pillar);
 			this.addValue(r.getDate(), r);
 		}
 	}
@@ -59,13 +58,19 @@ public class TermStructure extends TimeSerie<Rate>{
 		return Rate.class;
 	}
 
-	public TimeFrame getPillar() {
-		return pillar;
+	/**
+	 * TERM, Period, length 
+	 * @return La durée (term) sur laquelle s'exprime le taux
+	 */
+	public Period getTerm() {
+		return term;
 	}
 
-	public void setPillar(TimeFrame pillar) {
-		this.pillar = pillar;
+	public void setTerm(Period term) {
+		this.term = term;
 	}
+
+
 
 	
 	

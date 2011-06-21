@@ -1,8 +1,8 @@
 package org.jquant.instrument.rate;
 
 import org.joda.time.DateTime;
+import org.joda.time.Period;
 import org.jquant.model.Currency;
-import org.jquant.time.TimeFrame;
 
 
 /**
@@ -15,7 +15,7 @@ abstract public class InterestRateIndex {
 	protected double rate;
 	protected Currency currency;
 	protected DateTime fixingDate;
-	protected TimeFrame timeFrame;
+	protected Period term;
 
 	/**
 	 * Type de TAUX 
@@ -33,25 +33,25 @@ abstract public class InterestRateIndex {
 		SWAP;
 	}
 	
-	public InterestRateIndex(DateTime fixingDate, double rate, Currency currency, TimeFrame timeFrame){
+	public InterestRateIndex(DateTime fixingDate, double rate, Currency currency, Period term){
 		this.fixingDate = fixingDate;
 		this.rate = rate;
 		this.currency = currency;
-		this.timeFrame = timeFrame;
+		this.term  = term;
 	}
 	
 	abstract public RateType getRateType();
 	abstract public double getTimeToMaturity();
 	
-	public TimeFrame getTimeFrame() {
-		return this.timeFrame;
+	
+
+	public Period getTerm() {
+		return term;
 	}
 
 	public double getRate() {
 		return rate;
 	}
 
-	public void setRate(double rate) {
-		this.rate = rate;
-	}
+	
 }

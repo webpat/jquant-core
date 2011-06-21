@@ -1,7 +1,5 @@
 package org.jquant.time.calendar;
 
-import java.util.ArrayList;
-
 import net.objectlab.kit.datecalc.common.DateCalculator;
 import net.objectlab.kit.datecalc.common.HolidayHandlerType;
 import net.objectlab.kit.datecalc.joda.LocalDateKitCalculatorsFactory;
@@ -9,9 +7,6 @@ import net.objectlab.kit.datecalc.joda.LocalDateKitCalculatorsFactory;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.jquant.core.MICMarketPlace;
-import org.jquant.time.Periodicity;
-import org.jquant.time.TimeFrame;
-import org.jquant.time.TimeUnit;
 
 
 /**
@@ -155,144 +150,92 @@ public final class CalendarUtils {
         return startOfFollowingMonth;
 	}
     
-	/**
-	 * Get a schedule ending to endDate with a frequency and a time (nbYears)
-	 *
-	 * @return Last array of DateTime
-	 */
-    public static ArrayList<DateTime> getScheduleWorkDayBeforeDate(DateTime endDate, int nbYears, Periodicity frequency, MICMarketPlace marketPlace) {
-    	ArrayList<DateTime> schedule = new ArrayList<DateTime>();
-
-    	int scheduleSize = nbYears*frequency.getValue();
-    	for (int i=scheduleSize-1;i>=0;i--) {
-    		TimeFrame periodTmp = new TimeFrame(frequency.getPeriod().length*i,frequency.getPeriod().unit); 
-    		DateTime date = getPreviousWorkDay(endDate,periodTmp,marketPlace);
-    		schedule.add(date);
-    	}
-    	return schedule;
-    }
-    
-	/**
-	 * Get a schedule starting from startDate with a frequency and a time (nbYears)
-	 *
-	 * @return Last array of DateTime
-	 */
-    public static ArrayList<DateTime> getScheduleWorkDayAfterDate(DateTime startDate, int nbYears, Periodicity frequency, MICMarketPlace marketPlace) {
-    	ArrayList<DateTime> schedule = new ArrayList<DateTime>();
-
-    	int scheduleSize = nbYears*frequency.getValue();
-    	for (int i=0;i<scheduleSize;i++) {
-    		TimeFrame periodTmp = new TimeFrame(frequency.getPeriod().length*i,frequency.getPeriod().unit); 
-    		DateTime date = getLastWorkDay(startDate,periodTmp,marketPlace);
-    		schedule.add(date);
-    	}
-    	return schedule;
-    }
-    
-	/**
-	 * Get the last date before the first date from the end date with a frequency specified
-	 *
-	 * @return DateTime
-	 */
-    public static DateTime getWorkDayBeforeStartDateFromEndDate(DateTime endDate, DateTime startDate, Periodicity frequency, MICMarketPlace marketPlace) {
-    	DateTime date = endDate;
-    	int i = 1;
-    	while (date.compareTo(startDate)>0) {
-    		TimeFrame periodTmp = new TimeFrame(frequency.getPeriod().length*i,frequency.getPeriod().unit);
-    		date = getPreviousWorkDay(endDate,periodTmp,marketPlace);
-    		i++;
-    	}
-    	return date;
-    }
-
-    public static DateTime getPreviousWorkDay(DateTime endDate, TimeFrame period, MICMarketPlace marketPlace) {
-    	
-    	DateTime previousWorkDay = null;
-		if (marketPlace == null) {
-			marketPlace = MICMarketPlace.NO_MIC;
-		}
-		switch (period.unit)
-		{
-		case DAY:
-		{
-			DateTime tmpDate = endDate;
-			for (int i=0;i<period.length;i++)
-				tmpDate = getBusinessDayGoingForward(tmpDate.minusDays(1),marketPlace);
-			previousWorkDay = tmpDate;
-			break;
-		}
-		case WEEK:
-			previousWorkDay = getBusinessDayGoingForward(endDate.minusWeeks(period.length),marketPlace);
-			break;
-		case MONTH:
-		{
-			DateCalculator<LocalDate> cal = LocalDateKitCalculatorsFactory.getDefaultInstance().
-        		getDateCalculator(marketPlace.getCode(),HolidayHandlerType.MODIFIED_FOLLOWING);
-			if (isEndOfMonth(endDate)) {
-				cal.setStartDate(endDate.minusMonths(period.length).dayOfMonth().withMaximumValue().toLocalDate());
-			} else {
-				cal.setStartDate(endDate.minusMonths(period.length).toLocalDate());
-			}
-			previousWorkDay = cal.getCurrentBusinessDate().toDateTimeAtMidnight();
-			break;
-		}
-		case YEAR:
-		{
-			TimeFrame periodInMonths = new TimeFrame(period.length*12,TimeUnit.MONTH);
-			previousWorkDay = getLastWorkDay(endDate,periodInMonths,marketPlace);
-			break;
-		}
-		}
-		
-		return previousWorkDay;
-    }
+	
+//    public static DateTime getPreviousWorkDay(DateTime endDate,Period period, MICMarketPlace marketPlace) {
+//    	
+//    	DateTime previousWorkDay = null;
+//		if (marketPlace == null) {
+//			marketPlace = MICMarketPlace.NO_MIC;
+//		}
+//		
+//		if (durationType.equals(DurationFieldType.days()))
+//		{
+//			DateTime tmpDate = endDate;
+//			for (int i=0;i<period.length;i++)
+//				tmpDate = getBusinessDayGoingForward(tmpDate.minusDays(1),marketPlace);
+//			previousWorkDay = tmpDate;
+//		}else if (durationType.equals(DurationFieldType.weeks()){
+//		
+//			previousWorkDay = getBusinessDayGoingForward(endDate.minusWeeks(period.length),marketPlace);
+//		}else if (durationType.equals(DurationFieldType.years())){
+//		
+//			DateCalculator<LocalDate> cal = LocalDateKitCalculatorsFactory.getDefaultInstance().
+//        		getDateCalculator(marketPlace.getCode(),HolidayHandlerType.MODIFIED_FOLLOWING);
+//			if (isEndOfMonth(endDate)) {
+//				cal.setStartDate(endDate.minusMonths(period.length).dayOfMonth().withMaximumValue().toLocalDate());
+//			} else {
+//				cal.setStartDate(endDate.minusMonths(period.length).toLocalDate());
+//			}
+//			previousWorkDay = cal.getCurrentBusinessDate().toDateTimeAtMidnight();
+//			break;
+//		}
+//		case YEAR:
+//		{
+//			TimeFrame periodInMonths = new TimeFrame(period.length*12,TimeUnit.MONTH);
+//			previousWorkDay = getLastWorkDay(endDate,periodInMonths,marketPlace);
+//			break;
+//		}
+//		}
+//		
+//		return previousWorkDay;
+//    }
     
 	/**
 	 * Get Last day of a period using convention business days associated to a specific market place
 	 *
 	 * @return Last day of the period  
 	 */
-    public static DateTime getLastWorkDay(DateTime startDate, TimeFrame period, MICMarketPlace marketPlace) {
-    	
-    	DateTime lastWorkDay = null;
-		if (marketPlace == null) {
-			marketPlace = MICMarketPlace.NO_MIC;
-		}
-
-		switch (period.unit)
-		{
-		case DAY:
-		{
-			DateTime tmpDate = startDate;
-			for (int i=0;i<period.length;i++)
-				tmpDate = getBusinessDayGoingForward(tmpDate.plusDays(1),marketPlace);
-			lastWorkDay = tmpDate;
-			break;
-		}
-		case WEEK:
-			lastWorkDay = getBusinessDayGoingForward(startDate.plusWeeks(period.length),marketPlace);
-			break;
-		case MONTH:
-		{
-			DateCalculator<LocalDate> cal = LocalDateKitCalculatorsFactory.getDefaultInstance().
-        		getDateCalculator(marketPlace.getCode(),HolidayHandlerType.MODIFIED_FOLLOWING);
-			if (isEndOfMonth(startDate)) {
-				cal.setStartDate(startDate.plusMonths(period.length).dayOfMonth().withMaximumValue().toLocalDate());
-			} else {
-				cal.setStartDate(startDate.plusMonths(period.length).toLocalDate());
-			}
-			lastWorkDay = cal.getCurrentBusinessDate().toDateTimeAtMidnight();
-			break;
-		}
-		case YEAR:
-		{
-			TimeFrame periodInMonths = new TimeFrame(period.length*12,TimeUnit.MONTH);
-			lastWorkDay = getLastWorkDay(startDate,periodInMonths,marketPlace);
-			break;
-		}
-		}
-     	return lastWorkDay;
-    }
+//    public static DateTime getLastWorkDay(DateTime startDate, TimeFrame period, MICMarketPlace marketPlace) {
+//    	
+//    	DateTime lastWorkDay = null;
+//		if (marketPlace == null) {
+//			marketPlace = MICMarketPlace.NO_MIC;
+//		}
+//
+//		switch (period.unit)
+//		{
+//		case DAY:
+//		{
+//			DateTime tmpDate = startDate;
+//			for (int i=0;i<period.length;i++)
+//				tmpDate = getBusinessDayGoingForward(tmpDate.plusDays(1),marketPlace);
+//			lastWorkDay = tmpDate;
+//			break;
+//		}
+//		case WEEK:
+//			lastWorkDay = getBusinessDayGoingForward(startDate.plusWeeks(period.length),marketPlace);
+//			break;
+//		case MONTH:
+//		{
+//			DateCalculator<LocalDate> cal = LocalDateKitCalculatorsFactory.getDefaultInstance().
+//        		getDateCalculator(marketPlace.getCode(),HolidayHandlerType.MODIFIED_FOLLOWING);
+//			if (isEndOfMonth(startDate)) {
+//				cal.setStartDate(startDate.plusMonths(period.length).dayOfMonth().withMaximumValue().toLocalDate());
+//			} else {
+//				cal.setStartDate(startDate.plusMonths(period.length).toLocalDate());
+//			}
+//			lastWorkDay = cal.getCurrentBusinessDate().toDateTimeAtMidnight();
+//			break;
+//		}
+//		case YEAR:
+//		{
+//			TimeFrame periodInMonths = new TimeFrame(period.length*12,TimeUnit.MONTH);
+//			lastWorkDay = getLastWorkDay(startDate,periodInMonths,marketPlace);
+//			break;
+//		}
+//		}
+//     	return lastWorkDay;
+//    }
     
 	/**
 	 * Says if a date is at the end of month
