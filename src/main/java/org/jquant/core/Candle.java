@@ -21,8 +21,8 @@ public class Candle extends TimeValue {
 	 * @author patrick.merheb
 	 *
 	 */
-    public enum CandleType {
-    	INTRADAY,DAILY,WEEKLY,MONTHLY,YEARLY
+    public enum CandlePeriod {
+    	CUSTOM,DAILY,WEEKLY,MONTHLY,YEARLY
 	}
 
 	private double open;
@@ -30,6 +30,7 @@ public class Candle extends TimeValue {
     private double low;
     private double close;
     private double volume;
+    private CandlePeriod period;
     
     
     /**
@@ -52,17 +53,19 @@ public class Candle extends TimeValue {
         this.low = candle.low;
         this.close = candle.close;
         this.volume = candle.volume;
+        this.period = candle.period;
 	}
 
 	/**
      * @param start 
+	 * @param period 
 	 * @param open Valeur à l'ouverture 
      * @param high Valeur haute
      * @param low Valeur basse
      * @param close Valeur à la fermeture  
 	 * @param volume Volume des transactions pendant la période donnée 
      */
-    public Candle(DateTime start,double open, double high, double low, double close,double volume) {
+    public Candle(DateTime start,CandlePeriod period,double open, double high, double low, double close,double volume) {
         super();
         this.date = start;
         this.open = open;
@@ -70,6 +73,7 @@ public class Candle extends TimeValue {
         this.low = low;
         this.close = close;
         this.volume = volume;
+        this.period = period;
     }
 
     public Variable getDefaultVariable() {
@@ -103,48 +107,35 @@ public class Candle extends TimeValue {
 	}
 	
 	
-	
-	
-	
 	public double getOpen() {
 		return open;
 	}
 
-	public void setOpen(double open) {
-		this.open = open;
-	}
+	
 
 	public double getHigh() {
 		return high;
 	}
 
-	public void setHigh(double high) {
-		this.high = high;
-	}
+	
 
 	public double getLow() {
 		return low;
 	}
 
-	public void setLow(double low) {
-		this.low = low;
-	}
+	
 
 	public double getClose() {
 		return close;
 	}
 
-	public void setClose(double close) {
-		this.close = close;
-	}
+	
 
 	public double getVolume() {
 		return volume;
 	}
 
-	public void setVolume(double volume) {
-		this.volume = volume;
-	}
+	
 
 	public Candle clone(){
 		Candle clone = new Candle(this);

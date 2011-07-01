@@ -9,6 +9,7 @@ import org.easymock.EasyMock;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.jquant.core.Candle;
+import org.jquant.core.Candle.CandlePeriod;
 import org.jquant.core.MICMarketPlace;
 import org.jquant.data.ProviderAdapterFactory;
 import org.jquant.data.Symbols;
@@ -55,7 +56,7 @@ public class MarketManagerTest {
 		candleList = new ArrayList<Candle>();
 		IReportingDayCalendar cal = CalendarFactory.getDailyBrowser(new DateTime(2010, DateTimeConstants.JANUARY, 1, 0, 0, 0, 0), new DateTime(2010, DateTimeConstants.DECEMBER, 31, 0, 0, 0, 0));
 		for (DateTime date : cal){
-			Candle c = new Candle(date,Math.random(),Math.random(),Math.random(),Math.random(),Math.random());
+			Candle c = new Candle(date,CandlePeriod.DAILY,Math.random(),Math.random(),Math.random(),Math.random(),Math.random());
 			candleList.add(c);
 		}
 		candleSerie = new CandleSerie(candleList);
