@@ -9,7 +9,7 @@ import org.jquant.serie.QuoteSerie;
 public interface IQuoteReader {
 
 	/**
-	 * Lit une série de quotations 
+	 * Lit une sÃ©rie de quotations 
 	 * @param instrument
 	 * @return une {@link QuoteSerie}
 	 * @throws MarketDataReaderException
@@ -17,7 +17,7 @@ public interface IQuoteReader {
 	public QuoteSerie fetchAllQuote(String instrumentId) throws MarketDataReaderException;
 	
 	/**
-	 * Lit une série de quotations entre une date de début et une date de fin
+	 * Lit une sï¿½rie de quotations entre une date de dÃ©but et une date de fin
 	 * @param instrument
 	 * @return une {@link QuoteSerie}
 	 * @throws MarketDataReaderException

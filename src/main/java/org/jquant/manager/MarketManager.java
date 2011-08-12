@@ -1,8 +1,8 @@
 package org.jquant.manager;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.joda.time.DateTime;
 import org.jquant.core.BaseInstrument;
-import org.jquant.core.IInstrument;
 import org.jquant.core.Symbol;
 import org.jquant.data.ProviderAdapterFactory;
 import org.jquant.data.reader.ICandleReader;
@@ -14,7 +14,6 @@ import org.jquant.serie.TimeSerie.SerieFrequency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * InstrumentRepository for simulation and backtesting

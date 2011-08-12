@@ -31,8 +31,9 @@ import org.unitils.inject.annotation.InjectInto;
 import org.unitils.inject.annotation.TestedObject;
 import org.unitils.spring.annotation.SpringApplicationContext;
 
-@SpringApplicationContext(value="jquant-test-context.xml")
+
 @RunWith(UnitilsJUnit4TestClassRunner.class)
+@SpringApplicationContext(value="jquant-test-config.xml")
 public class MarketManagerTest {
 
 	Logger logger  = Logger.getLogger(MarketManagerTest.class);

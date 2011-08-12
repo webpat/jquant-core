@@ -4,7 +4,7 @@ import org.jquant.data.DataProvider;
 
 
 /**
- * La paire provider!code représente un instrument de manière unique chez un provider.
+ * La paire provider!code reprï¿½sente un instrument de maniÃ¨re unique chez un provider.
  * This class is immutable.
  * <br>
  * <b>History:</b><br>
