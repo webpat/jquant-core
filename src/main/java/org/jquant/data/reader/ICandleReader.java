@@ -3,8 +3,8 @@ package org.jquant.data.reader;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.jquant.core.Candle;
 import org.jquant.exception.MarketDataReaderException;
+import org.jquant.model.Candle;
 import org.jquant.serie.CandleSerie;
 
 

@@ -1,4 +1,4 @@
-package org.jquant.core;
+package org.jquant.instrument;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -6,7 +6,12 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.jquant.exception.NotEnoughDataException;
+import org.jquant.model.Candle;
 import org.jquant.model.Currency;
+import org.jquant.model.IInstrument;
+import org.jquant.model.MICMarketPlace;
+import org.jquant.model.Rate;
+import org.jquant.model.Symbol;
 import org.jquant.serie.CandleSerie;
 import org.jquant.serie.QuoteSerie;
 import org.jquant.serie.TermStructure;

@@ -2,14 +2,13 @@ package org.jquant.instrument;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.jquant.core.BaseInstrument;
-import org.jquant.core.Candle;
-import org.jquant.core.MICMarketPlace;
-import org.jquant.core.Quote;
-import org.jquant.core.Symbol;
 import org.jquant.exception.NotEnoughDataException;
 import org.jquant.instrument.rate.InterestCalculation;
 import org.jquant.instrument.rate.InterestType;
+import org.jquant.model.Candle;
+import org.jquant.model.MICMarketPlace;
+import org.jquant.model.Quote;
+import org.jquant.model.Symbol;
 import org.jquant.serie.QuoteSerie;
 import org.jquant.time.daycounter.DayCounter;
 

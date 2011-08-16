@@ -1,8 +1,8 @@
 package org.jquant.data.reader;
 
 import org.joda.time.DateTime;
-import org.jquant.core.Quote;
 import org.jquant.exception.MarketDataReaderException;
+import org.jquant.model.Quote;
 import org.jquant.serie.QuoteSerie;
 
 

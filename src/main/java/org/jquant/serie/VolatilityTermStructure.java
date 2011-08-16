@@ -3,8 +3,8 @@ package org.jquant.serie;
 import java.util.List;
 
 import org.joda.time.Period;
-import org.jquant.core.Rate;
 import org.jquant.model.OptionType;
+import org.jquant.model.Rate;
 
 
 

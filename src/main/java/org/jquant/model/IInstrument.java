@@ -1,9 +1,8 @@
 /*
  * Created on 13 juin 07
  */
-package org.jquant.core;
+package org.jquant.model;
 
-import org.jquant.model.Currency;
 
 
 /**

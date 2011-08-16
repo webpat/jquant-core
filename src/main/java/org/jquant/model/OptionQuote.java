@@ -1,8 +1,6 @@
-package org.jquant.core;
+package org.jquant.model;
 
 import org.joda.time.DateTime;
-import org.jquant.model.ExerciseType;
-import org.jquant.model.OptionType;
 
 
 /**

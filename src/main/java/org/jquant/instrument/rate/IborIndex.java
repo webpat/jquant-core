@@ -3,8 +3,8 @@ package org.jquant.instrument.rate;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Period;
-import org.jquant.core.MICMarketPlace;
 import org.jquant.model.Currency;
+import org.jquant.model.MICMarketPlace;
 import org.jquant.time.daycounter.Actual365Fixed;
 import org.jquant.time.daycounter.DayCounter;
 

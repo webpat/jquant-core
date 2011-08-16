@@ -2,12 +2,12 @@ package org.jquant.manager;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.joda.time.DateTime;
-import org.jquant.core.BaseInstrument;
-import org.jquant.core.Symbol;
 import org.jquant.data.ProviderAdapterFactory;
 import org.jquant.data.reader.ICandleReader;
 import org.jquant.data.reader.IQuoteReader;
 import org.jquant.exception.MarketDataReaderException;
+import org.jquant.instrument.BaseInstrument;
+import org.jquant.model.Symbol;
 import org.jquant.serie.CandleSerie;
 import org.jquant.serie.QuoteSerie;
 import org.jquant.serie.TimeSerie.SerieFrequency;

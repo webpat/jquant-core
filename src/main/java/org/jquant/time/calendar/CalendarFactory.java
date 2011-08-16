@@ -1,7 +1,7 @@
 package org.jquant.time.calendar;
 
 import org.joda.time.DateTime;
-import org.jquant.core.MICMarketPlace;
+import org.jquant.model.MICMarketPlace;
 
 
 /**

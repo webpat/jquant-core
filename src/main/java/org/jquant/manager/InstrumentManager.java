@@ -1,6 +1,6 @@
 package org.jquant.manager;
 
-import org.jquant.core.Symbol;
+import org.jquant.model.Symbol;
 import org.jquant.serie.CandleSerie;
 import org.springframework.stereotype.Service;
 

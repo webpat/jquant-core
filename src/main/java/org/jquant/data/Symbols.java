@@ -23,8 +23,8 @@
 ****/
 package org.jquant.data;
 
-import org.jquant.core.Symbol;
 import org.jquant.model.MarketDataProvider;
+import org.jquant.model.Symbol;
 
 
 

@@ -2,10 +2,9 @@ package org.jquant.instrument;
 
 import java.util.List;
 
-import org.jquant.core.BaseInstrument;
-import org.jquant.core.CashDividend;
-import org.jquant.core.MICMarketPlace;
-import org.jquant.core.Symbol;
+import org.jquant.model.CashDividend;
+import org.jquant.model.MICMarketPlace;
+import org.jquant.model.Symbol;
 
 
 /**

@@ -1,7 +1,7 @@
 /*
  * Created on 12 juin 07
  */
-package org.jquant.core;
+package org.jquant.model;
 
 import org.joda.time.DateTime;
 import org.jquant.serie.TimeSerie.Variable;

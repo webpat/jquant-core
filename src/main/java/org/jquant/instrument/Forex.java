@@ -1,11 +1,10 @@
 package org.jquant.instrument;
 
-import org.jquant.core.BaseInstrument;
-import org.jquant.core.MICMarketPlace;
-import org.jquant.core.Symbol;
 import org.jquant.data.DataProvider;
 import org.jquant.model.Currency;
+import org.jquant.model.MICMarketPlace;
 import org.jquant.model.MarketDataProvider;
+import org.jquant.model.Symbol;
 
 /**
  * <b>Description :</b> Une paire de devises échangées sur les marchés FOREX 

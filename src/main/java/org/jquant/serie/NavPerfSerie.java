@@ -1,6 +1,6 @@
 package org.jquant.serie;
 
-import org.jquant.core.NavPerf;
+import org.jquant.model.NavPerf;
 
 public class NavPerfSerie extends TimeSerie<NavPerf> {
 

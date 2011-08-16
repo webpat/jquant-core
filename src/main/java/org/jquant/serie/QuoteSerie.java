@@ -2,7 +2,7 @@ package org.jquant.serie;
 
 import java.util.List;
 
-import org.jquant.core.Quote;
+import org.jquant.model.Quote;
 
 /**
  * Time indexed Quote Structure

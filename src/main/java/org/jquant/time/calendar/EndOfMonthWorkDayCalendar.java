@@ -10,7 +10,7 @@ import net.objectlab.kit.datecalc.joda.LocalDateCalculator;
 import net.objectlab.kit.datecalc.joda.LocalDateKitCalculatorsFactory;
 
 import org.joda.time.DateTime;
-import org.jquant.core.MICMarketPlace;
+import org.jquant.model.MICMarketPlace;
 
 
 /**

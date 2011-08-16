@@ -1,8 +1,7 @@
 package org.jquant.instrument;
 
-import org.jquant.core.BaseInstrument;
-import org.jquant.core.MICMarketPlace;
-import org.jquant.core.Symbol;
+import org.jquant.model.MICMarketPlace;
+import org.jquant.model.Symbol;
 
 
 /**

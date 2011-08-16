@@ -3,7 +3,7 @@ package org.jquant.serie;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.jquant.core.Candle;
+import org.jquant.model.Candle;
 
 /**
  * 
