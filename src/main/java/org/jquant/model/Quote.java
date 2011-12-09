@@ -1,7 +1,6 @@
 package org.jquant.model;
 
 import org.joda.time.DateTime;
-import org.jquant.serie.TimeSerie.Variable;
 
 
 public class Quote extends TimeValue {
@@ -18,13 +17,13 @@ public class Quote extends TimeValue {
 		this.quote = rate;
 	}
 
-	public Variable getDefaultVariable() {
-		return Variable.QUOTE;
-	}
-
-	public double getValue(Variable var) {
-		return quote;
-	}
+//	public Variable getDefaultVariable() {
+//		return Variable.QUOTE;
+//	}
+//
+//	public double getValue(Variable var) {
+//		return quote;
+//	}
 
 
 	public double getValue() {

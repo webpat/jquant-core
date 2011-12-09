@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jquant.exception.NotEnoughDataException;
+import org.jquant.exception.TimeSerieException;
 import org.jquant.serie.CandleSerie;
 
 
@@ -533,12 +533,11 @@ public class FinancialLibrary {
      * returns the logarithmic change value for double[0] and double[1]. 
      * double[0] must be the more recent value.
      *  
-     * @param in
-     * @return
-     * @throws NotEnoughDataException
+     * @param in a two doubles vector
+     * @return returns the logarithmic change value for double[0] and double[1].
      */
-    public static double logChange(double[] in) throws NotEnoughDataException {
-        if(in.length<2)throw new NotEnoughDataException("Too few inputs.");
+    public static double logChange(double[] in) {
+        if(in.length<2)throw new RuntimeException("Too few inputs.");
         double logReturn = Math.log(in[0]/in[1]);
         return logReturn; 
     }
@@ -549,10 +548,10 @@ public class FinancialLibrary {
      * @param filterPeriod
      * @param multiplier
      * @param position
-     * @return
-     * @throws NotEnoughDataException 
+     * @return <code>true</code> if there is a hammer
+     * @throws TimeSerieException 
      */
-    public static boolean isHammer(CandleSerie series, int filterPeriod, double multiplier, int position) throws NotEnoughDataException{
+    public static boolean isHammer(CandleSerie series, int filterPeriod, double multiplier, int position) throws TimeSerieException{
 		//
     	
     	// 
@@ -561,7 +560,6 @@ public class FinancialLibrary {
     	
 		if(series.get(position).getClose() < xaverage){
     		
-			
 			
 			double open = series.get(position).getOpen();
 			double high = series.get(position).getHigh();

@@ -1,22 +1,23 @@
 package org.jquant.model;
 
-import org.jquant.data.DataProvider;
+import org.jquant.data.JQuantDataProvider;
 
 
 /**
- * La paire provider!code repr�sente un instrument de manière unique chez un provider.
+ * The  <b>provider!code</b> matches a unique instrument in the Jquant Scope 
+ * <p>
  * This class is immutable.
- * <br>
- * <b>History:</b><br>
- *
+ *@author patrick.merheb
  */
 public final class Symbol implements Comparable<Symbol> {
 	   
-    private final String id;
-    private final DataProvider provider;
+    private final String code;
+    private final JQuantDataProvider provider;
+    private final InstrumentType type;
     
-    public Symbol(DataProvider provider, String name) {
-    	this.id = name;
+    public Symbol(JQuantDataProvider provider, String code, InstrumentType type) {
+    	this.type = type;
+    	this.code = code;
     	this.provider = provider;
     }
 
@@ -24,7 +25,7 @@ public final class Symbol implements Comparable<Symbol> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((code == null) ? 0 : code.hashCode());
 		result = prime * result + ((provider == null) ? 0 : provider.hashCode());
 		return result;
 	}
@@ -38,32 +39,41 @@ public final class Symbol implements Comparable<Symbol> {
 		if (getClass() != obj.getClass())
 			return false;
 		Symbol other = (Symbol) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (code == null) {
+			if (other.code != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!code.equals(other.code))
 			return false;
 		if (provider != other.provider)
 			return false;
 		return true;
 	}
 
-	public String getId() {
-		return id;
+	public String getCode() {
+		return code;
 	}
 
-	public DataProvider getProvider() {
+	public JQuantDataProvider getProvider() {
 		return provider;
+	}
+
+	
+	/**
+	 * 
+	 * @return Le type d'instrument {@link InstrumentType} (EQUITY, FUND, FUTURE, TRACKER ...)
+	 */
+	public InstrumentType getType() {
+		return type;
 	}
 
 	public int compareTo(Symbol o) {
 		
-		return (provider.compareTo(o.provider)+id.compareTo(o.id));
+		return (provider.compareTo(o.provider)+code.compareTo(o.code));
 	}
 
 	@Override
 	public String toString() {
-		return "Symbol [" + provider + "!"+id+"]";
+		return "Symbol [" + provider + "!"+code+"]";
 	}
 
     

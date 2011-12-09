@@ -6,20 +6,43 @@ import java.util.Iterator;
 import java.util.TreeMap;
 
 import org.joda.time.DateTime;
-import org.jquant.exception.NotEnoughDataException;
+import org.jquant.exception.TimeSerieException;
+import org.jquant.model.IInstrument;
+import org.jquant.model.Symbol;
+import org.jquant.model.TimeValue;
 
 
 
 /**
- * <p>The Timeserie ease the creation,storage and transformation of time series.</p>
- * Agglomeration of one or more <b>variables</b> {@link Variable} that varies over time 
+ * Accumulation of time values that varies over time 
+ * <p>The Timeserie ease the creation,storage, transformation and manipulation of time series.</p>
+ * 
  * @author merhebp
+ * @param <T> The content type of the TimeSerie
+ * @see TimeValue
  */
-public abstract class TimeSerie<T> implements Iterable<T>  {
+public abstract class TimeSerie<T extends TimeValue> implements Iterable<T>  {
 
+	
+	/**
+	 * {@link #isPercent()}
+	 */
 	protected boolean isPercent;   
     
-    protected TreeMap<DateTime,T> map;
+	
+	/**
+	 * Le contenu de la time-serie
+	 */
+    private final TreeMap<DateTime,T> map;
+    
+    
+    /**
+     * {@link #getInstrument()}
+     */
+    protected IInstrument instrument;
+    
+    
+    protected Symbol symbol;
     
     
     public TimeSerie(){
@@ -34,6 +57,10 @@ public abstract class TimeSerie<T> implements Iterable<T>  {
     }
 
     
+    /**
+     * @param timestamp un {@link DateTime}
+     * @return La valeur contenue à l'instant précisé 
+     */
     public T getValue(DateTime timestamp){
         return map.get(timestamp);
     }
@@ -41,13 +68,13 @@ public abstract class TimeSerie<T> implements Iterable<T>  {
     /**
      * Return the element @ index position
      * @param index
-     * @return
-     * @throws NotEnoughDataException 
+     * @return the Time serie content at index 
+     * @throws TimeSerieException 
      */
-    public T get(int index) throws NotEnoughDataException{
+    public T get(int index) throws TimeSerieException{
     	
     	if (index >size())
-    		throw new NotEnoughDataException();
+    		throw new TimeSerieException("No Data",null);
     	Iterator<T> iter = map.values().iterator();
     	int i = index;
     	while(i>0 && iter.hasNext()){
@@ -62,10 +89,16 @@ public abstract class TimeSerie<T> implements Iterable<T>  {
         map.put(timestamp,value);
     }
     
+    /**
+     * @return Renvoie la classe contenue (Candle, Quote, Trade ...)
+     */
     protected abstract Class<T> getChildClass();
     
     public abstract TimeSerie<T> clone();
     
+    /**
+     * @return La {@link TimeSerie} convertie en Array
+     */
     @SuppressWarnings("unchecked")
 	public T[] toArray(){
         T[] array = 
@@ -74,14 +107,28 @@ public abstract class TimeSerie<T> implements Iterable<T>  {
         return array;
         
     }
+    
+    /**
+     * 
+     * @param date
+     * @return <code>true</code> si la {@link TimeSerie} contient cette date
+     */
     public boolean containsDate(DateTime date) {
 		return map.containsKey(date);
 	}
 
+    /**
+     * 
+     * @return La taille de la {@link TimeSerie}
+     */
     public int size(){
     	return map.size();
     }
     
+    /**
+     * 
+     * @return <code>true</code> Les valeurs sont en rendements 
+     */
 	public boolean isPercent() {
 		return isPercent;
 	}
@@ -90,8 +137,37 @@ public abstract class TimeSerie<T> implements Iterable<T>  {
 		this.isPercent = isYield;
 	}
 
+	/**
+	 * 
+	 * @return  L'instrument associé à la time serie 
+	 */
+	public IInstrument getInstrument() {
+		return instrument;
+	}
+
+
+	public void setInstrument(IInstrument instrument) {
+		this.instrument = instrument;
+	}
+
+	/**
+	 * 
+	 * @return Le {@link Symbol} de l'instrument associé à la timeSerie
+	 */
+	public Symbol getSymbol() {
+		return symbol;
+	}
+
+
+	public void setSymbol(Symbol symbol) {
+		this.symbol = symbol;
+	}
+
+	
+	
+	
     
-    public enum Variable{OPEN,HIGH,LOW,CLOSE,VOLUME,RETURN,NAV,QUOTE};
+//    public enum Variable{OPEN,HIGH,LOW,CLOSE,VOLUME,RETURN,NAV,QUOTE};
     
     /**
      * Résolution de la série temporelle 
@@ -101,11 +177,11 @@ public abstract class TimeSerie<T> implements Iterable<T>  {
      * </ul>
      * 
      */
-    public enum SerieFrequency {
-
-    	DAILY,
-    	QUOTES,
-    	TRADE
-    	
-    }
+//    public enum SerieFrequency {
+//
+//    	DAILY,
+//    	QUOTES,
+//    	TRADE
+//    	
+//    }
 }

@@ -1,9 +1,9 @@
 package org.jquant.instrument;
 
-import org.jquant.data.DataProvider;
+import org.jquant.data.JQuantDataProvider;
 import org.jquant.model.Currency;
+import org.jquant.model.InstrumentType;
 import org.jquant.model.MICMarketPlace;
-import org.jquant.model.MarketDataProvider;
 import org.jquant.model.Symbol;
 
 /**
@@ -30,12 +30,12 @@ public class Forex extends BaseInstrument {
 	
 	/**
 	 * 
-	 * @param provider : Le {@link MarketDataProvider} chez qui on prend la quotation
+	 * @param provider : Le {@link JQuantDataProvider} chez qui on prend la quotation
 	 * @param exchangedCurrency La devise échangée (ex : EURUSD, EUR est la devise échangée)
 	 * @param priceCurrency La devise de réglement (ex : EURUSD, USD est la devise de réglement) 
 	 */
-	public Forex(DataProvider provider, Currency exchangedCurrency, Currency priceCurrency) {
-		super(new Symbol(provider, exchangedCurrency.name()+priceCurrency.name()),MICMarketPlace.NO_MIC);
+	public Forex(JQuantDataProvider provider, Currency exchangedCurrency, Currency priceCurrency) {
+		super(new Symbol(provider, exchangedCurrency.name()+priceCurrency.name(),InstrumentType.FOREX),MICMarketPlace.NO_MIC);
 		
 		this.exchangedCurrency = exchangedCurrency;
 		this.priceCurrency = priceCurrency;

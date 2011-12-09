@@ -1,5 +1,10 @@
-package org.jquant.model;
+package org.jquant.data;
 
+/**
+ * Enumeration containing the main Market Data Providers 
+ * @author patrick.merheb
+ *
+ */
 public enum MarketDataProvider {
     BLOOMBERG(2),   
     HDG(7),

@@ -4,7 +4,6 @@
 package org.jquant.model;
 
 import org.joda.time.DateTime;
-import org.jquant.serie.TimeSerie.Variable;
 
 
 
@@ -35,26 +34,26 @@ public class NavPerf extends TimeValue {
 
 
 
-	public Variable getDefaultVariable() {
-       
-        return Variable.NAV;
-    }
+//	public Variable getDefaultVariable() {
+//       
+//        return Variable.NAV;
+//    }
 
     
     
     
-    public double getValue(Variable var) {
-        switch (var) {
-        case NAV:
-            return nav;
-        case RETURN:
-            return returnValue;
-
-        default:
-            return Double.NaN;
-
-        }
-    }
+//    public double getValue(Variable var) {
+//        switch (var) {
+//        case NAV:
+//            return nav;
+//        case RETURN:
+//            return returnValue;
+//
+//        default:
+//            return Double.NaN;
+//
+//        }
+//    }
     
     public NavPerf clone(){
     	return new NavPerf(this);

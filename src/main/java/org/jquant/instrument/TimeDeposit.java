@@ -1,15 +1,10 @@
 package org.jquant.instrument;
 
 import org.joda.time.DateTime;
-import org.joda.time.Period;
-import org.jquant.exception.NotEnoughDataException;
 import org.jquant.instrument.rate.InterestCalculation;
 import org.jquant.instrument.rate.InterestType;
-import org.jquant.model.Candle;
 import org.jquant.model.MICMarketPlace;
-import org.jquant.model.Quote;
 import org.jquant.model.Symbol;
-import org.jquant.serie.QuoteSerie;
 import org.jquant.time.daycounter.DayCounter;
 
 
@@ -27,14 +22,13 @@ public class TimeDeposit extends BaseInstrument {
 	private Double interestRate;
 	private Double nominal;
 	private InterestType interestType;
-	private RateIndex underlying;
-	private Double spread;
-	private Period underlyingPeriod;
+//	private RateIndex underlying;
+//	private Double spread;
+//	private Period underlyingPeriod;
 
 	public TimeDeposit(Symbol symbol, DateTime expirationDate, 
 			DayCounter dayCount, InterestCalculation interestCalculation) {
 		super(symbol, MICMarketPlace.NO_MIC);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public TimeDeposit(Symbol symbol) {
@@ -76,67 +70,67 @@ public class TimeDeposit extends BaseInstrument {
 //		return true;
 //	}
 	
-	public double getMarkToMarket(DateTime evaluationDate) throws NotEnoughDataException {
-		double markToMarket = 0.0;
-		switch (getInterestType()) {
-		case FIXED:
-			markToMarket = getMTMforFixedInterest(evaluationDate);
-			break;
-		case VARIABLE:
-			markToMarket = getMTMforVariableInterest(evaluationDate);
-			break;
-		case REVISABLE:
+//	public double getMarkToMarket(DateTime evaluationDate) throws NotEnoughDataException {
+//		double markToMarket = 0.0;
+//		switch (getInterestType()) {
+//		case FIXED:
+//			markToMarket = getMTMforFixedInterest(evaluationDate);
+//			break;
+//		case VARIABLE:
+//			markToMarket = getMTMforVariableInterest(evaluationDate);
+//			break;
+//		case REVISABLE:
 //			markToMarket = getMTMforRevisableInterest(evaluationDate);
-			break;
-		}
-		
-		return markToMarket;
-	}
+//			break;
+//		}
+//		
+//		return markToMarket;
+//	}
 	
-	private double getMTMforFixedInterest(DateTime evaluationDate) {
-		double markToMarket = 0.0;
-		switch (getInterestCalculation()) {
-		case PRE_JUDGEMENT:
-			markToMarket = nominal / (1+interestRate*
-					dayCount.calculateYearFraction(evaluationDate, expirationDate));
-			break;
-		case POST_JUDGEMENT:
-			markToMarket = nominal * (1+interestRate*
-					dayCount.calculateYearFraction(startDate, evaluationDate));
-			break;
-		}
-
-		return markToMarket;
-	}
+//	private double getMTMforFixedInterest(DateTime evaluationDate) {
+//		double markToMarket = 0.0;
+//		switch (getInterestCalculation()) {
+//		case PRE_JUDGEMENT:
+//			markToMarket = nominal / (1+interestRate*
+//					dayCount.calculateYearFraction(evaluationDate, expirationDate));
+//			break;
+//		case POST_JUDGEMENT:
+//			markToMarket = nominal * (1+interestRate*
+//					dayCount.calculateYearFraction(startDate, evaluationDate));
+//			break;
+//		}
+//
+//		return markToMarket;
+//	}
 	
-	private double getMTMforVariableInterest(DateTime evaluationDate) throws NotEnoughDataException {
-		double markToMarket = nominal;
-		DateTime t = startDate;
-		double rate = 0.0;
-		while (t.compareTo(evaluationDate)<0) {
-			t = t.plusDays(1);
-			// recuperation de n'eonia en t
-			Candle candle = underlying.getCandles().getValue(t);
-			// no rate for this date
-			
-			//if no rate for the evaluation date : the rate is not in louxor
-			if (candle == null&&t.compareTo(evaluationDate)==0) {
-				throw new NotEnoughDataException("The rate  has no price for the "+t.toString());
-			}
-			
-			if (candle == null) {
-				// les interets sont simples
-				markToMarket += (rate+spread)/360.;
-			}
-			else {
-				// les interets sont capitalis�s
-				rate = candle.getValue()/100.;
-				markToMarket = markToMarket*(1+(rate+spread)/360.);
-			}
-		}
-		
-		return markToMarket;
-	}
+//	private double getMTMforVariableInterest(DateTime evaluationDate) throws NotEnoughDataException {
+//		double markToMarket = nominal;
+//		DateTime t = startDate;
+//		double rate = 0.0;
+//		while (t.compareTo(evaluationDate)<0) {
+//			t = t.plusDays(1);
+//			// recuperation de n'eonia en t
+//			Candle candle = underlying.getCandles().getValue(t);
+//			// no rate for this date
+//			
+//			//if no rate for the evaluation date : the rate is not in louxor
+//			if (candle == null&&t.compareTo(evaluationDate)==0) {
+//				throw new NotEnoughDataException("The rate  has no price for the "+t.toString());
+//			}
+//			
+//			if (candle == null) {
+//				// les interets sont simples
+//				markToMarket += (rate+spread)/360.;
+//			}
+//			else {
+//				// les interets sont capitalis�s
+//				rate = candle.getValue()/100.;
+//				markToMarket = markToMarket*(1+(rate+spread)/360.);
+//			}
+//		}
+//		
+//		return markToMarket;
+//	}
 	
 //	private double getMTMforRevisableInterest(DateTime evaluationDate) {
 //		double markToMarket = nominal;
@@ -164,18 +158,17 @@ public class TimeDeposit extends BaseInstrument {
 //		return markToMarket;	
 //	}
 	
-	//TODO Renvoyer une exception si interet n'est pas fix�
-	public QuoteSerie getAllMarkToMarket() throws NotEnoughDataException {
-		QuoteSerie prices = new QuoteSerie();
-		DateTime date = startDate;
-		while (date.compareTo(expirationDate)<=0) {
-			Quote quote = new Quote(date, getMarkToMarket(date));
-			
-			prices.addValue(date, quote);
-			date = date.plusDays(1);
-		}
-		return prices;
-	}
+//	public QuoteSerie getAllMarkToMarket() throws NotEnoughDataException {
+//		QuoteSerie prices = new QuoteSerie();
+//		DateTime date = startDate;
+//		while (date.compareTo(expirationDate)<=0) {
+//			Quote quote = new Quote(date, getMarkToMarket(date));
+//			
+//			prices.addValue(date, quote);
+//			date = date.plusDays(1);
+//		}
+//		return prices;
+//	}
 
 	public DayCounter getDayCount() {
 		return dayCount;

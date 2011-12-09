@@ -4,18 +4,17 @@
 package org.jquant.model;
 
 import org.joda.time.DateTime;
-import org.jquant.serie.TimeSerie.Variable;
 
 
 public interface ITimeValue {
 
-    public double getValue(Variable var);
+//    public double getValue(Variable var);
     
     public double getValue();
     
     public DateTime getDate();
     
-    public Variable getDefaultVariable();
+//    public Variable getDefaultVariable();
     
     public boolean isPadValue();
     

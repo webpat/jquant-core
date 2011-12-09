@@ -23,7 +23,7 @@
 ****/
 package org.jquant.data;
 
-import org.jquant.model.MarketDataProvider;
+import org.jquant.model.InstrumentType;
 import org.jquant.model.Symbol;
 
 
@@ -40,60 +40,60 @@ import org.jquant.model.Symbol;
 public interface Symbols {
 	
     // forex
-	Symbol EURUSD = new Symbol(DataProvider.LOUXOR,"EURUSD");
-	Symbol GBPUSD = new Symbol(DataProvider.LOUXOR,"GBPUSD");
-	Symbol USDJPY = new Symbol(DataProvider.LOUXOR,"USDJPY");
-	Symbol USDCHF = new Symbol(DataProvider.LOUXOR,"USDCHF");
-	Symbol USDCAD = new Symbol(DataProvider.LOUXOR,"USDCAD");
-	Symbol AUDUSD = new Symbol(DataProvider.LOUXOR,"AUDUSD");
-	Symbol EURJPY = new Symbol(DataProvider.LOUXOR,"EURJPY");
-	Symbol EURCHF = new Symbol(DataProvider.LOUXOR,"EURCHF");
-	Symbol EURGBP = new Symbol(DataProvider.LOUXOR,"EURGBP");
-	Symbol EURCAD = new Symbol(DataProvider.LOUXOR,"EURCAD");
-	Symbol GBPJPY = new Symbol(DataProvider.LOUXOR,"GBPJPY");
-	Symbol GBPCHF = new Symbol(DataProvider.LOUXOR,"GBPCHF");
-	Symbol CHFJPY = new Symbol(DataProvider.LOUXOR,"CHFJPY");
-	Symbol NZDUSD = new Symbol(DataProvider.LOUXOR,"NZDUSD");
-	Symbol USDZAR = new Symbol(DataProvider.LOUXOR,"USDZAR");
-	Symbol USDNOK = new Symbol(DataProvider.LOUXOR,"USDNOK");
-	Symbol EURNOK = new Symbol(DataProvider.LOUXOR,"EURNOK");
-	Symbol USDSEK = new Symbol(DataProvider.LOUXOR,"USDSEK");
-	Symbol EURSEK = new Symbol(DataProvider.LOUXOR,"EURSEK");
-	Symbol USDMXN = new Symbol(DataProvider.LOUXOR,"USDMXN");
-	Symbol USDINR = new Symbol(DataProvider.LOUXOR,"USDINR");
-	Symbol GBPINR = new Symbol(DataProvider.LOUXOR,"GBPINR");
-	Symbol USDRMB = new Symbol(DataProvider.LOUXOR,"USDRMB");
+	Symbol EURUSD = new Symbol(JQuantDataProvider.LOUXOR,"EURUSD",InstrumentType.FOREX);
+	Symbol GBPUSD = new Symbol(JQuantDataProvider.LOUXOR,"GBPUSD",InstrumentType.FOREX);
+	Symbol USDJPY = new Symbol(JQuantDataProvider.LOUXOR,"USDJPY",InstrumentType.FOREX);
+	Symbol USDCHF = new Symbol(JQuantDataProvider.LOUXOR,"USDCHF",InstrumentType.FOREX);
+	Symbol USDCAD = new Symbol(JQuantDataProvider.LOUXOR,"USDCAD",InstrumentType.FOREX);
+	Symbol AUDUSD = new Symbol(JQuantDataProvider.LOUXOR,"AUDUSD",InstrumentType.FOREX);
+	Symbol EURJPY = new Symbol(JQuantDataProvider.LOUXOR,"EURJPY",InstrumentType.FOREX);
+	Symbol EURCHF = new Symbol(JQuantDataProvider.LOUXOR,"EURCHF",InstrumentType.FOREX);
+	Symbol EURGBP = new Symbol(JQuantDataProvider.LOUXOR,"EURGBP",InstrumentType.FOREX);
+	Symbol EURCAD = new Symbol(JQuantDataProvider.LOUXOR,"EURCAD",InstrumentType.FOREX);
+	Symbol GBPJPY = new Symbol(JQuantDataProvider.LOUXOR,"GBPJPY",InstrumentType.FOREX);
+	Symbol GBPCHF = new Symbol(JQuantDataProvider.LOUXOR,"GBPCHF",InstrumentType.FOREX);
+	Symbol CHFJPY = new Symbol(JQuantDataProvider.LOUXOR,"CHFJPY",InstrumentType.FOREX);
+	Symbol NZDUSD = new Symbol(JQuantDataProvider.LOUXOR,"NZDUSD",InstrumentType.FOREX);
+	Symbol USDZAR = new Symbol(JQuantDataProvider.LOUXOR,"USDZAR",InstrumentType.FOREX);
+	Symbol USDNOK = new Symbol(JQuantDataProvider.LOUXOR,"USDNOK",InstrumentType.FOREX);
+	Symbol EURNOK = new Symbol(JQuantDataProvider.LOUXOR,"EURNOK",InstrumentType.FOREX);
+	Symbol USDSEK = new Symbol(JQuantDataProvider.LOUXOR,"USDSEK",InstrumentType.FOREX);
+	Symbol EURSEK = new Symbol(JQuantDataProvider.LOUXOR,"EURSEK",InstrumentType.FOREX);
+	Symbol USDMXN = new Symbol(JQuantDataProvider.LOUXOR,"USDMXN",InstrumentType.FOREX);
+	Symbol USDINR = new Symbol(JQuantDataProvider.LOUXOR,"USDINR",InstrumentType.FOREX);
+	Symbol GBPINR = new Symbol(JQuantDataProvider.LOUXOR,"GBPINR",InstrumentType.FOREX);
+	Symbol USDRMB = new Symbol(JQuantDataProvider.LOUXOR,"USDRMB",InstrumentType.FOREX);
 	
 	// index
-	Symbol DAX = new Symbol(DataProvider.LOUXOR,"DAX");
-	Symbol SP500 = new Symbol(DataProvider.LOUXOR,"SP500");
-	Symbol NASDAQ = new Symbol(DataProvider.LOUXOR,"NASDAQ");
-	Symbol NIKKEI225 = new Symbol(DataProvider.LOUXOR,"NIKKEI225");
-	Symbol CRB = new Symbol(DataProvider.LOUXOR,"CRB");
-	Symbol CAC40 = new Symbol(DataProvider.LOUXOR,"CAC40");
+	Symbol DAX = new Symbol(JQuantDataProvider.LOUXOR,"DAX",InstrumentType.INDEX);
+	Symbol SP500 = new Symbol(JQuantDataProvider.LOUXOR,"SP500",InstrumentType.INDEX);
+	Symbol NASDAQ = new Symbol(JQuantDataProvider.LOUXOR,"NASDAQ",InstrumentType.INDEX);
+	Symbol NIKKEI225 = new Symbol(JQuantDataProvider.LOUXOR,"NIKKEI225",InstrumentType.INDEX);
+	Symbol CRB = new Symbol(JQuantDataProvider.LOUXOR,"CRB",InstrumentType.INDEX);
+	Symbol CAC40 = new Symbol(JQuantDataProvider.LOUXOR,"CAC40",InstrumentType.INDEX);
 	
 	// bonds
-	Symbol GERMANBUND = new Symbol(DataProvider.LOUXOR,"GERMANBUND");
-	Symbol TNOTES = new Symbol(DataProvider.LOUXOR,"TNOTES");
+	Symbol GERMANBUND = new Symbol(JQuantDataProvider.LOUXOR,"GERMANBUND",InstrumentType.BOND);
+	Symbol TNOTES = new Symbol(JQuantDataProvider.LOUXOR,"TNOTES",InstrumentType.BOND);
 	
 	// commodity
-	Symbol CRUDEOIL = new Symbol(DataProvider.LOUXOR,"CRUDEOIL");
-	Symbol NATURALGAS = new Symbol(DataProvider.LOUXOR,"NATURALGAS");
-	Symbol COFFEE = new Symbol(DataProvider.LOUXOR,"COFFEE");
-	Symbol AMGEN = new Symbol(DataProvider.LOUXOR,"AMGEN");
-	Symbol MERCK = new Symbol(DataProvider.LOUXOR,"MERCK");
-	Symbol SOYBEANS = new Symbol(DataProvider.LOUXOR,"SOYBEANS");
-	Symbol LUMBER = new Symbol(DataProvider.LOUXOR,"LUMBER");
-	Symbol GOLD = new Symbol(DataProvider.LOUXOR,"GOLD");
-	Symbol SILVER = new Symbol(DataProvider.LOUXOR,"SILVER");
-	Symbol OIL = new Symbol(DataProvider.LOUXOR,"OIL");
-	Symbol GAS = new Symbol(DataProvider.LOUXOR,"GAS");
-	Symbol COPPER = new Symbol(DataProvider.LOUXOR,"COPPER");
+	Symbol CRUDEOIL = new Symbol(JQuantDataProvider.LOUXOR,"CRUDEOIL",InstrumentType.FUTURE);
+	Symbol NATURALGAS = new Symbol(JQuantDataProvider.LOUXOR,"NATURALGAS",InstrumentType.FUTURE);
+	Symbol COFFEE = new Symbol(JQuantDataProvider.LOUXOR,"COFFEE",InstrumentType.FUTURE);
+	Symbol AMGEN = new Symbol(JQuantDataProvider.LOUXOR,"AMGEN",InstrumentType.FUTURE);
+	Symbol MERCK = new Symbol(JQuantDataProvider.LOUXOR,"MERCK",InstrumentType.FUTURE);
+	Symbol SOYBEANS = new Symbol(JQuantDataProvider.LOUXOR,"SOYBEANS",InstrumentType.FUTURE);
+	Symbol LUMBER = new Symbol(JQuantDataProvider.LOUXOR,"LUMBER",InstrumentType.FUTURE);
+	Symbol GOLD = new Symbol(JQuantDataProvider.LOUXOR,"GOLD",InstrumentType.FUTURE);
+	Symbol SILVER = new Symbol(JQuantDataProvider.LOUXOR,"SILVER",InstrumentType.FUTURE);
+	Symbol OIL = new Symbol(JQuantDataProvider.LOUXOR,"OIL",InstrumentType.FUTURE);
+	Symbol GAS = new Symbol(JQuantDataProvider.LOUXOR,"GAS",InstrumentType.FUTURE);
+	Symbol COPPER = new Symbol(JQuantDataProvider.LOUXOR,"COPPER",InstrumentType.FUTURE);
 
 	// stocks
-	Symbol MSFT = new Symbol(DataProvider.LOUXOR,"US5949181045");
-	Symbol GOOG = new Symbol(DataProvider.LOUXOR,"US38259P5089");
-	Symbol ALCATEL= new Symbol(DataProvider.LOUXOR,"FR0000130007");
+	Symbol MSFT = new Symbol(JQuantDataProvider.LOUXOR,"US5949181045",InstrumentType.EQUITY);
+	Symbol GOOG = new Symbol(JQuantDataProvider.LOUXOR,"US38259P5089",InstrumentType.EQUITY);
+	Symbol ALCATEL= new Symbol(JQuantDataProvider.LOUXOR,"FR0000130007",InstrumentType.EQUITY);
 	
 	
 }

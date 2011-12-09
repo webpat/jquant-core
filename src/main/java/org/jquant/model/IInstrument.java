@@ -7,8 +7,11 @@ package org.jquant.model;
 
 /**
  * Basic Interface for an IInstrument
+ * <p> Holds a <b>Symbol</b>, a Market and a Currency
  * @author JQUANT TEAM 
- *
+ *@see Currency
+ *@see MICMarketPlace
+ *@see Symbol
  */
 public interface IInstrument {
 

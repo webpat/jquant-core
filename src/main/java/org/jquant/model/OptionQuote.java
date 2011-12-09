@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 public class OptionQuote extends Quote{
 
 	private final OptionType 		optionType;
-	private final ExerciseType 	exerciseType;
+	private final OptionExercisingStyle 	exerciseType;
 	
 	/**
 	 * {@link OptionQuote#getStrike()}
@@ -26,7 +26,7 @@ public class OptionQuote extends Quote{
 	
 	
 	
-	public OptionQuote(DateTime date, double price, OptionType optionType, ExerciseType exerciseType, double strike, double timeToMaturity){
+	public OptionQuote(DateTime date, double price, OptionType optionType, OptionExercisingStyle exerciseType, double strike, double timeToMaturity){
 		super(date, price);
 		this.optionType = optionType;
 		this.exerciseType = exerciseType;
@@ -62,7 +62,7 @@ public class OptionQuote extends Quote{
 	}
 
 
-	public ExerciseType getExerciseType() {
+	public OptionExercisingStyle getExerciseType() {
 		return exerciseType;
 	}
 

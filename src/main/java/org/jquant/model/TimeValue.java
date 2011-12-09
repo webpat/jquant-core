@@ -1,9 +1,17 @@
 package org.jquant.model;
 
 import org.joda.time.DateTime;
-import org.jquant.serie.TimeSerie.Variable;
 
 
+/**
+ * Temporal Value
+ * 
+ * @author patrick.merheb
+ *
+ *@see Candle
+ *@see Quote
+ *
+ */
 public abstract class TimeValue implements ITimeValue{
 
 	protected DateTime date;
@@ -22,7 +30,7 @@ public abstract class TimeValue implements ITimeValue{
 		this.padValue = padValue;
 	}
 
-	public abstract double getValue(Variable var);
+//	public abstract double getValue(Variable var);
 	
 	public abstract double getValue(); 
 

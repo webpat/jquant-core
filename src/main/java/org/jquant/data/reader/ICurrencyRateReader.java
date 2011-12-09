@@ -8,7 +8,12 @@ import org.jquant.model.Currency;
 import org.jquant.model.Rate;
 import org.jquant.serie.TermStructure;
 
-
+/**
+ * 
+ * @author patrick.merheb
+ *@deprecated
+ */
+@Deprecated
 public interface ICurrencyRateReader {
 
 	

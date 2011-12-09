@@ -6,10 +6,11 @@ import org.joda.time.DateTime;
 import org.jquant.model.Candle;
 
 /**
- * 
- * 
- * @author JQUANT TEAM 
- *
+ * The CandleSerie is a time-serie of Candles 
+ *<p> This time-serie can be associated with an instrument  
+ *@author JQUANT TEAM 
+ *@see TimeSerie
+ *@see Candle
  */
 public class CandleSerie extends TimeSerie<Candle> {
 
