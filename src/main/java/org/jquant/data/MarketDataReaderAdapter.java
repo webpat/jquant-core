@@ -26,7 +26,7 @@ public interface MarketDataReaderAdapter {
 	 * @param symbol the Instrument {@link Symbol}
 	 * @param start begining of the TimeSerie
 	 * @param end end of the TimeSerie
-	 * @param reader
+	 * @param reader The legacy Market Data Reader
 	 * @return a {@link CandleSerie} from the Instrument {@link Symbol} between start and end 
 	 */
 	public CandleSerie readCandleSerie(Symbol symbol,DateTime start, DateTime end, Object reader);
@@ -36,7 +36,7 @@ public interface MarketDataReaderAdapter {
 	 * @param symbol
 	 * @param start
 	 * @param end
-	 * @param reader
+	 * @param reader The legacy Market Data Reader
 	 * @return a {@link QuoteSerie} from the Instrument {@link Symbol}
 	 */
 	public QuoteSerie readQuoteSerie(Symbol symbol,DateTime start, DateTime end, Object reader);
@@ -44,11 +44,17 @@ public interface MarketDataReaderAdapter {
 	/**
 	 * 
 	 * @param symbol
-	 * @param reader
+	 * @param reader The legacy Market Data Reader
 	 * @return a {@link CandleSerie} from the Instrument {@link Symbol}
 	 */
 	public CandleSerie readCandleSerie(Symbol symbol, Object reader);
 	
+	/**
+	 * 
+	 * @param symbol
+	 * @param reader The legacy Market Data Reader
+	 * @return 
+	 */
 	public QuoteSerie readQuoteSerie(Symbol symbol, Object reader);
 	
 }
