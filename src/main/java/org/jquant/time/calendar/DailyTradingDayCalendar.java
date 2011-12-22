@@ -9,18 +9,16 @@ import net.objectlab.kit.datecalc.common.HolidayHandlerType;
 import net.objectlab.kit.datecalc.joda.LocalDateCalculator;
 import net.objectlab.kit.datecalc.joda.LocalDateKitCalculatorsFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.jquant.model.MICMarketPlace;
 
 
 /**
  * Takes a DailyBrowser, add the Holidays Mgt (Working day only)
- * 
- * 
- * 
  * @author merhebp
  */
-class DailyWorkDayCalendar implements IReportingDayCalendar {
+class DailyTradingDayCalendar implements IDateTimeCalendar {
 
     /** start (min) date */
     private DateTime from;
@@ -33,7 +31,7 @@ class DailyWorkDayCalendar implements IReportingDayCalendar {
     
     
     /** The Date Calculator for business day management*/
-    private LocalDateCalculator cal;
+    private final LocalDateCalculator cal;
 
     /**
      * 
@@ -43,10 +41,10 @@ class DailyWorkDayCalendar implements IReportingDayCalendar {
      *  right bound of the calendar
      * @param calendarName
      * market calendar name (holidays set interested in). 
-     * If there is set of holidays with that name, 
-     * it will return a DateCalculator with an empty holiday set (will work on Weekend only).
+     * If there is no set of holidays with that name, 
+     * it will return a DateCalculator with an empty holiday set (Only Week end will be strip off).
      */
-    DailyWorkDayCalendar(DateTime from, DateTime to,MICMarketPlace mic) {
+    DailyTradingDayCalendar(DateTime from, DateTime to,MICMarketPlace mic) {
         this.from = from;
         this.to = to;
 		if (to == null) {
@@ -55,9 +53,12 @@ class DailyWorkDayCalendar implements IReportingDayCalendar {
 		if (this.from == null) {
 			this.from = this.to;
 		}		
-        
-        cal = LocalDateKitCalculatorsFactory.getDefaultInstance().
-        getDateCalculator(mic.getCode(),HolidayHandlerType.FORWARD); //TYPE FORWARD
+        if (mic != null){
+        	cal = LocalDateKitCalculatorsFactory.getDefaultInstance().
+        			getDateCalculator(mic.getCode(),HolidayHandlerType.FORWARD); //TYPE FORWARD
+        }else {
+        	cal  = LocalDateKitCalculatorsFactory.getDefaultInstance().getDateCalculator(StringUtils.EMPTY, HolidayHandlerType.FORWARD);
+        }
     }
 
     private void initForNext() {

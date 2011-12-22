@@ -9,7 +9,7 @@ import org.joda.time.DateTime;
  * 
  * @author Patrick Ducharme-Boutin
  */
-public interface IReportingDayCalendar extends Iterable<DateTime>, Iterator<DateTime> {
+public interface IDateTimeCalendar extends Iterable<DateTime>, Iterator<DateTime> {
 
 	/**
 	 * Return the day the browser starts from.

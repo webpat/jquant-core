@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
  * 
  * @author Patrick Ducharme-Boutin
  */
-class DailyCalendar implements IReportingDayCalendar {
+class DailyCalendar implements IDateTimeCalendar {
 
 	/** start (min) date */
 	private DateTime from;

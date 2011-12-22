@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.jquant.data.JQuantDataProvider;
 import org.jquant.data.MarketDataReaderAdapter;
 import org.jquant.data.MarketDataReaderMapping;
@@ -32,6 +34,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class MarketManager implements InitializingBean, ApplicationContextAware {
 
+	/** logger */
+	private static final Logger logger = Logger.getLogger(MarketManager.class);
+	
 	private List<CandleSerie> candleSeries;
 
 	private ApplicationContext applicationContext;
@@ -50,9 +55,11 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 	 *  </ul>
 	 * @param symbol the {@link Symbol} of the Instrument you want to add to the simulation  
 	 * @param precision The MarketData resolution (CANDLE,TRADE,QUOTE)
+	 * @param from begining of the historical data  
+	 * @param to end of the historical data  
 	 * @throws MarketDataReaderException 
 	 */
-	public void addInstrument(Symbol symbol,MarketDataPrecision precision) throws MarketDataReaderException{
+	public void addInstrument(Symbol symbol,MarketDataPrecision precision,DateTime from, DateTime to) throws MarketDataReaderException{
 		
 		Object reader = findMarketDataReader(symbol.getProvider());
 		
@@ -63,14 +70,18 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 		switch (precision){
 		case CANDLE: 
 			// Read All historical market data
-			CandleSerie candles = readerAdapter.readCandleSerie(symbol, reader);
-			candles.setSymbol(symbol);
+			CandleSerie candles = readerAdapter.readCandleSerie(symbol,from, to, reader);
+			if (candles != null) {
+				candles.setSymbol(symbol);
 			
-			// TODO: Manage Implied Volatility If Any
-			// TODO : Subscribe for New CandleEvents
+				// TODO: Manage Implied Volatility If Any
+				// TODO : Subscribe for New CandleEvents
 			
-			//Add Serie to the MarketMgr space (TODO: Manage cache)
-			candleSeries.add(candles);
+				//Add Serie to the MarketMgr space (TODO: Manage cache)
+				candleSeries.add(candles);
+			}else {
+				logger.warn("No market-data for Symbol"+ symbol.toString());
+			}
 			break;
 			
 		case QUOTE:

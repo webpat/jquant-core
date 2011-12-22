@@ -13,7 +13,7 @@ import org.joda.time.Days;
  * 
  * @author Patrick Ducharme-Boutin
  */
-class WeeklyCalendar implements IReportingDayCalendar {
+class WeeklyCalendar implements IDateTimeCalendar {
 
 	/** start (min) date */
 	private DateTime from;

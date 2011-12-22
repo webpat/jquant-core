@@ -19,7 +19,7 @@ import org.jquant.model.MICMarketPlace;
  *
  * @author merhebp
  */
-class EndOfMonthWorkDayCalendar implements IReportingDayCalendar {
+class EndOfMonthWorkDayCalendar implements IDateTimeCalendar {
 
     /** start (min) date */
     private DateTime from;

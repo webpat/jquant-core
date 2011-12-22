@@ -15,7 +15,7 @@ import org.joda.time.DateTime;
  * 
  * @author Patrick Ducharme-Boutin
  */
-class MonthlyCalendar implements IReportingDayCalendar {
+class MonthlyCalendar implements IDateTimeCalendar {
 
 	/** start (min) date */
 	private DateTime from;
