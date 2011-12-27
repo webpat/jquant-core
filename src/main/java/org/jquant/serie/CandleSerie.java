@@ -38,6 +38,13 @@ public class CandleSerie extends TimeSerie<Candle> {
 		
 		return clonedCandleSerie;
 	}
+	
+	@Override
+	public void addValue(DateTime timestamp, Candle candle) {
+		super.addValue(timestamp, candle);
+		candle.setSerie(this);//Symetric binding
+	}
+	
 
 	@Override
 	protected Class<Candle> getChildClass() {
@@ -52,24 +59,16 @@ public class CandleSerie extends TimeSerie<Candle> {
 		return null;
 	}
 	
-	public CandleSerie getClosesFromDateToDate(DateTime firstDate, DateTime lastDate) {
-		// count the closes
-		CandleSerie candleSerie = new CandleSerie();
-		//int nbCandles = 0;
-		for(Candle c:this){
-			if (c.getDate().compareTo(firstDate)<0) continue;
-			if (c.getDate().compareTo(lastDate)>0) break;
-			candleSerie.addValue(c.getDate(), c);
-			//nbCandles++;
-		}
-		/*double[] array = new double[nbCandles];
+	public double[] getClosesFromDateToDate(DateTime firstDate, DateTime lastDate) {
+	
+		double[] array = new double[this.size()-1];
 		int i =0;
 		for(Candle c:this){
 			if (c.getDate().compareTo(firstDate)<0) continue;
 			if (c.getDate().compareTo(lastDate)>0) break;
 			array[i++] = c.getClose();
-		}*/
-		return candleSerie;
+		}
+		return array;
 	}
 	
 	@Override

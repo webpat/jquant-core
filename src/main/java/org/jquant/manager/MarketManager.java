@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.jquant.data.JQuantDataProvider;
 import org.jquant.data.MarketDataReaderAdapter;
 import org.jquant.data.MarketDataReaderMapping;
 import org.jquant.exception.MarketDataReaderException;
+import org.jquant.model.Candle;
 import org.jquant.model.MarketDataPrecision;
 import org.jquant.model.Symbol;
 import org.jquant.serie.CandleSerie;
@@ -70,15 +72,14 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 		switch (precision){
 		case CANDLE: 
 			// Read All historical market data
-			CandleSerie candles = readerAdapter.readCandleSerie(symbol,from, to, reader);
-			if (candles != null) {
-				candles.setSymbol(symbol);
+			CandleSerie serie = readerAdapter.readCandleSerie(symbol,from, to, reader);
+			if (serie != null) {
+				serie.setSymbol(symbol);
 			
 				// TODO: Manage Implied Volatility If Any
-				// TODO : Subscribe for New CandleEvents
 			
 				//Add Serie to the MarketMgr space (TODO: Manage cache)
-				candleSeries.add(candles);
+				candleSeries.add(serie);
 			}else {
 				logger.warn("No market-data for Symbol"+ symbol.toString());
 			}
@@ -98,7 +99,52 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 		
 	}
 	
-@Override
+	/**
+	 * 
+	 * @param timestamp a {@link DateTime}
+	 * @return The Collection of Candles in the market at a precise time 
+	 */
+	public List<Candle> getMarketSlice(DateTime timestamp){
+		List<Candle> slice = new ArrayList<Candle>(candleSeries.size());
+		for (CandleSerie cs : candleSeries){
+			if (cs.getValue(timestamp)!= null){
+				slice.add(cs.getValue(timestamp));
+			}
+			
+		}
+		return slice;
+	}
+	
+	
+	/**
+	 * 
+	 * @return First and Last DateTime for the current Market
+	 */
+	public ImmutablePair<DateTime, DateTime> getFirstLast(){
+		
+		
+		
+		if (candleSeries != null ){
+			
+			DateTime min = candleSeries.get(0).getFirstDate();
+			DateTime max = candleSeries.get(0).getLastDate();
+			
+			for (CandleSerie cs : candleSeries.subList(1, candleSeries.size())){
+				if (cs.getFirstDate().isBefore(min))
+					min = cs.getFirstDate();
+				if (cs.getLastDate().isAfter(max))
+					max= cs.getLastDate();
+			}
+		
+			return new ImmutablePair<DateTime, DateTime>(min, max);
+		}
+		
+		return null;
+		
+	}
+	
+	
+	@Override
 	public void afterPropertiesSet() throws Exception {
 		candleSeries = new ArrayList<CandleSerie>();
 		initMarketDataProviderReaderMappings();

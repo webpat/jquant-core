@@ -5,6 +5,7 @@ package org.jquant.model;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import org.jquant.serie.CandleSerie;
 import org.jquant.time.calendar.Periods;
 
 
@@ -24,6 +25,8 @@ public class Candle extends TimeValue {
     private double close;
     private double volume;
     private Period period;
+    
+    private CandleSerie serie;
     
     
     /**
@@ -68,32 +71,6 @@ public class Candle extends TimeValue {
         this.volume = volume;
         this.period = period;
     }
-
-//    public Variable getDefaultVariable() {
-//        // The close is the default 
-//        return Variable.CLOSE;
-//    }
-//
-//    public double getValue(Variable var) {
-//    	switch (var) {
-//		case CLOSE:
-//			return close;
-//		case OPEN:
-//			return open;
-//		case HIGH:
-//			return high;
-//		case LOW:
-//			return low;
-//		case VOLUME:
-//			return volume;
-//
-//		default:
-//			return Double.NaN;
-//
-//		}
-//        
-//    }
-	
 
 	/**
 	 * 
@@ -140,7 +117,7 @@ public class Candle extends TimeValue {
 	
 	/**
 	 * 
-	 * @return Le volume échangé pendant {@link #getDate()} + {@link #getPeriod()}
+	 * @return The exchanged volume during {@link #getDate()} + {@link #getPeriod()}
 	 */
 	public double getVolume() {
 		return volume;
@@ -149,11 +126,25 @@ public class Candle extends TimeValue {
 
 	
 	/**
-	 * 
-	 * @return la {@link Period} Joda Time ex : {@link Periods#ONE_DAY}, {@link Periods#BUSINESS_YEAR} 
+	 * The Candle period (INTRADAY_360ms_CANDLE , ONE_DAY Candle, ONE_WEEK_CANDLE, ONE_MONTH_CANDLE ...)
+	 * @return The Joda Time {@link Period}  ex : {@link Periods#ONE_DAY}, {@link Periods#BUSINESS_YEAR} 
 	 */
 	public Period getPeriod() {
 		return period;
+	}
+
+	
+	
+	/**
+	 *
+	 * @return The owning {@link CandleSerie}
+	 */
+	public CandleSerie getSerie() {
+		return serie;
+	}
+
+	public void setSerie(CandleSerie serie) {
+		this.serie = serie;
 	}
 
 	public Candle clone(){

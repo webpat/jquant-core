@@ -17,7 +17,7 @@ import org.jquant.model.TimeValue;
  * Accumulation of time values that varies over time 
  * <p>The Timeserie ease the creation,storage, transformation and manipulation of time series.</p>
  * 
- * @author merhebp
+ * @author Patrick Merheb
  * @param <T> The content type of the TimeSerie
  * @see TimeValue
  */
@@ -164,24 +164,23 @@ public abstract class TimeSerie<T extends TimeValue> implements Iterable<T>  {
 	}
 
 	
+	/**
+	 * 
+	 * @return <b>first</b> {@link DateTime} of the Serie
+	 */
+	public DateTime getFirstDate(){
+		return map.firstKey();
+		
+	}
 	
+	/**
+	 * 
+	 * @return <b>last</b> DateTime of the Serie
+	 */
+	public DateTime getLastDate(){
+		return map.lastKey();
+		
+	}
 	
-    
-//    public enum Variable{OPEN,HIGH,LOW,CLOSE,VOLUME,RETURN,NAV,QUOTE};
-    
-    /**
-     * Résolution de la série temporelle 
-     * <ul>
-     * 	<li>DAILY : Quotidienne</li>
-     *  <li>QUOTES : Intraday quotes (bid, ask)</li>
-     * </ul>
-     * 
-     */
-//    public enum SerieFrequency {
-//
-//    	DAILY,
-//    	QUOTES,
-//    	TRADE
-//    	
-//    }
+
 }

@@ -18,6 +18,9 @@ public abstract class TimeValue implements ITimeValue{
 	protected boolean padValue;
 	protected boolean isPercent;   
 	
+	/**
+	 * @return moment in time where the Value stands 
+	 */
 	public DateTime getDate() {
 		return date;
 	}
@@ -30,15 +33,23 @@ public abstract class TimeValue implements ITimeValue{
 		this.padValue = padValue;
 	}
 
-//	public abstract double getValue(Variable var);
-	
+	/**
+	 * 
+	 */
 	public abstract double getValue(); 
 
+	/**
+	 * @return Is it a Padding Value ? 
+	 */
 	public boolean isPadValue() {
 		
 		return padValue;
 	}
 	
+	/**
+	 * 
+	 * @return is it a yield or an absolute value ? 
+	 */
 	public boolean isPercent() {
 		return isPercent;
 	}
