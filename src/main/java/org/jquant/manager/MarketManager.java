@@ -67,12 +67,14 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 		
 		if (reader == null ) throw new MarketDataReaderException("No MarketData reader for provider " + symbol.getProvider());
 		
-		MarketDataReaderAdapter readerAdapter = findReaderAdapter(reader);
+		MarketDataReaderAdapter adapter = findReaderAdapter(reader);
+		
+		if (adapter == null ) throw new MarketDataReaderException("No MarketData adapter for provider " + symbol.getProvider());
 		
 		switch (precision){
 		case CANDLE: 
 			// Read All historical market data
-			CandleSerie serie = readerAdapter.readCandleSerie(symbol,from, to, reader);
+			CandleSerie serie = adapter.readCandleSerie(symbol,from, to, reader);
 			if (serie != null) {
 				serie.setSymbol(symbol);
 			
@@ -122,9 +124,7 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 	 */
 	public ImmutablePair<DateTime, DateTime> getFirstLast(){
 		
-		
-		
-		if (candleSeries != null ){
+		if (candleSeries != null && candleSeries.size()>0){
 			
 			DateTime min = candleSeries.get(0).getFirstDate();
 			DateTime max = candleSeries.get(0).getLastDate();
@@ -188,8 +188,8 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 		if (mappings != null){
 			// Parse all mappings 
 			for (MarketDataReaderMapping mapping : mappings.values()){
-				if (mapping.getHandler(provider)!= null){
-					return mapping.getHandler(provider);
+				if (mapping.getReader(provider)!= null){
+					return mapping.getReader(provider);
 				}
 			}
 		}

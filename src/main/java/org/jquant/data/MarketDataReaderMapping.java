@@ -14,5 +14,5 @@ public interface MarketDataReaderMapping {
 	 * @param provider a {@link JQuantDataProvider} (Bloomberg, Louxor, ...)
 	 * @return The Proporietary MarketDataReader 
 	 */
-	public Object getHandler(JQuantDataProvider provider);
+	public Object getReader(JQuantDataProvider provider);
 }
