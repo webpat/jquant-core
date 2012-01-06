@@ -11,9 +11,9 @@ import org.jquant.data.JQuantDataProvider;
 import org.jquant.data.MarketDataReaderAdapter;
 import org.jquant.data.MarketDataReaderMapping;
 import org.jquant.exception.MarketDataReaderException;
-import org.jquant.model.Candle;
 import org.jquant.model.MarketDataPrecision;
 import org.jquant.model.Symbol;
+import org.jquant.serie.Candle;
 import org.jquant.serie.CandleSerie;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
@@ -73,9 +73,9 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 		
 		switch (precision){
 		case CANDLE: 
-			// Read All historical market data
+			// Read historical market data
 			CandleSerie serie = adapter.readCandleSerie(symbol,from, to, reader);
-			if (serie != null) {
+			if (serie != null && serie.size()>0) {
 				serie.setSymbol(symbol);
 			
 				// TODO: Manage Implied Volatility If Any

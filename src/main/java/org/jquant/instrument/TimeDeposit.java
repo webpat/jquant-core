@@ -162,7 +162,7 @@ public class TimeDeposit extends BaseInstrument {
 //		QuoteSerie prices = new QuoteSerie();
 //		DateTime date = startDate;
 //		while (date.compareTo(expirationDate)<=0) {
-//			Quote quote = new Quote(date, getMarkToMarket(date));
+//			BBBA quote = new BBBA(date, getMarkToMarket(date));
 //			
 //			prices.addValue(date, quote);
 //			date = date.plusDays(1);

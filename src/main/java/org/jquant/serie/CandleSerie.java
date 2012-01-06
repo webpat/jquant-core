@@ -3,7 +3,6 @@ package org.jquant.serie;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.jquant.model.Candle;
 
 /**
  * The CandleSerie is a time-serie of Candles 
@@ -25,7 +24,7 @@ public class CandleSerie extends TimeSerie<Candle> {
 	public CandleSerie(List<Candle> vector){
 		//indexes the candleVector and make it a TimeSerie
 		for(Candle c:vector){
-			this.addValue(c.getDate(), c);
+			this.addValue(c);
 		}
 	}
 	
@@ -33,15 +32,15 @@ public class CandleSerie extends TimeSerie<Candle> {
 	public CandleSerie clone() {
 		CandleSerie clonedCandleSerie = new CandleSerie();
 		for(Candle candle: this){
-			clonedCandleSerie.addValue(candle.getDate(), candle.clone());
+			clonedCandleSerie.addValue(candle.clone());
 		}
 		
 		return clonedCandleSerie;
 	}
 	
 	@Override
-	public void addValue(DateTime timestamp, Candle candle) {
-		super.addValue(timestamp, candle);
+	public void addValue(Candle candle) {
+		super.addValue(candle);
 		candle.setSerie(this);//Symetric binding
 	}
 	

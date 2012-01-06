@@ -2,16 +2,14 @@ package org.jquant.serie;
 
 import java.util.List;
 
-import org.jquant.model.Quote;
 
 /**
- * Time indexed Quote Structure
- * isPercent (is it percentage yield) 
+ * Time indexed Best Bid Best Ask series {@link BBBA}
  *  
  * @author merhebp
  *
  */
-public class QuoteSerie extends TimeSerie<Quote>{
+public class QuoteSerie extends TimeSerie<BBBA>{
 
 	
 	public QuoteSerie(){
@@ -20,15 +18,15 @@ public class QuoteSerie extends TimeSerie<Quote>{
 	
 	/**
 	 * HASH TIME INDEX THE QUOTES ARRAY LIST
-	 * @return a Time Indexed Quotes Serie  with fancy methods to parse and manipulate
+	 * constuct a Time Indexed Quotes Serie  with fancy methods to parse and manipulate
 	 * @param vector
 	 */
-	public QuoteSerie(List<Quote> vector){
+	public QuoteSerie(List<BBBA> vector){
 		
 		super();
 		//indexes the QuotesVector and make it a TimeSerie
-		for(Quote c:vector){
-			this.addValue(c.getDate(), c);
+		for(BBBA bbba:vector){
+			this.addValue(bbba);
 		}
 	}
 	
@@ -37,25 +35,18 @@ public class QuoteSerie extends TimeSerie<Quote>{
 	public QuoteSerie clone() {
 		QuoteSerie clonedTimeSerie = new QuoteSerie();
 		
-		for(Quote quote: this){
-			clonedTimeSerie.addValue(quote.getDate(), quote.clone());
+		for(BBBA quote: this){
+			clonedTimeSerie.addValue(quote.clone());
 		}
 		
 		return clonedTimeSerie;
 	}
 
 	@Override
-	protected Class<Quote> getChildClass() {
-		return Quote.class;
+	protected Class<BBBA> getChildClass() {
+		return BBBA.class;
 	}
 	
-//	public QuoteVector toQuoteVector() {
-//		QuoteVector quoteVector = new QuoteVector();
-//		for(Quote quote: this){
-//			quoteVector.add(quote.toQuoteTO());
-//		}
-//		return quoteVector;
-//	}
 
 	
 }

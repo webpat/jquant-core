@@ -35,7 +35,7 @@ public class Forex extends BaseInstrument {
 	 * @param priceCurrency La devise de réglement (ex : EURUSD, USD est la devise de réglement) 
 	 */
 	public Forex(JQuantDataProvider provider, Currency exchangedCurrency, Currency priceCurrency) {
-		super(new Symbol(provider, exchangedCurrency.name()+priceCurrency.name(),InstrumentType.FOREX),MICMarketPlace.NO_MIC);
+		super(new Symbol(provider, exchangedCurrency.name()+priceCurrency.name(),InstrumentType.FOREX,MICMarketPlace.NO_MIC),MICMarketPlace.NO_MIC);
 		
 		this.exchangedCurrency = exchangedCurrency;
 		this.priceCurrency = priceCurrency;

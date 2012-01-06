@@ -1,11 +1,10 @@
 /*
  * Created on 12 juin 07
  */
-package org.jquant.model;
+package org.jquant.serie;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.jquant.serie.CandleSerie;
 import org.jquant.time.calendar.Periods;
 
 
@@ -13,29 +12,24 @@ import org.jquant.time.calendar.Periods;
 /**
  * The usual Candle (aka Bar)
  * <p><b>date, Open, High, Low, Close, {@link Period}</b> 
+ * <p>This class is immutable 
  * @author merhebp
  */
-public class Candle extends TimeValue {
+public final class Candle extends AbstractTimeValue {
 
     
 
-	private double open;
-    private double high;
-    private double low;
-    private double close;
-    private double volume;
-    private Period period;
+	private final double open;
+    private final double high;
+    private final double low;
+    private final double close;
+    private final double volume;
+    private final Period period;
     
     private CandleSerie serie;
     
     
-    /**
-     * Blank constructor
-     */
-    public Candle(){
-    	
-    }
-    
+ 
     /**
 	 * Copy Constructor
 	 *
@@ -43,6 +37,7 @@ public class Candle extends TimeValue {
 	 */
 	private Candle(Candle candle) 
 	{
+		super(candle.getDate());
 		this.date = candle.date;
         this.open = candle.open;
         this.high = candle.high;
@@ -62,7 +57,7 @@ public class Candle extends TimeValue {
 	 * @param volume Transaction Volume during sampling 
      */
     public Candle(DateTime date,Period period,double open, double high, double low, double close,double volume) {
-        super();
+        super(date);
         this.date = date;
         this.open = open;
         this.high = high;
@@ -73,7 +68,7 @@ public class Candle extends TimeValue {
     }
 
 	/**
-	 * 
+	 * By default you get the CLOSE Value 
 	 */
     public double getValue() {
 		return close;

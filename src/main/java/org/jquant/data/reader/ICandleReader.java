@@ -2,7 +2,7 @@ package org.jquant.data.reader;
 
 import org.joda.time.DateTime;
 import org.jquant.exception.MarketDataReaderException;
-import org.jquant.model.Candle;
+import org.jquant.serie.Candle;
 import org.jquant.serie.CandleSerie;
 
 

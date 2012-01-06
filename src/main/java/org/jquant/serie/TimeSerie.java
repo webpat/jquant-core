@@ -3,13 +3,13 @@ package org.jquant.serie;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
+import java.util.Observable;
 import java.util.TreeMap;
 
 import org.joda.time.DateTime;
 import org.jquant.exception.TimeSerieException;
 import org.jquant.model.IInstrument;
 import org.jquant.model.Symbol;
-import org.jquant.model.TimeValue;
 
 
 
@@ -21,7 +21,7 @@ import org.jquant.model.TimeValue;
  * @param <T> The content type of the TimeSerie
  * @see TimeValue
  */
-public abstract class TimeSerie<T extends TimeValue> implements Iterable<T>  {
+public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable implements Iterable<T>  {
 
 	
 	/**
@@ -38,6 +38,7 @@ public abstract class TimeSerie<T extends TimeValue> implements Iterable<T>  {
     
     /**
      * {@link #getInstrument()}
+     * TODO: est ce bien nécessaire vu qu'il y a le symbole 
      */
     protected IInstrument instrument;
     
@@ -85,12 +86,12 @@ public abstract class TimeSerie<T extends TimeValue> implements Iterable<T>  {
     	
     }
     
-    public void addValue(DateTime timestamp, T value){
-        map.put(timestamp,value);
+    public void addValue(T value){
+        map.put(value.getDate(),value);
     }
     
     /**
-     * @return Renvoie la classe contenue (Candle, Quote, Trade ...)
+     * @return Renvoie la classe contenue (Candle, BBBA, Trade ...)
      */
     protected abstract Class<T> getChildClass();
     
@@ -180,6 +181,13 @@ public abstract class TimeSerie<T extends TimeValue> implements Iterable<T>  {
 	public DateTime getLastDate(){
 		return map.lastKey();
 		
+	}
+	/**
+	 * 
+	 * @return the Last {@link AbstractTimeValue} of the Serie 
+	 */
+	public T getLast(){
+		return map.lastEntry().getValue();
 	}
 	
 

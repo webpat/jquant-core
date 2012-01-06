@@ -5,7 +5,7 @@ import org.joda.time.Period;
 import org.jquant.exception.MarketDataReaderException;
 import org.jquant.instrument.rate.InterestRateIndex.RateType;
 import org.jquant.model.Currency;
-import org.jquant.model.Rate;
+import org.jquant.serie.Rate;
 import org.jquant.serie.TermStructure;
 
 /**

@@ -11,12 +11,20 @@ package org.jquant.model;
  */
 public class MICMarketPlace {
 
-    public final static MICMarketPlace NO_MIC=new MICMarketPlace("NO_MIC","EARTH");
+	/**
+	 * Marchés Composites ou fictifs
+	 */
+	public final static MICMarketPlace NO_MIC=new MICMarketPlace("NO_MIC","EARTH");
+	public final static MICMarketPlace HDG_JP=new MICMarketPlace("HDG_JP","JP");
+	public final static MICMarketPlace HDG_US=new MICMarketPlace("HDG_US","US");
 	
-    public final static MICMarketPlace XCBT=new MICMarketPlace("XCBT","US");
-    public final static MICMarketPlace HDG_JP=new MICMarketPlace("HDG_JP","JP");
-    public final static MICMarketPlace HDG_US=new MICMarketPlace("HDG_US","US");
+    /**
+     * Well known Market Places
+     */
+	public final static MICMarketPlace XCBT=new MICMarketPlace("XCBT","US");
     public final static MICMarketPlace XNYM=new MICMarketPlace("XNYM","US");
+    public final static MICMarketPlace XNMS=new MICMarketPlace("XNMS","US");
+    public static final MICMarketPlace XNYS = new MICMarketPlace("XNYS","US");
     public final static MICMarketPlace XLON=new MICMarketPlace("XLON","GB");
     public final static MICMarketPlace XCME=new MICMarketPlace("XCME","US");
     public final static MICMarketPlace XCEC=new MICMarketPlace("XCEC","US");
@@ -34,6 +42,7 @@ public class MICMarketPlace {
     public final static MICMarketPlace XIPE=new MICMarketPlace("XIPE","GB");
     public final static MICMarketPlace XOSE=new MICMarketPlace("XOSE","JP");
     public final static MICMarketPlace XLUX=new MICMarketPlace("XLUX","LU");
+	
     
     
     private String description;

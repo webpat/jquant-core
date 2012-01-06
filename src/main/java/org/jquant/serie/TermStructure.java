@@ -3,7 +3,6 @@ package org.jquant.serie;
 import java.util.List;
 
 import org.joda.time.Period;
-import org.jquant.model.Rate;
 
 
 /**
@@ -32,7 +31,7 @@ public class TermStructure extends TimeSerie<Rate>{
 		super();
 		//indexes the QuotesVector and make it a TimeSerie
 		for(Rate r:list){
-			this.addValue(r.getDate(), r);
+			this.addValue(r);
 		}
 	}
 	
@@ -41,7 +40,7 @@ public class TermStructure extends TimeSerie<Rate>{
 		this.setTerm(term);
 		//indexes the QuotesVector and make it a TimeSerie
 		for(Rate r:list){
-			this.addValue(r.getDate(), r);
+			this.addValue(r);
 		}
 	}
 	

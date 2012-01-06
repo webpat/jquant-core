@@ -2,7 +2,7 @@ package org.jquant.data.reader;
 
 import org.joda.time.DateTime;
 import org.jquant.exception.MarketDataReaderException;
-import org.jquant.model.Quote;
+import org.jquant.serie.BBBA;
 import org.jquant.serie.QuoteSerie;
 
 
@@ -18,7 +18,7 @@ import org.jquant.serie.QuoteSerie;
  * </ul>
  * @author patrick.merheb
  * 
- * @see Quote
+ * @see BBBA
  * @see QuoteSerie
  * 
  * @deprecated
@@ -48,10 +48,10 @@ public interface IQuoteReader {
 	 * Lit une unique quotations 
 	 * @param instrumentId identifiant de l'instrument chez le provider 
 	 * @param date a market day 
-	 * @return une {@link Quote}
+	 * @return une {@link BBBA}
 	 * @throws MarketDataReaderException
 	 */
-	public Quote fetchQuote(String instrumentId,DateTime date) throws MarketDataReaderException;
+	public BBBA fetchQuote(String instrumentId,DateTime date) throws MarketDataReaderException;
 	
 	
 }

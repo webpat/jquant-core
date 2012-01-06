@@ -1,9 +1,9 @@
 /*
  * Created on 12 juin 07
  */
-package org.jquant.model;
+package org.jquant.serie;
 
-import org.joda.time.DateTime;
+
 
 
 
@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
  * A trackRecord Element
  * @author merhebp
  */
-public class NavPerf extends TimeValue {
+public class NavPerf extends AbstractTimeValue {
 
 	private double nav;
     private double returnValue;
@@ -26,6 +26,7 @@ public class NavPerf extends TimeValue {
 	 */
 	public NavPerf(NavPerf navPerf) 
 	{
+		super(navPerf.getDate());
 	    this.nav = navPerf.nav;
 	    this.returnValue = navPerf.returnValue;
 	    this.isOfficial = navPerf.isOfficial;
@@ -33,28 +34,6 @@ public class NavPerf extends TimeValue {
 
 
 
-
-//	public Variable getDefaultVariable() {
-//       
-//        return Variable.NAV;
-//    }
-
-    
-    
-    
-//    public double getValue(Variable var) {
-//        switch (var) {
-//        case NAV:
-//            return nav;
-//        case RETURN:
-//            return returnValue;
-//
-//        default:
-//            return Double.NaN;
-//
-//        }
-//    }
-    
     public NavPerf clone(){
     	return new NavPerf(this);
     }
@@ -101,10 +80,6 @@ public class NavPerf extends TimeValue {
         this.isOfficial = isOfficial;
     }
 
-
-	public DateTime getDate() {
-		return date;
-	}
 
 	@Override
 	public double getValue() {
