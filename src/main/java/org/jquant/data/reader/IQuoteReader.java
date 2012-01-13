@@ -7,7 +7,7 @@ import org.jquant.serie.QuoteSerie;
 
 
 /**
- * Interface to be implemented by objects that can read a <b>quote</b> serie from an Instrument
+ * Interface to be implemented by objects that can read a <b>quote</b> output from an Instrument
  * <p> 
  * Abstraction layer with the data provider (Louxor/Yahoo/IB/TENFORE etc...)
  * <ul>
@@ -37,8 +37,8 @@ public interface IQuoteReader {
 	/**
 	 * Lit une s�rie de quotations entre une date de début et une date de fin
 	 * @param instrumentId identifiant de l'instrument chez le provider 
-	 * @param debut a {@link DateTime} that marks the begining of the serie
-	 * @param fin a {@link DateTime} that marks the end of the serie
+	 * @param debut a {@link DateTime} that marks the begining of the output
+	 * @param fin a {@link DateTime} that marks the end of the output
 	 * @return une {@link QuoteSerie}
 	 * @throws MarketDataReaderException
 	 */

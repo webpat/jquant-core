@@ -14,7 +14,7 @@ package org.jquant.serie;
 public final class NavPerfSerie extends TimeSerie<NavPerf> {
 
 	@Override
-	public TimeSerie<NavPerf> clone() {
+	public ITimeSerie<NavPerf> clone() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,7 +1,11 @@
 package org.jquant.indicator;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jquant.serie.Candle;
+import org.jquant.serie.Candle.CandleData;
 import org.jquant.serie.CandleSerie;
+import org.jquant.serie.TimeValue;
+import org.jquant.util.FinancialLibrary;
 
 /**
  * Simple Moving Average 
@@ -13,16 +17,34 @@ import org.jquant.serie.CandleSerie;
  */
 public final class SMA extends CandleIndicator {
 
+	/**
+	 * Length of the indicator in candles 
+	 */
+	private final int length;
 	
-	@Override
-	public void compute(CandleSerie serie) {
-		// TODO Auto-generated method stub
+	private final CandleData data;
+	
+	
+	public SMA(CandleSerie serie, int length,CandleData data) {
+		super(serie);
+		this.length = length;
+		this.data = data;
 		
 	}
 
+//	@Override
+//	public void compute(CandleSerie output) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
 	@Override
-	public void compute(Candle candle) {
-		// TODO Auto-generated method stub
+	public void add(Candle candle) {
+	 if (input.size()>=length){
+		 double[] array = input.getData(data);
+		 output.addValue(new TimeValue(candle.getDate(), 
+				 					 FinancialLibrary.SMA(length, ArrayUtils.subarray(array,array.length-length ,array.length),0)));
+	 }
 		
 	}
 

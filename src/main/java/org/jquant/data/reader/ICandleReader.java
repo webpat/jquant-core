@@ -7,7 +7,7 @@ import org.jquant.serie.CandleSerie;
 
 
 /**
- * Interface to be implemented by objects that can read a <b>candle</b> serie from an Instrument
+ * Interface to be implemented by objects that can read a <b>candle</b> output from an Instrument
  * <p> 
  * Abstraction layer with the data provider (Louxor/Yahoo/IB/TENFORE etc...)
  * <ul>
@@ -37,8 +37,8 @@ public interface ICandleReader {
 	/**
 	 * 
 	 * @param instrumentId
-	 * @param start a {@link DateTime} that marks the begining of the serie
-	 * @param end a {@link DateTime} that marks the end of the serie
+	 * @param start a {@link DateTime} that marks the begining of the output
+	 * @param end a {@link DateTime} that marks the end of the output
 	 * @return a {@link CandleSerie} between start and end 
 	 * @throws MarketDataReaderException
 	 */

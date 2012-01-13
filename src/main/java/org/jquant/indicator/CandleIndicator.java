@@ -6,28 +6,43 @@ import org.jquant.serie.Candle;
 import org.jquant.serie.CandleSerie;
 
 /**
- * Indicator build on a serie of candles 
+ * Indicator build on a output of candles 
  * @author patrick.merheb
  *
  */
 public abstract class CandleIndicator extends AbstractIndicator {
 
 	/**
-	 * Compute the Inicator serie based on the CandleSerie
-	 * @param serie
+	 * The Input of the CandleIndicator is a CandleSerie 
 	 */
-	public abstract void compute(CandleSerie serie);
+	protected CandleSerie input;
+		
+	
+	public CandleIndicator(CandleSerie input) {
+		super();
+		this.input = input;
+		this.input.addObserver(this); // This indicator becomes a CandleSerieObserver
+	}
 	
 	/**
-	 * Update the indicator serie based on the last candle received
+	 * Compute the Inicator output based on the CandleSerie
+	 * @param output
+	 */
+//	public abstract void compute(CandleSerie output);
+	
+	/**
+	 * Update the indicator output based on the last candle received
 	 * @param candle
 	 */
-	public abstract void compute(Candle candle);
+	public abstract void add(Candle candle);
 	
 	@Override
 	public void update(Observable o, Object arg) {
+		/**
+		 * The indicator receives an update from an Obsrvable CandleSerie then update its own output via the add method
+		 */
 		if (o instanceof CandleSerie){
-			compute(((CandleSerie)o).getLast());
+			add(((CandleSerie)o).getLast());
 		}
 
 	}

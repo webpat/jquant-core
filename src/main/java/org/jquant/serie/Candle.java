@@ -26,7 +26,7 @@ public final class Candle extends AbstractTimeValue {
     private final double volume;
     private final Period period;
     
-    private CandleSerie serie;
+//    private CandleSerie output;
     
     
  
@@ -128,19 +128,33 @@ public final class Candle extends AbstractTimeValue {
 		return period;
 	}
 
-	
-	
 	/**
-	 *
-	 * @return The owning {@link CandleSerie}
+	 * 
+	 * @param data a {@link CandleData} 
+	 * @return a <code>double</code> representing the OPEN, HIGH, LOW or CLOSE value depending on the CandleData input
 	 */
-	public CandleSerie getSerie() {
-		return serie;
+	public double getData(CandleData data){
+		switch (data){
+			case CLOSE :return close;
+			case OPEN :return open;
+			case HIGH :return high;
+			case LOW :return low;
+			default : return close;
+		}
 	}
-
-	public void setSerie(CandleSerie serie) {
-		this.serie = serie;
-	}
+	
+	
+//	/**
+//	 *
+//	 * @return The owning {@link CandleSerie}
+//	 */
+//	public CandleSerie getSerie() {
+//		return output;
+//	}
+//
+//	public void setSerie(CandleSerie output) {
+//		this.serie = output;
+//	}
 
 	public Candle clone(){
 		Candle clone = new Candle(this);
@@ -154,5 +168,8 @@ public final class Candle extends AbstractTimeValue {
 	}
 
 	
+	public enum CandleData{
+		OPEN,HIGH,LOW,CLOSE;
+	}
 	
 }

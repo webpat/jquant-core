@@ -1,5 +1,6 @@
 package org.jquant.serie;
 
+
 /**
  * 
  * @author patrick.merheb
@@ -15,8 +16,22 @@ public class DoubleSerie extends TimeSerie<TimeValue> {
 		return TimeValue.class;
 	}
 
+	/**
+	 * 
+	 * @return an <code>array</code> containing the values of the output
+	 */
+	public double[] getData() {
+		double[] array = new double[size()];
+		int i =0;
+		for(TimeValue tv:this){
+			 array[i++] = tv.getValue();break;
+				
+		}
+		return array;
+	}
+	
 	@Override
-	public TimeSerie<TimeValue> clone() {
+	public ITimeSerie<TimeValue> clone() {
 		
 		DoubleSerie dolly = new DoubleSerie();
 		for (TimeValue tv : this){

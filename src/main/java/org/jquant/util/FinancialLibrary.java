@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.jquant.exception.TimeSerieException;
+import org.jquant.serie.Candle.CandleData;
 import org.jquant.serie.CandleSerie;
 
 
@@ -555,7 +556,7 @@ public class FinancialLibrary {
 		//
     	
     	// 
-    	double xaverage = EMA(filterPeriod, series.getCloses(), position);
+    	double xaverage = EMA(filterPeriod, series.getData(CandleData.CLOSE), position);
     
     	
 		if(series.get(position).getClose() < xaverage){
@@ -619,7 +620,7 @@ public class FinancialLibrary {
     }
 
     /**
-     * return realized Variance for a serie of close with a RMS (root mean squared) measure
+     * return realized Variance for a output of close with a RMS (root mean squared) measure
      * @param close
      * @return realized Variance
      */
@@ -636,7 +637,7 @@ public class FinancialLibrary {
     }
     
     /**
-     * return realized Volatility for a serie of close with a RMS (root mean squared) measure
+     * return realized Volatility for a output of close with a RMS (root mean squared) measure
      * @param close
      * @return realized volatility
      */

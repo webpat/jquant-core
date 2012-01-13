@@ -46,7 +46,7 @@ public class TermStructure extends TimeSerie<Rate>{
 	
 	
 	@Override
-	public TimeSerie<Rate> clone() {
+	public ITimeSerie<Rate> clone() {
 		TermStructure clone = new TermStructure();
 		return clone;
 	}

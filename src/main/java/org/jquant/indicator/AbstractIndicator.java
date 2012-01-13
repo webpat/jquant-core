@@ -3,6 +3,7 @@ package org.jquant.indicator;
 import java.util.Iterator;
 import java.util.Observer;
 
+import org.joda.time.DateTime;
 import org.jquant.serie.DoubleSerie;
 import org.jquant.serie.TimeValue;
 
@@ -22,20 +23,30 @@ public abstract class AbstractIndicator implements Observer,Iterable<TimeValue> 
 	/**
 	 * Le contenu de l'indicateur
 	 */
-    protected final DoubleSerie serie;
+    protected final DoubleSerie output;
 	
-  
+   
     
     
 	public AbstractIndicator() {
 		super();
-		 serie = new DoubleSerie();
+		 output = new DoubleSerie();
 	}
 
 
+	public double getValue(DateTime timestamp){
+		if (output.getValue(timestamp)!=null){
+			return output.getValue(timestamp).getValue();
+		}else {
+			return Double.NaN;
+		}
+		
+		
+	}
+	
 	@Override
 	public Iterator<TimeValue> iterator() {
-		return serie.iterator();
+		return output.iterator();
 	}
 
 	 

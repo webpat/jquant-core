@@ -8,7 +8,6 @@ import java.util.TreeMap;
 
 import org.joda.time.DateTime;
 import org.jquant.exception.TimeSerieException;
-import org.jquant.model.IInstrument;
 import org.jquant.model.Symbol;
 
 
@@ -21,7 +20,7 @@ import org.jquant.model.Symbol;
  * @param <T> The content type of the TimeSerie
  * @see TimeValue
  */
-public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable implements Iterable<T>  {
+public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable implements Iterable<T>, ITimeSerie<T>  {
 
 	
 	/**
@@ -31,18 +30,15 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
     
 	
 	/**
-	 * Le contenu de la time-serie
+	 * Le contenu de la time-output
 	 */
-    private final TreeMap<DateTime,T> map;
+    protected final TreeMap<DateTime,T> map;
     
-    
+     
     /**
-     * {@link #getInstrument()}
-     * TODO: est ce bien nécessaire vu qu'il y a le symbole 
+     * Le symbole de l'instrument associé à la Time Serie 
+     * {@link #getSymbol()}
      */
-    protected IInstrument instrument;
-    
-    
     protected Symbol symbol;
     
     
@@ -58,21 +54,19 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
     }
 
     
-    /**
-     * @param timestamp un {@link DateTime}
-     * @return La valeur contenue à l'instant précisé 
-     */
-    public T getValue(DateTime timestamp){
+    /* (non-Javadoc)
+	 * @see org.jquant.serie.ITimeSerie#getValue(org.joda.time.DateTime)
+	 */
+    @Override
+	public T getValue(DateTime timestamp){
         return map.get(timestamp);
     }
     
-    /**
-     * Return the element @ index position
-     * @param index
-     * @return the Time serie content at index 
-     * @throws TimeSerieException 
-     */
-    public T get(int index) throws TimeSerieException{
+    /* (non-Javadoc)
+	 * @see org.jquant.serie.ITimeSerie#get(int)
+	 */
+    @Override
+	public T get(int index) throws TimeSerieException{
     	
     	if (index >size())
     		throw new TimeSerieException("No Data",null);
@@ -88,6 +82,9 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
     
     public void addValue(T value){
         map.put(value.getDate(),value);
+        setChanged();
+        notifyObservers(this);
+        clearChanged();
     }
     
     /**
@@ -95,7 +92,7 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
      */
     protected abstract Class<T> getChildClass();
     
-    public abstract TimeSerie<T> clone();
+    public abstract ITimeSerie<T> clone();
     
     /**
      * @return La {@link TimeSerie} convertie en Array
@@ -127,8 +124,8 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
     }
     
     /**
-     * 
-     * @return <code>true</code> Les valeurs sont en rendements 
+     * is this a yield output 
+     * @return <code>true</code> if values are yield  
      */
 	public boolean isPercent() {
 		return isPercent;
@@ -138,23 +135,12 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
 		this.isPercent = isYield;
 	}
 
-	/**
-	 * 
-	 * @return  L'instrument associé à la time serie 
+	
+
+	/* (non-Javadoc)
+	 * @see org.jquant.serie.ITimeSerie#getSymbol()
 	 */
-	public IInstrument getInstrument() {
-		return instrument;
-	}
-
-
-	public void setInstrument(IInstrument instrument) {
-		this.instrument = instrument;
-	}
-
-	/**
-	 * 
-	 * @return Le {@link Symbol} de l'instrument associé à la timeSerie
-	 */
+	@Override
 	public Symbol getSymbol() {
 		return symbol;
 	}

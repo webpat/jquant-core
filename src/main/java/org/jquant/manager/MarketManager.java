@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.jquant.data.JQuantDataProvider;
@@ -106,11 +107,11 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 	 * @param timestamp a {@link DateTime}
 	 * @return The Collection of Candles in the market at a precise time 
 	 */
-	public List<Candle> getMarketSlice(DateTime timestamp){
-		List<Candle> slice = new ArrayList<Candle>(candleSeries.size());
+	public List<Pair<Symbol,Candle>> getMarketSlice(DateTime timestamp){
+		List<Pair<Symbol,Candle>> slice = new ArrayList<Pair<Symbol,Candle>>(candleSeries.size());
 		for (CandleSerie cs : candleSeries){
 			if (cs.getValue(timestamp)!= null){
-				slice.add(cs.getValue(timestamp));
+				slice.add(new ImmutablePair<Symbol, Candle>(cs.getSymbol(), cs.getValue(timestamp)));
 			}
 			
 		}
@@ -195,5 +196,15 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 		}
 		return null;
 	}
+
+	/**
+	 * 
+	 * @return All the {@link CandleSerie} instanciated so far
+	 */
+	public List<CandleSerie> getCandleSeries() {
+		return candleSeries;
+	}
+	
+	
 
 }
