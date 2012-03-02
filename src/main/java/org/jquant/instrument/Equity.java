@@ -3,7 +3,8 @@ package org.jquant.instrument;
 import java.util.List;
 
 import org.jquant.model.CashDividend;
-import org.jquant.model.MICMarketPlace;
+import org.jquant.model.Currency;
+import org.jquant.model.InstrumentType;
 import org.jquant.model.Symbol;
 
 
@@ -21,8 +22,9 @@ public class Equity extends BaseInstrument{
 	protected List<CashDividend> cashDividends;
 
 	
-	public Equity(Symbol symbol, MICMarketPlace market) {
-		super(symbol, market);
+	public Equity(Symbol symbol,Currency currency) {
+		super(symbol,currency);
+		assert(InstrumentType.EQUITY.equals(symbol.getType()));
 		
 	}
 	

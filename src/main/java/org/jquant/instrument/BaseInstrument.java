@@ -20,30 +20,16 @@ import org.jquant.model.Symbol;
  */
 public abstract class BaseInstrument implements IInstrument {
 
-	protected MICMarketPlace market;
 	protected Symbol symbol = null;	
 	protected Currency currency;
 
 	/**
-	 * Daily prices {@link BaseInstrument#getCandles()}
-	 */
-//	private CandleSerie candles;
-	
-	/**
-	 * Intraday Quotes
-	 */
-//	private QuoteSerie quotes;
-	
-	/**
-	 * Volatility Surface
-	 */
-//	private Map<Integer,VolatilityTermStructure> volatilityMap; 
-	
-	
-	
-	public BaseInstrument(Symbol symbol,MICMarketPlace market){
+	 * Constructor
+	 * @param symbol a {@link Symbol} 
+	 * @param currency a {@link Currency}
+	 */	
+	public BaseInstrument(Symbol symbol,Currency currency){
 		this.symbol = symbol;
-		this.market = market;
 	}
 
 	
@@ -57,7 +43,7 @@ public abstract class BaseInstrument implements IInstrument {
 	
 	
 	public MICMarketPlace getMarket() {
-		return market;
+		return symbol.getExchange();
 	}		
 	
 	public Symbol getSymbol() {
@@ -72,7 +58,7 @@ public abstract class BaseInstrument implements IInstrument {
 	public int hashCode() {
 		int hashcode = 0;
 		hashcode ^= symbol.hashCode();
-		hashcode ^= market.hashCode();
+		hashcode ^= currency.hashCode();
 		
 		return hashcode;
 	}

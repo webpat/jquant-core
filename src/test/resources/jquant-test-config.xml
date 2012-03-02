@@ -19,9 +19,6 @@
 			http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
 
-	<!-- La data source  prend sa configuration dans unitils.properties -->
-	<bean id="dataSource" class="org.unitils.database.UnitilsDataSourceFactoryBean" />
-
 	<!-- Configuration par annotation. -->
 	<context:annotation-config />
 </beans>

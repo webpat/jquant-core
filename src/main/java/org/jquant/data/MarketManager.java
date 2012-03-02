@@ -1,4 +1,4 @@
-package org.jquant.manager;
+package org.jquant.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.jquant.data.JQuantDataProvider;
-import org.jquant.data.MarketDataReaderAdapter;
-import org.jquant.data.MarketDataReaderMapping;
 import org.jquant.exception.MarketDataReaderException;
 import org.jquant.model.MarketDataPrecision;
 import org.jquant.model.Symbol;

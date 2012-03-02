@@ -19,14 +19,10 @@ public class Forex extends BaseInstrument {
 
 	
 
-	private Currency exchangedCurrency;
+	private final Currency exchangedCurrency;
 	private Currency priceCurrency;
 	
-	
-	public Forex(Symbol symbol, MICMarketPlace market) {
-		super(symbol, market);
-	}
-	
+		
 	
 	/**
 	 * 
@@ -35,10 +31,9 @@ public class Forex extends BaseInstrument {
 	 * @param priceCurrency La devise de réglement (ex : EURUSD, USD est la devise de réglement) 
 	 */
 	public Forex(JQuantDataProvider provider, Currency exchangedCurrency, Currency priceCurrency) {
-		super(new Symbol(provider, exchangedCurrency.name()+priceCurrency.name(),InstrumentType.FOREX,MICMarketPlace.NO_MIC),MICMarketPlace.NO_MIC);
+		super(new Symbol(provider, exchangedCurrency.name()+priceCurrency.name(),InstrumentType.FOREX,MICMarketPlace.NO_MIC),priceCurrency);
 		
 		this.exchangedCurrency = exchangedCurrency;
-		this.priceCurrency = priceCurrency;
 	}
 	
 	//TODO : Test it
@@ -64,18 +59,9 @@ public class Forex extends BaseInstrument {
 		return exchangedCurrency;
 	}
 
-	public void setExchangedCurrency(Currency exchangedCurrency) {
-		this.exchangedCurrency = exchangedCurrency;
-	}
-
 	public Currency getPriceCurrency() {
 		return priceCurrency;
 	}
 
-	public void setPriceCurrency(Currency priceCurrency) {
-		this.priceCurrency = priceCurrency;
-	}
-	
-	
 	
 }

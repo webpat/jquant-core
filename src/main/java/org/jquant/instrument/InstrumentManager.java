@@ -1,6 +1,5 @@
-package org.jquant.manager;
+package org.jquant.instrument;
 
-import org.jquant.instrument.BaseInstrument;
 import org.jquant.model.InstrumentType;
 import org.jquant.model.Symbol;
 import org.springframework.stereotype.Component;

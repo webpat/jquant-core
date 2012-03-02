@@ -6,9 +6,12 @@ package org.jquant.model;
 
 
 /**
- * Basic Interface for an IInstrument
+ * Basic Interface for an Instrument
  * <p> Holds a <b>Symbol</b>, a Market and a Currency
- * @author JQUANT TEAM 
+ * <p>
+ * A tradeable asset or negotiable item such as a security, commodity, derivative or index, or any item that underlies a derivative.
+ *
+ *@author Patrick Merheb 
  *@see Currency
  *@see MICMarketPlace
  *@see Symbol
@@ -21,14 +24,9 @@ public interface IInstrument {
      */
     public Currency getCurrency();
     
-    /**
-     * Sur quel marché l'instrument est il côté 
-     * @return un {@link MICMarketPlace}
-     */
-    public MICMarketPlace getMarket();
     
     /**
-     * Quelle est sa paire Provider!Code
+     * Quelle est sa paire Provider!Code!Exchange
      * @return un {@link Symbol}
      */
     public Symbol getSymbol();
