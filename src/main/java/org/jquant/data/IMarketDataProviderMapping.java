@@ -7,7 +7,7 @@ package org.jquant.data;
  * @author patrick.merheb
  *
  */
-public interface MarketDataReaderMapping {
+public interface IMarketDataProviderMapping {
 
 	/**
 	 * Returns a MarketDataReader according to the MarketData Layer provider

@@ -2,7 +2,7 @@ package org.jquant.serie;
 
 import org.joda.time.DateTime;
 import org.jquant.exception.TimeSerieException;
-import org.jquant.model.Symbol;
+import org.jquant.model.InstrumentId;
 
 public interface ITimeSerie<T extends AbstractTimeValue> {
 
@@ -22,8 +22,8 @@ public interface ITimeSerie<T extends AbstractTimeValue> {
 
 	/**
 	 * 
-	 * @return Le {@link Symbol} de l'instrument associé à la timeSerie
+	 * @return Le {@link InstrumentId} de l'instrument associé à la timeSerie
 	 */
-	public abstract Symbol getSymbol();
+	public abstract InstrumentId getSymbol();
 
 }

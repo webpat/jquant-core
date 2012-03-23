@@ -2,8 +2,8 @@ package org.jquant.instrument;
 
 import org.jquant.model.Currency;
 import org.jquant.model.IInstrument;
+import org.jquant.model.InstrumentId;
 import org.jquant.model.MICMarketPlace;
-import org.jquant.model.Symbol;
 
 
 
@@ -14,31 +14,26 @@ import org.jquant.model.Symbol;
  * <p>For a given Data Provider a symbol/market tuple should be unique  
  * <b>History:</b><br>
  * @author patrick.merheb
- * @see Symbol
+ * @see InstrumentId
  * @see MICMarketPlace
  * @see Currency
  */
 public abstract class BaseInstrument implements IInstrument {
 
-	protected Symbol symbol = null;	
-	protected Currency currency;
+	protected InstrumentId symbol = null;	
 
 	/**
 	 * Constructor
-	 * @param symbol a {@link Symbol} 
-	 * @param currency a {@link Currency}
+	 * @param symbol a {@link InstrumentId} 
 	 */	
-	public BaseInstrument(Symbol symbol,Currency currency){
+	public BaseInstrument(InstrumentId symbol){
 		this.symbol = symbol;
 	}
 
 	
 	
 	public Currency getCurrency() {
-		return currency;
-	}
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
+		return symbol.getCurrency();
 	}
 	
 	
@@ -46,95 +41,46 @@ public abstract class BaseInstrument implements IInstrument {
 		return symbol.getExchange();
 	}		
 	
-	public Symbol getSymbol() {
+	public InstrumentId getId() {
 		return symbol;
 	}
 	
 	
-	
-	
-	
+
+
 	@Override
 	public int hashCode() {
-		int hashcode = 0;
-		hashcode ^= symbol.hashCode();
-		hashcode ^= currency.hashCode();
-		
-		return hashcode;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((symbol == null) ? 0 : symbol.hashCode());
+		return result;
 	}
-	
-	/**
-	 * 
-	 * @return Daily prices
-	 */
-//	public CandleSerie getCandles(){	
-//		return candles;
-//		
-//	}
-//	
-//	public void setCandles(CandleSerie prices) {
-//		this.candles = prices;
-//	}
-	
-
-//	protected VolatilityTermStructure getImplicitVolatility(Period term){
-//		
-//		if (volatilityMap != null){
-//			VolatilityTermStructure volCurve = volatilityMap.get(term);
-//			return volCurve;
-//		}
-//		
-//		return null;
-//	}
-	
-//	protected Candle getCandle(DateTime date){
-//		
-//		if (candles != null){
-//			Candle result = candles.getValue(date);
-//			return result;
-//		}
-//		return null;
-//	}
-	/**
-	 * get Implicit volatility OnDate 
-	 * @param pillar
-	 * @param une {@link DateTime} 
-	 * @return {@link Rate}
-	 * @throws NotEnoughDataException 
-	 */
-//	protected Rate getImplicitVolatility(Period pillar,DateTime date){
-//		
-//		TermStructure volCurve = volatilityMap.get(pillar.toString());
-//		if (volCurve == null){
-//			throw new NotEnoughDataException("No volatilities for pillar:"+pillar.toString()+" at date"+ date);
-//		}
-//			
-//		return volCurve.getValue(date);
-//		
-//	}
-
-	
-
-//	protected void setVolatility(Period pillar,VolatilityTermStructure volCurve) {
-//		
-//		// Create the Map if it does not exist 
-//		if (volatilityMap == null)
-//			volatilityMap = new IdentityHashMap<Integer, VolatilityTermStructure>();
-//		
-//		this.volatilityMap.put(pillar.hashCode(), volCurve);
-//	}
 
 
 
-//	public void setQuotes(QuoteSerie quotes) {
-//		this.quotes = quotes;
-//	}
-//
-//
-//
-//	public QuoteSerie getQuotes() {
-//		return quotes;
-//	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BaseInstrument other = (BaseInstrument) obj;
+		if (symbol == null) {
+			if (other.symbol != null)
+				return false;
+		} else if (!symbol.equals(other.symbol))
+			return false;
+		return true;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Instrument [symbol=" + symbol.getCode() + ", type=" + symbol.getType() + "]";
+	}
 	
 	
 	

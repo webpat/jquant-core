@@ -3,9 +3,8 @@ package org.jquant.instrument;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jquant.model.Currency;
 import org.jquant.model.IInstrument;
-import org.jquant.model.Symbol;
+import org.jquant.model.InstrumentId;
 
 
 /**
@@ -21,8 +20,8 @@ public class Index extends BaseInstrument {
 	
 	List<IInstrument> composition  =  new ArrayList<IInstrument>();
 	
-	public Index(Symbol symbol, Currency currency) {
-		super(symbol, currency);
+	public Index(InstrumentId symbol) {
+		super(symbol);
 	}
 
 	public List<IInstrument> getComposition() {

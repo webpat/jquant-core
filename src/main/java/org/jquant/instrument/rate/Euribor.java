@@ -10,6 +10,5 @@ public class Euribor extends IborIndex{
 
 	public Euribor(DateTime fixingDate, double rate, Currency currency, Period period, DayCounter dayCounter) {
 		super(fixingDate, rate, currency, period, dayCounter,2);
-		// TODO Auto-generated constructor stub
 	}
 }

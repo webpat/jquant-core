@@ -13,7 +13,6 @@ public class ActualActual extends DayCounter{
 
 	@Override
 	public double calculateYearFraction(DateTime startDate, DateTime endDate) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }

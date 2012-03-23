@@ -6,15 +6,15 @@ package org.jquant.model;
 
 
 /**
- * Basic Interface for an Instrument
- * <p> Holds a <b>Symbol</b>, a Market and a Currency
+ * Basic Interface for an InstrumentId
+ * <p> Holds a <b>InstrumentId</b>, a Market and a Currency
  * <p>
  * A tradeable asset or negotiable item such as a security, commodity, derivative or index, or any item that underlies a derivative.
  *
  *@author Patrick Merheb 
  *@see Currency
  *@see MICMarketPlace
- *@see Symbol
+ *@see InstrumentId
  */
 public interface IInstrument {
 
@@ -27,8 +27,8 @@ public interface IInstrument {
     
     /**
      * Quelle est sa paire Provider!Code!Exchange
-     * @return un {@link Symbol}
+     * @return un {@link InstrumentId}
      */
-    public Symbol getSymbol();
+    public InstrumentId getId();
     
 }

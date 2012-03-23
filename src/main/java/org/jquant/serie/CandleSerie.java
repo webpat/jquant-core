@@ -3,7 +3,7 @@ package org.jquant.serie;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.jquant.model.Symbol;
+import org.jquant.model.InstrumentId;
 import org.jquant.serie.Candle.CandleData;
 
 
@@ -22,10 +22,10 @@ public class CandleSerie extends TimeSerie<Candle> {
 	}
 	
 	/**
-	 * Construct and mark the output with a Symbol
-	 * @param symbol {@link Symbol}
+	 * Construct and mark the output with a InstrumentId
+	 * @param symbol {@link InstrumentId}
 	 */
-	public CandleSerie(Symbol symbol){
+	public CandleSerie(InstrumentId symbol){
 		super();
 		setSymbol(symbol);
 	}

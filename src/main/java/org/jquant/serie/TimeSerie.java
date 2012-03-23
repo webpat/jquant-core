@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 import org.joda.time.DateTime;
 import org.jquant.exception.TimeSerieException;
-import org.jquant.model.Symbol;
+import org.jquant.model.InstrumentId;
 
 
 
@@ -39,7 +39,7 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
      * Le symbole de l'instrument associé à la Time Serie 
      * {@link #getSymbol()}
      */
-    protected Symbol symbol;
+    protected InstrumentId symbol;
     
     
     public TimeSerie(){
@@ -141,12 +141,12 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
 	 * @see org.jquant.serie.ITimeSerie#getSymbol()
 	 */
 	@Override
-	public Symbol getSymbol() {
+	public InstrumentId getSymbol() {
 		return symbol;
 	}
 
 
-	public void setSymbol(Symbol symbol) {
+	public void setSymbol(InstrumentId symbol) {
 		this.symbol = symbol;
 	}
 

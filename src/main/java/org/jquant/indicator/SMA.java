@@ -32,11 +32,6 @@ public final class SMA extends CandleIndicator {
 		
 	}
 
-//	@Override
-//	public void compute(CandleSerie output) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 
 	@Override
 	public void add(Candle candle) {

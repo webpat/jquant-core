@@ -34,7 +34,7 @@ public class Trade {
 	/**
 	 * ENTER, EXIT, STRENGTHEN, RELIEVE your position, what is the purpose of this trade
 	 */
-	private PositionSide mouvement;
+	private TradeStatus status;
 	
 	/**
 	 * P&L if > 0 the trade is a Winning trade
@@ -54,13 +54,15 @@ public class Trade {
 	 * @param side
 	 * @param timestamp
 	 */
-	public Trade(IInstrument instrument, double quantity, double price, TradeSide side, DateTime timestamp) {
+	public Trade(TradeSide side,IInstrument instrument, double quantity, double price,  DateTime timestamp) {
 		super();
 		this.instrument = instrument;
 		this.quantity = quantity;
 		this.price = price;
 		this.side = side;
 		this.timestamp = timestamp;
+		this.status = TradeStatus.OPEN;
+		
 	}
 
 	/**
@@ -103,12 +105,12 @@ public class Trade {
 	}
 
 
-	public PositionSide getMouvement() {
-		return mouvement;
+	public TradeStatus getStatus() {
+		return status;
 	}
 
-	public void setMouvement(PositionSide mouvement) {
-		this.mouvement = mouvement;
+	public void setStatus(TradeStatus status) {
+		this.status = status;
 	}
 
 	public double getProfitAndLoss() {
@@ -128,7 +130,7 @@ public class Trade {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((instrument == null) ? 0 : instrument.getSymbol().hashCode());
+		result = prime * result + ((instrument == null) ? 0 : instrument.getId().hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(quantity);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -149,7 +151,7 @@ public class Trade {
 		if (instrument == null) {
 			if (other.instrument != null)
 				return false;
-		} else if (!instrument.getSymbol().equals(other.instrument.getSymbol()))
+		} else if (!instrument.getId().equals(other.instrument.getId()))
 			return false;
 		if (Double.doubleToLongBits(quantity) != Double.doubleToLongBits(other.quantity))
 			return false;
@@ -163,6 +165,13 @@ public class Trade {
 		return true;
 	}
 	
+	public enum TradeStatus {
+		OPEN,CLOSED
+	}
+	
+	public enum TradeSide {
+		BUY,SELL;
+	}
 	
 	
 }
