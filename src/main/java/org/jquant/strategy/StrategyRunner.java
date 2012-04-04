@@ -10,10 +10,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.jquant.data.MarketManager;
-import org.jquant.execution.IBroker;
 import org.jquant.model.Currency;
 import org.jquant.model.InstrumentId;
 import org.jquant.model.MarketDataPrecision;
+import org.jquant.order.IOrderManager;
 import org.jquant.portfolio.Portfolio;
 import org.jquant.serie.Candle;
 import org.jquant.serie.CandleSerie;
@@ -42,7 +42,7 @@ public class StrategyRunner implements InitializingBean{
 	private MarketManager marketMgr;
 	
 	@Autowired
-	private IBroker broker;
+	private IOrderManager orderManager;
 	
 	/**
 	 * Map of all strategies
@@ -150,7 +150,7 @@ public class StrategyRunner implements InitializingBean{
 			/*
 			 * Give the strategy a grab on the exec provider 
 			 */
-			strategy.setExecutionProvider(broker);
+			strategy.setOrderManager(orderManager);
 	
 			
 			/*
@@ -161,9 +161,14 @@ public class StrategyRunner implements InitializingBean{
 			strategy.setPortfolio(globalPortfolio);
 			
 			/*
-			 * Give the PaperBroker access to the global Portfolio to turn filled orders into Trades 
+			 * Give the OrderManager access to the global Portfolio to turn filled orders into Trades 
 			 */
-			broker.setPortfolio(globalPortfolio);
+			orderManager.setPortfolio(globalPortfolio);
+			
+			/*
+			 * Tell the OrderManager the strategy is listening to the changes in Positions 
+			 */
+			orderManager.addStrategy(strategy);
 		}
 		
 		
@@ -226,16 +231,19 @@ public class StrategyRunner implements InitializingBean{
 					 }
 					 cs.addValue(pair.getRight());
 					 
+					// TODO : Multi Threading here ...
+					/*
+					 * Runtime.availableProcessors() 
+					 * create that many java.util.concurrent.Callable Objects
+					 * use java.util.concurrent.ExecutorService with a pool of java.util.concurrent.Executors
+					 * distribuer les stratégies aux processeurs 
+					 * exécuter la boucle dans les executors 
+					 */ 
 					
 					// Feed the Strategies 
 					for (IStrategy s : strategies.values()){
 						if (s.getMarket().contains(pair.getLeft())){
-							// TODO : Multi Threading here ...
-							/*
-							 * Runtime.availableProcessors() 
-							 * create that many java.util.concurrent.Callable Objects
-							 * use java.util.concurrent.ExecutorService with a pool of java.util.concurrent.Executors
-							 */
+							
 							s.onCandle(pair.getLeft(), pair.getRight());
 						}
 					}

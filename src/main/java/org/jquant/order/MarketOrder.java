@@ -1,7 +1,7 @@
 package org.jquant.order;
 
 import org.joda.time.DateTime;
-import org.jquant.model.IInstrument;
+import org.jquant.model.InstrumentId;
 
 /**
  * An order that an investor makes through a broker or brokerage service to buy or sell an investment immediately at the best available current price. 
@@ -14,12 +14,12 @@ import org.jquant.model.IInstrument;
 public class MarketOrder extends Order {
 
 	
-	public MarketOrder(OrderSide side, IInstrument instrument, double quantity, String text) {
+	public MarketOrder(OrderSide side, InstrumentId instrument, double quantity, String text) {
 		super(side, instrument, quantity, text);
 		
 	}
 	
-	public MarketOrder(OrderSide side, IInstrument instrument, double quantity, String text,DateTime created) {
+	public MarketOrder(OrderSide side, InstrumentId instrument, double quantity, String text,DateTime created) {
 		super(side, instrument, quantity, text,created);
 		
 	}

@@ -1,7 +1,7 @@
 package org.jquant.order;
 
 import org.joda.time.DateTime;
-import org.jquant.model.IInstrument;
+import org.jquant.model.InstrumentId;
 
 /**
  * An order to buy or sell a security when its price surpasses a particular point, 
@@ -17,12 +17,12 @@ public class StopOrder extends Order {
 	
 	private final double stopPrice;
 
-	public StopOrder(OrderSide side, IInstrument instrument, double quantity, double price,String text) {
+	public StopOrder(OrderSide side, InstrumentId instrument, double quantity, double price,String text) {
 		super(side, instrument, quantity, text);
 		this.stopPrice = price;
 	}
 	
-	public StopOrder(OrderSide side, IInstrument instrument, double quantity, double price,String text,DateTime created) {
+	public StopOrder(OrderSide side, InstrumentId instrument, double quantity, double price,String text,DateTime created) {
 		super(side, instrument, quantity, text,created);
 		this.stopPrice = price;
 	}

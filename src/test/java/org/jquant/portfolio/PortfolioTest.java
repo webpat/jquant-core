@@ -1,13 +1,9 @@
-package org.jquant;
+package org.jquant.portfolio;
 
 import org.joda.time.DateTime;
-import org.jquant.data.Symbols;
-import org.jquant.instrument.Equity;
+import org.jquant.data.Instruments;
 import org.jquant.model.Currency;
-import org.jquant.model.IInstrument;
-import org.jquant.portfolio.Portfolio;
-import org.jquant.portfolio.PortfolioException;
-import org.jquant.portfolio.Trade;
+import org.jquant.model.InstrumentId;
 import org.jquant.portfolio.Trade.TradeSide;
 import org.jquant.portfolio.Trade.TradeStatus;
 import org.junit.Assert;
@@ -23,13 +19,13 @@ public class PortfolioTest {
 
 	
 	private Portfolio ptf;
-	private IInstrument ibm, google;
+	private InstrumentId ibm, google;
 
 	@Before
 	public void setup(){
 		ptf = new Portfolio("Test Ptf", Currency.USD);
-		ibm = new Equity(Symbols.IBM);
-		google = new Equity(Symbols.GOOG);
+		ibm = Instruments.IBM;
+		google = Instruments.GOOG;
 		
 	}
 	
@@ -67,7 +63,7 @@ public class PortfolioTest {
 	 * @throws PortfolioException 
 	 */
 	@Test
-	public void testPartSellOnBullMarket() throws PortfolioException {
+	public void testPartialSellOnBullMarket() throws PortfolioException {
 		// 1000 euros en cash 
 		ptf.addCash(1000);
 		
@@ -98,7 +94,7 @@ public class PortfolioTest {
 	 * @throws PortfolioException 
 	 */
 	@Test
-	public void testPartSellOnBearMarket() throws PortfolioException {
+	public void testPartialSellOnBearMarket() throws PortfolioException {
 		// 1000 euros en cash 
 		ptf.addCash(1000);
 		
@@ -269,5 +265,100 @@ public class PortfolioTest {
 		ptf.addTransaction(buy1);
 		
 	}
+	
+	/**
+	 * Use case : Short Sell nominal
+	 * @throws PortfolioException
+	 */
+	@Test
+	public void testShortSellNominal() throws PortfolioException{
+		// 1000 euros en cash 
+		ptf.addCash(1000);
+		
+		// Vente Short 2 IBM @ 110
+		Trade sale1 = new Trade(TradeSide.SELL,ibm, 2, 220,  new DateTime());
+		ptf.addTransaction(sale1);
+		Assert.assertEquals(-2,ptf.getPosition(ibm),0.0);
+		Assert.assertEquals(1220,ptf.getCash(),0.0);
+		Assert.assertEquals(TradeStatus.OPEN,sale1.getStatus());
+		
+		// RAchat 2 IBM @ 100 
+		Trade buy1 = new Trade(TradeSide.BUY,ibm, 2, 200,  new DateTime());
+		ptf.addTransaction(buy1);
+		
+		/*
+		 * Normalement, il ne reste plus d'IBM en portefeuille, 
+		 * les deux trades sont bouclés, il y a 1020 en cash 
+		 * et le PnL est de 20$ sur le trade de débouclage 
+		 * 
+		 */
+		Assert.assertEquals(1020,ptf.getCash(),0.0);
+		Assert.assertEquals(0,ptf.getPosition(ibm),0.0);
+		Assert.assertEquals(TradeStatus.CLOSED,sale1.getStatus());
+		Assert.assertEquals(TradeStatus.CLOSED,buy1.getStatus());
+		Assert.assertEquals(20,buy1.getProfitAndLoss(),0.0);
+		
+	}
+	
+	/**
+	 * Use Case : short entry then short exit and long entry in two trades 
+	 * @throws PortfolioException
+	 */
+	@Test
+	public void testShortSellShortExitAndLongEntry() throws PortfolioException{
+		// 1000 euros en cash 
+		ptf.addCash(1000);
+		
+		// Vente Short 2 IBM @ 110
+		Trade sale1 = new Trade(TradeSide.SELL,ibm, 2, 220,  new DateTime());
+		ptf.addTransaction(sale1);
+		Assert.assertEquals(-2,ptf.getPosition(ibm),0.0);
+		Assert.assertEquals(1220,ptf.getCash(),0.0);
+		Assert.assertEquals(TradeStatus.OPEN,sale1.getStatus());
+		
+		// RAchat 3 IBM @ 100 
+		Trade buy1 = new Trade(TradeSide.BUY,ibm, 3, 300,  new DateTime());
+		ptf.addTransaction(buy1);
+		
+		/*
+		 * Normalement, il ne reste plus d'IBM en portefeuille, 
+		 * les deux trades sont bouclés, il y a 1020 en cash 
+		 * et le PnL est de 20$ sur le trade de débouclage 
+		 * 
+		 */
+		Assert.assertEquals(920,ptf.getCash(),0.0);
+		Assert.assertEquals(1,ptf.getPosition(ibm),0.0);
+		Assert.assertEquals(TradeStatus.CLOSED,sale1.getStatus());
+		Assert.assertEquals(20,ptf.getRealizedPnL(),0.0);
+		
+	}
+	
+	/**
+	 * Use Case : long entry then long exit short entry in two trades 
+	 * @throws PortfolioException
+	 */
+	@Test
+	public void testLongEntryLongExitShortEntry() throws PortfolioException{
+		// 1000 euros en cash 
+		ptf.addCash(1000);
+		
+		// Achat 2 IBM @ 100 
+		Trade buy1 = new Trade(TradeSide.BUY,ibm, 2, 200,  new DateTime());
+		ptf.addTransaction(buy1);
+		Assert.assertEquals(2,ptf.getPosition(ibm),0.0);
+		Assert.assertEquals(800,ptf.getCash(),0.0);
+		Assert.assertEquals(TradeStatus.OPEN,buy1.getStatus());
+		
+		// Vente 3 IBM @ 110
+		Trade sale1 = new Trade(TradeSide.SELL,ibm, 3, 330,  new DateTime());
+		ptf.addTransaction(sale1);
+		Assert.assertEquals(-1,ptf.getPosition(ibm),0.0);
+		Assert.assertEquals(1130,ptf.getCash(),0.0);
+		Assert.assertEquals(TradeStatus.CLOSED,buy1.getStatus());
+		Assert.assertEquals(20,ptf.getRealizedPnL(),0.0);
+	
+		
+	}
+	
 
 }

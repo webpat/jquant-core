@@ -1,7 +1,7 @@
 package org.jquant.order;
 
 import org.joda.time.DateTime;
-import org.jquant.model.IInstrument;
+import org.jquant.model.InstrumentId;
 
 /**
  * An order placed with a brokerage to buy or sell a set number of shares at a specified price or better. 
@@ -17,12 +17,12 @@ public class LimitOrder extends Order {
 
 	private final double limitPrice;
 
-	public LimitOrder(OrderSide side, IInstrument instrument, double quantity, double price, String text) {
+	public LimitOrder(OrderSide side, InstrumentId instrument, double quantity, double price, String text) {
 		super(side, instrument, quantity, text);
 		this.limitPrice = price;
 	}
 	
-	public LimitOrder(OrderSide side, IInstrument instrument, double quantity, double price, String text,DateTime created) {
+	public LimitOrder(OrderSide side, InstrumentId instrument, double quantity, double price, String text,DateTime created) {
 		super(side, instrument, quantity, text,created);
 		this.limitPrice = price;
 	}

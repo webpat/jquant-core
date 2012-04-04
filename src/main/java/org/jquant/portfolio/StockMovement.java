@@ -1,6 +1,6 @@
 package org.jquant.portfolio;
 
-import org.jquant.model.IInstrument;
+import org.jquant.model.InstrumentId;
 
 /**
  * used in the  {@link Portfolio} inventory
@@ -34,7 +34,7 @@ public final class StockMovement {
 
 
 
-	public IInstrument getInstrument() {
+	public InstrumentId getInstrument() {
 		return trade.getInstrument();
 	}
 	
@@ -76,7 +76,7 @@ public final class StockMovement {
 	}
 
 	public enum MovementType{
-		ENTRY,EXIT;
+		LONG_ENTRY,LONG_EXIT,SHORT_ENTRY,SHORT_EXIT;
 	}
 	
 	

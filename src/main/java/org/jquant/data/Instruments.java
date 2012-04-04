@@ -39,7 +39,7 @@ import org.jquant.model.MICMarketPlace;
  *
  *  @author Patrick Merheb
  */
-public interface Symbols {
+public interface Instruments {
 	
     // forex
 	InstrumentId EURUSD = new InstrumentId(JQuantDataProvider.LOUXOR,"EURUSD",InstrumentType.FOREX,MICMarketPlace.NO_MIC,Currency.USD);

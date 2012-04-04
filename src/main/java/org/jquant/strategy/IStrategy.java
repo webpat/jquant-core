@@ -3,9 +3,9 @@ package org.jquant.strategy;
 import java.util.List;
 
 import org.jquant.model.InstrumentId;
+import org.jquant.portfolio.Trade.TradeSide;
 import org.jquant.serie.BBBA;
 import org.jquant.serie.Candle;
-import org.jquant.serie.CandleSerie;
 
 /**
  * Interface to be implemented by Strategies 
@@ -35,12 +35,20 @@ public interface IStrategy {
 	
 	
 	/**
-	 * Receive Candle Event From the Simulation/MarketData Feed 
-	 * @param instrument
-	 * @param candle
+	 * Called for each Candle received on instrument 
+	 * @param instrument an {@link InstrumentId}
+	 * @param candle a {@link Candle}
 	 */
 	public void onCandle(InstrumentId instrument, Candle candle);
 
+	
+	/**
+	 * Called when a new position is opened 
+	 * @param side the {@link TradeSide} BUY : Long SELL : Short  
+	 * @param instrumentId the {@link InstrumentId}
+	 */
+	public void onPositionOpened(TradeSide side,InstrumentId instrumentId);
+	
 
 	/**
 	 * 
@@ -49,12 +57,12 @@ public interface IStrategy {
 	public List<InstrumentId> getMarket();
 
 	
-	/**
-	 * 
-	 * @param symbol a InstrumentId
-	 * @return the Candleserie associated with the symbol
-	 */
-	public CandleSerie getCandleSerie(InstrumentId symbol);
+//	/**
+//	 * 
+//	 * @param symbol a InstrumentId
+//	 * @return the Candleserie associated with the symbol
+//	 */
+//	public CandleSerie getCandleSerie(InstrumentId symbol);
 	
 	
 	

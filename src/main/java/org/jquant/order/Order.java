@@ -1,7 +1,7 @@
 package org.jquant.order;
 
 import org.joda.time.DateTime;
-import org.jquant.model.IInstrument;
+import org.jquant.model.InstrumentId;
 
 /**
  * Order POJO
@@ -31,18 +31,18 @@ public class Order {
 	private final OrderSide side;
 	
 	
-	private final IInstrument instrument;
+	private final InstrumentId instrument;
 	
 	
 	
 	/**
 	 * 
 	 * @param side {@link OrderSide#BUY} or {@link OrderSide#SELL}
-	 * @param instrument The {@link IInstrument}
+	 * @param instrument The {@link InstrumentId}
 	 * @param quantity 
 	 * @param text 
 	 */
-	public Order(OrderSide side, IInstrument instrument, double quantity, String text) {
+	public Order(OrderSide side, InstrumentId instrument, double quantity, String text) {
 		super();
 		this.side = side;
 		this.instrument = instrument;
@@ -54,12 +54,12 @@ public class Order {
 	/**
 	 * 
 	 * @param side {@link OrderSide#BUY} or {@link OrderSide#SELL}
-	 * @param instrument The {@link IInstrument}
+	 * @param instrument The {@link InstrumentId}
 	 * @param quantity
 	 * @param text
 	 * @param created {@link DateTime} Used for backtesting orders 
 	 */
-	public Order(OrderSide side, IInstrument instrument, double quantity, String text,DateTime created) {
+	public Order(OrderSide side, InstrumentId instrument, double quantity, String text,DateTime created) {
 		super();
 		this.side = side;
 		this.instrument = instrument;
@@ -146,7 +146,7 @@ public class Order {
 	 * 
 	 * @return The exchanged instrument 
 	 */
-	public IInstrument getInstrument() {
+	public InstrumentId getInstrument() {
 		return instrument;
 	}
 

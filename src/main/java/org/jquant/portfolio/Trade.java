@@ -1,7 +1,7 @@
 package org.jquant.portfolio;
 
 import org.joda.time.DateTime;
-import org.jquant.model.IInstrument;
+import org.jquant.model.InstrumentId;
 
 /**
  * 	A <b>transaction</b> that involves the selling and purchasing of a security
@@ -13,7 +13,7 @@ import org.jquant.model.IInstrument;
  */
 public class Trade {
 	
-	private final IInstrument instrument;
+	private final InstrumentId instrument;
 	
 	/**
 	 * How many securities were traded
@@ -54,7 +54,7 @@ public class Trade {
 	 * @param side
 	 * @param timestamp
 	 */
-	public Trade(TradeSide side,IInstrument instrument, double quantity, double price,  DateTime timestamp) {
+	public Trade(TradeSide side,InstrumentId instrument, double quantity, double price,  DateTime timestamp) {
 		super();
 		this.instrument = instrument;
 		this.quantity = quantity;
@@ -64,12 +64,18 @@ public class Trade {
 		this.status = TradeStatus.OPEN;
 		
 	}
+	
+	@Override
+	protected Trade clone()  {
+		Trade dolly = new Trade(this.side,this.instrument,this.quantity, this.price,this.timestamp);
+		return dolly;
+	}
 
 	/**
 	 * 
-	 * @return the traded security, an {@link IInstrument}
+	 * @return the traded security, an {@link InstrumentId}
 	 */
-	public IInstrument getInstrument() {
+	public InstrumentId getInstrument() {
 		return instrument;
 	}
 
@@ -90,21 +96,26 @@ public class Trade {
 		return price;
 	}
 
-
+	/**
+	 * {@link TradeSide#BUY} or {@link TradeSide#SELL}
+	 * @return the {@link TradeSide}
+	 */
 	public TradeSide getSide() {
 		return side;
 	}
 
 	
 	/**
-	 * 
 	 * @return The date at wich the Trade takes place 
 	 */
 	public DateTime getTimestamp() {
 		return timestamp;
 	}
 
-
+	/**
+	 * Is it an {@link TradeStatus#OPEN} Trade or a {@link TradeStatus#CLOSED} Trade 
+	 * @return The {@link TradeStatus}
+	 */
 	public TradeStatus getStatus() {
 		return status;
 	}
@@ -113,6 +124,10 @@ public class Trade {
 		this.status = status;
 	}
 
+	/**
+	 * Only valid for a Closing Trade
+	 * @return get the P&L associated with this trade 
+	 */
 	public double getProfitAndLoss() {
 		return profitAndLoss;
 	}
@@ -130,7 +145,7 @@ public class Trade {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((instrument == null) ? 0 : instrument.getId().hashCode());
+		result = prime * result + ((instrument == null) ? 0 : instrument.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(quantity);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -151,7 +166,7 @@ public class Trade {
 		if (instrument == null) {
 			if (other.instrument != null)
 				return false;
-		} else if (!instrument.getId().equals(other.instrument.getId()))
+		} else if (!instrument.equals(other.instrument))
 			return false;
 		if (Double.doubleToLongBits(quantity) != Double.doubleToLongBits(other.quantity))
 			return false;
@@ -164,6 +179,8 @@ public class Trade {
 			return false;
 		return true;
 	}
+	
+	
 	
 	public enum TradeStatus {
 		OPEN,CLOSED

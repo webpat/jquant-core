@@ -1,16 +1,16 @@
 package org.jquant.portfolio;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
-import org.joda.time.DateTime;
 import org.jquant.model.Currency;
 import org.jquant.model.IInstrument;
+import org.jquant.model.InstrumentId;
 import org.jquant.portfolio.StockMovement.MovementType;
 import org.jquant.portfolio.Trade.TradeStatus;
 
@@ -27,11 +27,11 @@ import org.jquant.portfolio.Trade.TradeStatus;
  */
 public class Portfolio {
 	
-	private final Map<DateTime, Trade> transactions;
+	private final List<Trade> transactions;
 	
-	private final Map<IInstrument,List<StockMovement>> inventory;
+	private final Map<InstrumentId,Deque<StockMovement>> inventory;
 	
-	private final Map<IInstrument, Double> positions;
+	private final Map<InstrumentId, Double> positions;
 	
 	private final String name;
 	
@@ -51,9 +51,9 @@ public class Portfolio {
 		super();
 		this.name = name;
 		this.currency = currency;
-		transactions = new TreeMap<DateTime, Trade>();
-		positions = new HashMap<IInstrument, Double>();
-		inventory = new HashMap<IInstrument,List<StockMovement>>();
+		transactions = new ArrayList<Trade>();
+		positions = new HashMap<InstrumentId, Double>();
+		inventory = new HashMap<InstrumentId,Deque<StockMovement>>();
 		this.valuationMode = InventoryValuationMode.FIFO;
 		cash = 0;
 	}
@@ -62,9 +62,9 @@ public class Portfolio {
 		super();
 		this.name = name;
 		this.currency = currency;
-		transactions = new TreeMap<DateTime, Trade>();
-		positions = new HashMap<IInstrument, Double>();
-		inventory = new HashMap<IInstrument,List<StockMovement>>();
+		transactions = new ArrayList<Trade>();
+		positions = new HashMap<InstrumentId, Double>();
+		inventory = new HashMap<InstrumentId,Deque<StockMovement>>();
 		this.valuationMode = mode;
 		cash = 0;
 	}
@@ -92,8 +92,6 @@ public class Portfolio {
 	 * @throws PortfolioException 
 	 */
 	public void addTransaction(Trade trade) throws PortfolioException{
-		// Record the transaction
-		transactions.put(trade.getTimestamp(), trade);
 		
 		switch (trade.getSide()) {
 		case BUY:
@@ -118,7 +116,7 @@ public class Portfolio {
 	/**
 	 * @return A Map containing all the instruments positions in the Portfolio
 	 */
-	public Map<IInstrument,Double> getPositions(){
+	public Map<InstrumentId,Double> getPositions(){
 		return positions;
 	}
 	
@@ -127,7 +125,7 @@ public class Portfolio {
 	 * @param instrument
 	 * @return the amount of instrument hold in the portfolio
 	 */
-	public double getPosition(IInstrument instrument){
+	public double getPosition(InstrumentId instrument){
 		if (positions.containsKey(instrument)){
 			return positions.get(instrument);
 		}else {
@@ -147,9 +145,11 @@ public class Portfolio {
 
 	private void buy(Trade trade) throws PortfolioException{
 		
-		IInstrument asset = trade.getInstrument();
+		InstrumentId asset = trade.getInstrument();
 		double quantity = trade.getQuantity();
+		double currentPos = getPosition(asset);
 		double unitPrice = trade.getPrice()/quantity;
+		boolean split = false;
 		
 		// update cash 
 		if (getCash()<(trade.getPrice())){
@@ -165,87 +165,172 @@ public class Portfolio {
 			positions.put(asset, quantity);
 		}
 		//update inventory
-		StockMovement sm = new StockMovement(MovementType.ENTRY,trade);
-		if (inventory.containsKey(asset)){
-			inventory.get(asset).add(sm);
-		}else {
-			List<StockMovement> sml = new ArrayList<StockMovement>();
-			sml.add(sm);
-			inventory.put(asset, sml);
+		if (currentPos >=0){
+			// Long Entry
+			StockMovement sm = new StockMovement(MovementType.LONG_ENTRY,trade);
+			addStockMovmentForAsset(asset, sm);
+		}else if (currentPos <0){
+			if (quantity > -currentPos ){
+				// Short Exit + Long Entry
+				Trade shortExitTrade = new Trade(trade.getSide(),trade.getInstrument(),-currentPos,unitPrice*(-currentPos),trade.getTimestamp());
+				double pnL = getPnL(asset, MovementType.SHORT_ENTRY, quantity, unitPrice);
+				shortExitTrade.setProfitAndLoss(pnL);
+				shortExitTrade.setStatus(TradeStatus.CLOSED); // Débouclage
+				StockMovement sm1 = new StockMovement(MovementType.SHORT_EXIT,shortExitTrade);
+				addStockMovmentForAsset(asset, sm1);
+				
+				double delta = quantity + currentPos;
+				Trade longEntryTrade = new Trade(trade.getSide(),trade.getInstrument(),delta,unitPrice*delta,trade.getTimestamp());
+				StockMovement sm2 = new StockMovement(MovementType.LONG_ENTRY,longEntryTrade);
+				addStockMovmentForAsset(asset, sm2);
+				
+				transactions.add(shortExitTrade);
+				transactions.add(longEntryTrade);
+				split = true;
+				
+			}else {
+				// Short Exit 
+				StockMovement sm = new StockMovement(MovementType.SHORT_EXIT,trade);
+				addStockMovmentForAsset(asset, sm);
+				//update Trade information (P&L) 
+				double pnL = getPnL(asset, MovementType.SHORT_ENTRY, quantity, unitPrice);
+				trade.setProfitAndLoss(pnL);
+				trade.setStatus(TradeStatus.CLOSED); // Débouclage
+			}
 		}
-	
+		
+		// Record the transaction
+		if (!split){
+			transactions.add(trade);
+		}
 		
 	}
 	
 	
 	private void sell(Trade trade) throws PortfolioException{
-		
-		IInstrument asset = trade.getInstrument();
-		double sellQuantity = trade.getQuantity();
-		double unitPrice = trade.getPrice()/sellQuantity;
-		
-		//TODO : update cash
+
+		InstrumentId asset = trade.getInstrument();
+		double quantity = trade.getQuantity();
+		double unitPrice = trade.getPrice()/quantity;
+		double currentPos = getPosition(asset);
+		boolean split = false;
+
+		// update cash
 		this.cash += trade.getPrice();
-		
+
 		//  update positions
 		if (positions.containsKey(asset)){
-			double updatedPos = positions.get(asset) - sellQuantity;
-			if (updatedPos < 0 ){
-				
-				throw new PortfolioException("Can't go short");
-				
-			}else {
-			
-				positions.put(trade.getInstrument(), updatedPos);
-			}
-		}else{
-			throw new PortfolioException("Can't go short");
-		}
-		//update inventory 
-		StockMovement sm = new StockMovement(MovementType.EXIT,trade);
+			double updatedPos =  currentPos - quantity;
+			positions.put(trade.getInstrument(), updatedPos);
 
+		}else{
+			positions.put(trade.getInstrument(), - quantity);
+		}
+		
+		//update inventory 
+		if (currentPos > 0){
+			if (quantity > currentPos){
+				// long exit + short entry
+				
+				Trade longExitTrade = new Trade(trade.getSide(),trade.getInstrument(),currentPos,unitPrice*currentPos,trade.getTimestamp());
+				double pnL = getPnL(asset, MovementType.LONG_ENTRY, quantity, unitPrice);
+				longExitTrade.setProfitAndLoss(pnL);
+				longExitTrade.setStatus(TradeStatus.CLOSED); // Débouclage
+				StockMovement sm1 = new StockMovement(MovementType.LONG_EXIT,longExitTrade);
+				addStockMovmentForAsset(asset, sm1);
+				
+				double delta = quantity - currentPos;
+				Trade shortEntryTrade = new Trade(trade.getSide(),trade.getInstrument(),delta,unitPrice*delta,trade.getTimestamp());
+				StockMovement sm2 = new StockMovement(MovementType.SHORT_ENTRY,shortEntryTrade);
+				addStockMovmentForAsset(asset, sm2);
+				
+				transactions.add(longExitTrade);
+				transactions.add(shortEntryTrade);
+				split = true;
+			}else {
+				// long exit
+				StockMovement sm = new StockMovement(MovementType.LONG_EXIT,trade);
+				addStockMovmentForAsset(asset,sm);	
+				//update Trade information (P&L) 
+				double pnL = getPnL(asset, MovementType.LONG_ENTRY, quantity, unitPrice);
+				trade.setProfitAndLoss(pnL);
+				trade.setStatus(TradeStatus.CLOSED); // Débouclage
+				
+			}
+
+		}else if (currentPos <= 0){
+			// short entry (reinforcing short position) 
+			StockMovement sm = new StockMovement(MovementType.SHORT_ENTRY,trade);
+			addStockMovmentForAsset(asset,sm);
+		}
+
+
+		// Record the transaction
+		if (!split){
+			transactions.add(trade);
+		}
+	}
+
+		
+	
+
+	private void addStockMovmentForAsset(InstrumentId asset,StockMovement sm) {
 		if (inventory.containsKey(asset)){
 			inventory.get(asset).add(sm);
 		}else {
-			List<StockMovement> sml = new ArrayList<StockMovement>();
+			ArrayDeque<StockMovement> sml = new ArrayDeque<StockMovement>();
 			sml.add(sm);
 			inventory.put(asset, sml);
 		}
-		
-		//update Trade information (P&L) 
-		List<StockMovement> sml = getInventory(asset, MovementType.ENTRY,valuationMode);
-		if (sml != null){
-			Iterator<StockMovement> it = sml.iterator();
-			double pnL = 0;
-			while (sellQuantity >0 && it.hasNext()){
-				StockMovement mvt = it.next();
-				
-				// Update P&L 
-				pnL = pnL + (unitPrice - mvt.getPrice()/mvt.getQuantity())* Math.min(mvt.getRemainingQuantity(), sellQuantity);
-				// Update remaining quantity
-			
-				
-				// Mise à jour des remaining quantity dans la liste des StockMovment et de la Quantité restant à écouler
-				if (sellQuantity >= mvt.getRemainingQuantity()){
-					mvt.getTrade().setStatus(TradeStatus.CLOSED);
-					mvt.setRemainingQuantity(0);
-					sellQuantity = sellQuantity - mvt.getRemainingQuantity();
-					
-				}else{
-					mvt.setRemainingQuantity(mvt.getRemainingQuantity()-sellQuantity);
-					sellQuantity = 0 ;
-				}
-				
-				
-			}
-			trade.setProfitAndLoss(pnL);
-			trade.setStatus(TradeStatus.CLOSED);
-			
-		}
-		
-		
 	}
 
+	
+	/**
+	 * 
+	 * @param asset l'instrument 
+	 * @param mvtType type de mouvement qui contre balance 
+	 * @param qty Quantité à écouler 
+	 * @param unitPrice le prix du trade 
+	 * @return le P&L sur le trade 
+	 */
+	private double getPnL(InstrumentId asset, MovementType mvtType, double qty, double unitPrice){
+		List<StockMovement> sml = getInventory(asset, mvtType,valuationMode);
+		double pnL = 0;
+		double mvtPnL = 0;
+		if (sml != null){
+			Iterator<StockMovement> it = sml.iterator();
+
+			while (qty >0 && it.hasNext()){
+				StockMovement mvt = it.next();
+
+				mvtPnL = (unitPrice - mvt.getPrice()/mvt.getQuantity());
+				
+				if (MovementType.SHORT_ENTRY.equals(mvtType)){
+					mvtPnL*=-1;
+				}
+				// Update P&L 
+				pnL = pnL + mvtPnL * Math.min(mvt.getRemainingQuantity(), qty);
+				
+				// Update remaining quantity
+				if (qty >= mvt.getRemainingQuantity()){
+					mvt.getTrade().setStatus(TradeStatus.CLOSED);
+					qty = qty - mvt.getRemainingQuantity();
+					
+					// the StockMovment will be removed from the Queue next P&L calculation
+					mvt.setRemainingQuantity(0);
+					
+
+				}else{
+					mvt.setRemainingQuantity(mvt.getRemainingQuantity()- qty);
+					qty = 0 ;
+				}
+
+
+			}
+			
+		}
+		return pnL;	
+	}
 	/**
 	 * Return the Stock Movment List for an asset and a Movement type
 	 * TODO : support the AVERAGE Inventory valuation Mode  
@@ -253,18 +338,30 @@ public class Portfolio {
 	 * @param mvt ENTRY or EXIT 
 	 * @return a {@link StockMovement} references List or <code>null</code> if no asset in inventory
 	 */
-	private List<StockMovement> getInventory(IInstrument asset, MovementType mvt,InventoryValuationMode mode){
+	private List<StockMovement> getInventory(InstrumentId asset, MovementType mvt,InventoryValuationMode mode){
 		
 		if (inventory.get(asset)!= null){
+			
+			Deque<StockMovement> deq = inventory.get(asset);
+			
+					
 			List<StockMovement> result = new ArrayList<StockMovement>();
-			for (StockMovement sm : inventory.get(asset)){
-				if (mvt.equals(sm.getMovement())&& sm.getRemainingQuantity()>0){
+			Iterator<StockMovement> it = InventoryValuationMode.LIFO.equals(mode)?deq.descendingIterator():deq.iterator();
+			
+			while(it.hasNext()){
+				
+				StockMovement sm = it.next();
+				
+				if (sm.getRemainingQuantity()==0){
+					it.remove();
+					continue;
+				}
+				
+				if (mvt.equals(sm.getMovement())){
 					result.add(sm);
 				}
 			}
-			if (InventoryValuationMode.LIFO.equals(mode)){
-				Collections.reverse(result);
-			}
+			
 			return result;
 		}
 		return null;
@@ -276,9 +373,14 @@ public class Portfolio {
 	 * @return The PnL of the Portfolio depending on the {@link #getValuationMode()}
 	 */
 	public double getRealizedPnL(){
-		// NOT Yet Implemented 
-		throw new UnsupportedOperationException();
 		
+		double pnL = 0;
+		for (Trade tr : transactions){
+			if (TradeStatus.CLOSED.equals(tr.getStatus())){
+				pnL+= tr.getProfitAndLoss();
+			}
+		}
+		return pnL;
 	}
 	
 	
