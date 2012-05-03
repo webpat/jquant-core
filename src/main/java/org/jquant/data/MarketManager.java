@@ -38,7 +38,6 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 	/** logger */
 	private static final Logger logger = Logger.getLogger(MarketManager.class);
 	
-//	private List<CandleSerie> candleSeries;
 
 	private ApplicationContext applicationContext;
 	

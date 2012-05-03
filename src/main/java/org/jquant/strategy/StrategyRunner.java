@@ -222,17 +222,39 @@ public class StrategyRunner implements InitializingBean{
 				List<Pair<InstrumentId, Candle>> slice = marketMgr.getMarketSlice(dt);
 
 				for (Pair<InstrumentId, Candle> pair : slice){
+					
 					// Grow the instruments table
 					 CandleSerie cs = instruments.get(pair.getLeft());
-					 
 					 if (cs == null){
 						 cs = new CandleSerie(pair.getLeft());
 						 instruments.put(pair.getLeft(), cs);
 					 }
 					 cs.addValue(pair.getRight());
 					 
-					// TODO : Multi Threading here ...
+					 /*
+					  * Call onCandleOpen in OrderManager 
+					  */
+					 orderManager.onCandleOpen(pair.getLeft(), pair.getRight());
+					 
+					 /*
+					  * Call onCandleOpen in strategies 
+					  */
+					 for (IStrategy s : strategies.values()){
+							if (s.getMarket().contains(pair.getLeft())){
+								
+								s.onCandleOpen(pair.getLeft(), pair.getRight());
+							}
+						}
+					 
+					 /*
+					  * Call onCandle (completed candle) in the Order Manager 
+					  */
+					 orderManager.onCandle(pair.getLeft(), pair.getRight());
+					 
 					/*
+					 * Call onCandle (completed candle) in the strategies
+					 *
+					 * TODO : a bit of multithreading here 
 					 * Runtime.availableProcessors() 
 					 * create that many java.util.concurrent.Callable Objects
 					 * use java.util.concurrent.ExecutorService with a pool of java.util.concurrent.Executors
@@ -240,7 +262,6 @@ public class StrategyRunner implements InitializingBean{
 					 * exécuter la boucle dans les executors 
 					 */ 
 					
-					// Feed the Strategies 
 					for (IStrategy s : strategies.values()){
 						if (s.getMarket().contains(pair.getLeft())){
 							

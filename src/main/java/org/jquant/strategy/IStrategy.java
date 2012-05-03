@@ -43,6 +43,14 @@ public interface IStrategy {
 
 	
 	/**
+	 * Called for each candle at the begining of the Candle
+	 * @param instrument
+	 * @param candle 
+	 */
+	public void onCandleOpen(InstrumentId instrument, Candle candle);
+	
+	
+	/**
 	 * Called when a new position is opened 
 	 * @param side the {@link TradeSide} BUY : Long SELL : Short  
 	 * @param instrumentId the {@link InstrumentId}
@@ -56,13 +64,7 @@ public interface IStrategy {
 	 */
 	public List<InstrumentId> getMarket();
 
-	
-//	/**
-//	 * 
-//	 * @param symbol a InstrumentId
-//	 * @return the Candleserie associated with the symbol
-//	 */
-//	public CandleSerie getCandleSerie(InstrumentId symbol);
+
 	
 	
 	

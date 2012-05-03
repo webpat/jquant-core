@@ -13,9 +13,11 @@ import org.jquant.order.MarketOrder;
 import org.jquant.order.Order;
 import org.jquant.order.Order.OrderSide;
 import org.jquant.order.StopOrder;
+import org.jquant.order.TrailingStopOrder;
 import org.jquant.portfolio.Portfolio;
 import org.jquant.portfolio.Trade.TradeSide;
 import org.jquant.serie.Candle;
+import org.jquant.serie.Candle.CandleData;
 import org.jquant.serie.CandleSerie;
 
 /**
@@ -71,6 +73,10 @@ public abstract class AbstractStrategy implements IStrategy {
 		logger.info("Position opened for Instrument " + instrumentId );
 	}
 	
+	@Override
+	public void onCandleOpen(InstrumentId instrument, Candle candle){
+		logger.info("Candle opened for Instrument " + instrument );
+	}
 	
 	/**
 	 *  ex : CANDLE TRADE or QUOTE
@@ -100,10 +106,10 @@ public abstract class AbstractStrategy implements IStrategy {
 	
 	/**
 	 * Add an instrument in the strategy market 
-	 * @param symbol {@link InstrumentId}
+	 * @param instrument {@link InstrumentId}
 	 */
-	protected void addInstrument(InstrumentId symbol){
-		market.add(symbol);
+	protected void addInstrument(InstrumentId instrument){
+		market.add(instrument);
 	}
 
 	/**
@@ -117,11 +123,11 @@ public abstract class AbstractStrategy implements IStrategy {
 	
 	/**
 	 * Return the candleSerie for the given InstrumentId 
-	 * @param symbol a InstrumentId
+	 * @param instrument a InstrumentId
 	 * @return a {@link CandleSerie}
 	 */
-	protected CandleSerie getCandleSerie(InstrumentId symbol){
-		return candleSeries.get(symbol);
+	protected CandleSerie getCandleSerie(InstrumentId instrument){
+		return candleSeries.get(instrument);
 	}
 	
 	protected void setCandleSerieMap(Map<InstrumentId,CandleSerie> map){
@@ -137,14 +143,14 @@ public abstract class AbstractStrategy implements IStrategy {
 	 * @param text
 	 * @return The submitted {@link Order}
 	 */
-	protected Order sendMarketOrder(InstrumentId instrument, OrderSide side,double qty,String text){
+	protected Order sendMarketOrder(InstrumentId instrument, OrderSide side,double qty,CandleData data, String text){
 		
 		MarketOrder marketOrder;
 		CandleSerie cs = candleSeries.get(instrument);
 		if (cs != null){
 			// Simulation Order 
 			Candle last = cs.getLast();
-			marketOrder = new MarketOrder(side, instrument, qty, text,last.getDate());
+			marketOrder = new MarketOrder(side, instrument, qty, data,text,last.getDate());
 		}else {
 			// Live Order 
 			marketOrder = new MarketOrder(side, instrument, qty, text);
@@ -208,6 +214,33 @@ public abstract class AbstractStrategy implements IStrategy {
 		return stopOrder;
 		
 	}
+	
+	/**
+	 * @param instrument
+	 * @param side
+	 * @param qty
+	 * @param text
+	 * @return The submitted {@link Order}
+	 */
+	protected Order sendTrailingStopOrder(InstrumentId instrument, OrderSide side,double qty, double percentage,String text){
+		TrailingStopOrder stopOrder;
+		
+		CandleSerie cs = candleSeries.get(instrument);
+		if (cs != null){
+			// Simulation Order 
+			Candle last = cs.getLast();
+			stopOrder = new TrailingStopOrder(side, instrument, percentage,qty, text,last.getDate());
+		}else {
+			// Live Order 
+			stopOrder = new TrailingStopOrder(side, instrument, percentage,qty, text);
+		}
+		
+		
+		orderManager.sendOrder(stopOrder);
+		return stopOrder;
+		
+	}
+	
 
 
 	protected void setOrderManager(IOrderManager execProvider) {

@@ -1,5 +1,6 @@
 package org.jquant.order;
 
+import org.jquant.data.MarketManager;
 import org.jquant.model.InstrumentId;
 import org.jquant.portfolio.Portfolio;
 import org.jquant.serie.Candle;
@@ -61,5 +62,12 @@ public interface IOrderManager {
 	 */
 	public void onCandle(InstrumentId instrument, Candle candle);
 	
-	
+	/**
+	 * The {@link MarketManager} informs the OrderManager when a Candle is opened for an instrument 
+	 * <p>
+	 * used for the Market Open Orders 
+	 * @param instrument
+	 * @param candle 
+	 */
+	public void onCandleOpen(InstrumentId instrument, Candle candle);
 }

@@ -21,4 +21,6 @@
 
 	<!-- Configuration par annotation. -->
 	<context:annotation-config />
+	<!-- Component Scanning -->
+	<context:component-scan base-package="org.jquant"  />
 </beans>
