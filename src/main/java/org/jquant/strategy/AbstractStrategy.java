@@ -78,6 +78,11 @@ public abstract class AbstractStrategy implements IStrategy {
 		logger.info("Candle opened for Instrument " + instrument );
 	}
 	
+	@Override
+	public void onCandle(InstrumentId instrument, Candle candle){
+		logger.info("Candle closed for Instrument " + instrument );
+	}
+	
 	/**
 	 *  ex : CANDLE TRADE or QUOTE
 	 * @return The Strategy {@link MarketDataPrecision}  

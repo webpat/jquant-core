@@ -42,12 +42,13 @@ public class Portfolio {
 	 */
 	private final InventoryValuationMode valuationMode;
 	
+	private final double initialWealth;
 	
 	private double cash;
 	
 	
 
-	public Portfolio(String name, Currency currency) {
+	public Portfolio(String name, Currency currency, double initialCash) {
 		super();
 		this.name = name;
 		this.currency = currency;
@@ -55,10 +56,11 @@ public class Portfolio {
 		positions = new HashMap<InstrumentId, Double>();
 		inventory = new HashMap<InstrumentId,Deque<StockMovement>>();
 		this.valuationMode = InventoryValuationMode.FIFO;
-		cash = 0;
+		cash = initialCash;
+		initialWealth = initialCash;
 	}
 	
-	public Portfolio(String name, Currency currency,InventoryValuationMode mode) {
+	public Portfolio(String name, Currency currency,double initialCash,InventoryValuationMode mode) {
 		super();
 		this.name = name;
 		this.currency = currency;
@@ -66,7 +68,9 @@ public class Portfolio {
 		positions = new HashMap<InstrumentId, Double>();
 		inventory = new HashMap<InstrumentId,Deque<StockMovement>>();
 		this.valuationMode = mode;
-		cash = 0;
+		cash = initialCash;
+		initialWealth = initialCash;
+		
 	}
 
 	/**
@@ -368,21 +372,6 @@ public class Portfolio {
 		
 	}
 	
-	/**
-	 * 
-	 * @return The PnL of the Portfolio depending on the {@link #getValuationMode()}
-	 */
-	public double getRealizedPnL(){
-		
-		double pnL = 0;
-		for (Trade tr : transactions){
-			if (TradeStatus.CLOSED.equals(tr.getStatus())){
-				pnL+= tr.getProfitAndLoss();
-			}
-		}
-		return pnL;
-	}
-	
 	
 	
 	/**
@@ -393,6 +382,24 @@ public class Portfolio {
 		return valuationMode;
 	}
 
+
+
+	/**
+	 * 
+	 *  @return the initial Cash amount 
+	 */
+	public double getInitialWealth() {
+		return initialWealth;
+	}
+
+
+	/**
+	 * 
+	 * @return The {@link Trade} collection
+	 */
+	public List<Trade> getTransactions() {
+		return transactions;
+	}
 
 
 

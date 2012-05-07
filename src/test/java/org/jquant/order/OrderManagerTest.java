@@ -34,8 +34,7 @@ public class OrderManagerTest {
 	
 	@Before
 	public void setup(){
-		ptf = new Portfolio("Test Ptf", Currency.USD);
-		ptf.addCash(1000);
+		ptf = new Portfolio("Test Ptf", Currency.USD,1000);
 		ibm = Instruments.IBM;
 		google = Instruments.GOOG;
 		orderManager.setPortfolio(ptf);

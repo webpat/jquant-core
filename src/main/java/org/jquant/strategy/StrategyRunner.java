@@ -28,8 +28,9 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 /**
  * The StrategyRunner aka the <b>BackTestRunner</b> is the simulation player, he plays the strategies on <b>historical market data</b>
- * <p>Discover the strategies annotated by Strategy in the classpath, initialize their market with the help of the MarketManager, 
+ * <p>In Multi strategy Mode : discover the strategies annotated by Strategy in <b>basePackage</b>, initialize their market with the help of the MarketManager, 
  * dispatch the Candles and the Quotes during the Simulation.
+ * <p> In Single Strategy Mode : run the <b>strategyClassName</b>
  * @author patrick.merheb
  * @see AbstractStrategy
  * @see MarketManager
@@ -47,7 +48,7 @@ public class StrategyRunner implements InitializingBean{
 	/**
 	 * Map of all strategies
 	 */
-	private Map<String,IStrategy> strategies;
+	private Map<String,AbstractStrategy> strategies;
 	
 	/*
 	 * Growing Map of CandleSeries, the candleseries are growing gradually candle by candle during the simulation
@@ -86,6 +87,8 @@ public class StrategyRunner implements InitializingBean{
 	 * {@link #getBasePackage()}
 	 */
 	private String basePackage;
+	
+	private String strategyClassName;
 
 	
 	
@@ -101,29 +104,44 @@ public class StrategyRunner implements InitializingBean{
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		
-		
-		// Find all strategies  
-		ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-		provider.addIncludeFilter(new AnnotationTypeFilter(Strategy.class));
-		
-		String root = getBasePackage();
-		if (StringUtils.isEmpty(root)){
-			root = this.getClass().getPackage().getName();
-		}
-		Set<BeanDefinition> components = provider.findCandidateComponents(root);
-		
-		strategies = new HashMap<String, IStrategy>();
-		
-		/**
-		 *  For All Strategies
+		/*
+		 * Scan Phase
 		 */
-		for (BeanDefinition strategyBean : components){
+		
+		strategies = new HashMap<String, AbstractStrategy>();
+		 
+		String root = getBasePackage();
 
-			// FIXME : ensure strategy inherits AbstractStrategy 
-			AbstractStrategy strategy = (AbstractStrategy) Class.forName(strategyBean.getBeanClassName()).newInstance();
-			strategies.put(strategy.getId(), strategy);
+		if (StringUtils.isNotEmpty(root) && StringUtils.isNotEmpty(strategyClassName)){
+			throw new RuntimeException("Cannot define strategyClassName and basePackage at the same time.");
+		}
+		
+		if (StringUtils.isNotEmpty(root)){
+			/*
+			 *  If multi strategy scan mode, find all strategies
+			 */
+			ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+			provider.addIncludeFilter(new AnnotationTypeFilter(Strategy.class));
 			
+			Set<BeanDefinition> components = provider.findCandidateComponents(root);
+
+			for (BeanDefinition strategyBean : components){
+				// FIXME : ensure strategy inherits AbstractStrategy 
+				AbstractStrategy strategy = (AbstractStrategy) Class.forName(strategyBean.getBeanClassName()).newInstance();
+				strategies.put(strategy.getId(), strategy);
+			}
+		} else {
+			/*
+			 *  No detection Mode 
+			 */
+			AbstractStrategy strategy = (AbstractStrategy) Class.forName(strategyClassName).newInstance();
+			strategies.put(strategy.getId(), strategy);
+		}
+		
+		/*
+		 *  Simulation phase
+		 */
+		for (AbstractStrategy strategy : strategies.values()){
 			/*
 			 * Init Market for the strategy
 			 */
@@ -328,7 +346,7 @@ public class StrategyRunner implements InitializingBean{
 	}
 
 	/**
-	 * 
+	 * Multi Strategy Mode 
 	 * @return The Strategy Scan Entry Point
 	 */
 	public String getBasePackage() {
@@ -337,6 +355,18 @@ public class StrategyRunner implements InitializingBean{
 
 	public void setBasePackage(String basePackage) {
 		this.basePackage = basePackage;
+	}
+
+	/**
+	 * Single Strategy Mode
+	 * @return The Strategy class Name
+	 */
+	public String getStrategyClassName() {
+		return strategyClassName;
+	}
+
+	public void setStrategyClassName(String strategyClassName) {
+		this.strategyClassName = strategyClassName;
 	}
 	
 	

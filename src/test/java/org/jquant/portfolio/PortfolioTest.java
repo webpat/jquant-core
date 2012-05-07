@@ -23,7 +23,7 @@ public class PortfolioTest {
 
 	@Before
 	public void setup(){
-		ptf = new Portfolio("Test Ptf", Currency.USD);
+		ptf = new Portfolio("Test Ptf", Currency.USD,1000);
 		ibm = Instruments.IBM;
 		google = Instruments.GOOG;
 		
@@ -35,8 +35,7 @@ public class PortfolioTest {
 	 */
 	@Test
 	public void testBuySellNominal() throws PortfolioException {
-		// 1000 euros en cash 
-		ptf.addCash(1000);
+		
 		
 		// Achat 10 IBM @ 100 
 		Trade buy = new Trade(TradeSide.BUY,ibm, 10, 1000,  new DateTime());
@@ -64,8 +63,6 @@ public class PortfolioTest {
 	 */
 	@Test
 	public void testPartialSellOnBullMarket() throws PortfolioException {
-		// 1000 euros en cash 
-		ptf.addCash(1000);
 		
 		// Achat 10 IBM @ 100 
 		Trade buy = new Trade(TradeSide.BUY,ibm, 10, 1000,  new DateTime());
@@ -95,8 +92,6 @@ public class PortfolioTest {
 	 */
 	@Test
 	public void testPartialSellOnBearMarket() throws PortfolioException {
-		// 1000 euros en cash 
-		ptf.addCash(1000);
 		
 		// Achat 10 IBM @ 100 
 		Trade buy = new Trade(TradeSide.BUY,ibm, 10, 1000,  new DateTime());
@@ -124,8 +119,6 @@ public class PortfolioTest {
 	 */
 	@Test
 	public void testExitAfterMultipleBuy() throws PortfolioException {
-		// 1000 euros en cash 
-		ptf.addCash(1000);
 		
 		// Achat 3 IBM @ 100 
 		Trade buy1 = new Trade(TradeSide.BUY,ibm, 3, 300,  new DateTime());
@@ -169,8 +162,6 @@ public class PortfolioTest {
 	 */
 	@Test
 	public void testMultipleSaleAfterMultipleBuy() throws PortfolioException {
-		// 1000 euros en cash 
-		ptf.addCash(1000);
 		
 		// Achat 3 IBM @ 100 
 		Trade buy1 = new Trade(TradeSide.BUY,ibm, 3, 300,  new DateTime());
@@ -220,8 +211,6 @@ public class PortfolioTest {
 	 */
 	@Test
 	public void testBuySellBuySell() throws PortfolioException {
-		// 1000 euros en cash 
-		ptf.addCash(1000);
 		
 		// Achat 3 IBM @ 100 
 		Trade buy1 = new Trade(TradeSide.BUY,ibm, 3, 300,  new DateTime());
@@ -258,7 +247,7 @@ public class PortfolioTest {
 	@Test(expected = PortfolioException.class)
 	public void testNotEnoughCash() throws PortfolioException{
 		//100 is not enough to buy 3 IBM @ 100
-		ptf.addCash(100);
+		ptf = new Portfolio("Test Ptf", Currency.USD,100);
 		
 		// Buy 3 IBM @ 100 ==> leads to exception
 		Trade buy1 = new Trade(TradeSide.BUY,ibm, 3, 300,  new DateTime());
@@ -272,8 +261,6 @@ public class PortfolioTest {
 	 */
 	@Test
 	public void testShortSellNominal() throws PortfolioException{
-		// 1000 euros en cash 
-		ptf.addCash(1000);
 		
 		// Vente Short 2 IBM @ 110
 		Trade sale1 = new Trade(TradeSide.SELL,ibm, 2, 220,  new DateTime());
@@ -306,8 +293,6 @@ public class PortfolioTest {
 	 */
 	@Test
 	public void testShortSellShortExitAndLongEntry() throws PortfolioException{
-		// 1000 euros en cash 
-		ptf.addCash(1000);
 		
 		// Vente Short 2 IBM @ 110
 		Trade sale1 = new Trade(TradeSide.SELL,ibm, 2, 220,  new DateTime());
@@ -329,7 +314,6 @@ public class PortfolioTest {
 		Assert.assertEquals(920,ptf.getCash(),0.0);
 		Assert.assertEquals(1,ptf.getPosition(ibm),0.0);
 		Assert.assertEquals(TradeStatus.CLOSED,sale1.getStatus());
-		Assert.assertEquals(20,ptf.getRealizedPnL(),0.0);
 		
 	}
 	
@@ -339,8 +323,6 @@ public class PortfolioTest {
 	 */
 	@Test
 	public void testLongEntryLongExitShortEntry() throws PortfolioException{
-		// 1000 euros en cash 
-		ptf.addCash(1000);
 		
 		// Achat 2 IBM @ 100 
 		Trade buy1 = new Trade(TradeSide.BUY,ibm, 2, 200,  new DateTime());
@@ -355,7 +337,6 @@ public class PortfolioTest {
 		Assert.assertEquals(-1,ptf.getPosition(ibm),0.0);
 		Assert.assertEquals(1130,ptf.getCash(),0.0);
 		Assert.assertEquals(TradeStatus.CLOSED,buy1.getStatus());
-		Assert.assertEquals(20,ptf.getRealizedPnL(),0.0);
 	
 		
 	}
