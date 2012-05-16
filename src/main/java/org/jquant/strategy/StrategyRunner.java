@@ -104,10 +104,10 @@ public class StrategyRunner implements InitializingBean{
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		
 		/*
 		 * Scan Phase
 		 */
-		
 		strategies = new HashMap<String, AbstractStrategy>();
 		 
 		String root = getBasePackage();
@@ -139,7 +139,8 @@ public class StrategyRunner implements InitializingBean{
 		}
 		
 		/*
-		 *  Simulation phase
+		 *  TODO : Externalize this phase 
+		 *  Init market for all strategies (build the MarketDataHistory (market data timeline) 
 		 */
 		for (AbstractStrategy strategy : strategies.values()){
 			/*
@@ -161,19 +162,19 @@ public class StrategyRunner implements InitializingBean{
 			}
 			
 			/*
-			 * Give the strategy a reference to the instruments table 
+			 * Give the strategy a reference to the instruments table to manipulate market data series
 			 */
 			strategy.setCandleSerieMap(instruments);
 			
 			/*
-			 * Give the strategy a grab on the exec provider 
+			 * Give the strategy a grab on the exec provider to pass order
 			 */
 			strategy.setOrderManager(orderManager);
 	
 			
 			/*
 			 * Give the strategy the access to the global Portfolio
-			 * TODO replace by new Portfolio and Allocation by MoneyManager
+			 * TODO PortfolioManager ? 
 			 */
 			
 			strategy.setPortfolio(globalPortfolio);
@@ -184,7 +185,7 @@ public class StrategyRunner implements InitializingBean{
 			orderManager.setPortfolio(globalPortfolio);
 			
 			/*
-			 * Tell the OrderManager the strategy is listening to the changes in Positions 
+			 * the strategies are listening to the Order Events
 			 */
 			orderManager.addStrategy(strategy);
 		}
