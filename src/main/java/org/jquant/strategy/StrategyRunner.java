@@ -1,8 +1,8 @@
 package org.jquant.strategy;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +15,7 @@ import org.jquant.model.InstrumentId;
 import org.jquant.model.MarketDataPrecision;
 import org.jquant.order.IOrderManager;
 import org.jquant.portfolio.Portfolio;
+import org.jquant.portfolio.PortfolioStatistics;
 import org.jquant.serie.Candle;
 import org.jquant.serie.CandleSerie;
 import org.jquant.time.calendar.CalendarFactory;
@@ -139,7 +140,7 @@ public class StrategyRunner implements InitializingBean{
 		}
 		
 		/*
-		 *  TODO : Externalize this phase 
+		 *  TODO : Extract method for  this phase 
 		 *  Init market for all strategies (build the MarketDataHistory (market data timeline) 
 		 */
 		for (AbstractStrategy strategy : strategies.values()){
@@ -238,37 +239,37 @@ public class StrategyRunner implements InitializingBean{
 			// Begin Simulation rePlay
 			for (DateTime dt : cal){
 
-				List<Pair<InstrumentId, Candle>> slice = marketMgr.getMarketSlice(dt);
+				Map<InstrumentId, Candle> slice = marketMgr.getMarketSlice(dt);
 
-				for (Pair<InstrumentId, Candle> pair : slice){
+				for (Entry<InstrumentId, Candle> pair : slice.entrySet()){
 					
 					// Grow the instruments table
-					 CandleSerie cs = instruments.get(pair.getLeft());
+					 CandleSerie cs = instruments.get(pair.getKey());
 					 if (cs == null){
-						 cs = new CandleSerie(pair.getLeft());
-						 instruments.put(pair.getLeft(), cs);
+						 cs = new CandleSerie(pair.getKey());
+						 instruments.put(pair.getKey(), cs);
 					 }
-					 cs.addValue(pair.getRight());
+					 cs.addValue(pair.getValue());
 					 
 					 /*
-					  * Call onCandleOpen in OrderManager 
+					  * Call onCandleOpen in OrderManager (execution of pending orders) 
 					  */
-					 orderManager.onCandleOpen(pair.getLeft(), pair.getRight());
+					 orderManager.onCandleOpen(pair.getKey(), pair.getValue());
 					 
 					 /*
 					  * Call onCandleOpen in strategies 
 					  */
 					 for (IStrategy s : strategies.values()){
-							if (s.getMarket().contains(pair.getLeft())){
+							if (s.getMarket().contains(pair.getKey())){
 								
-								s.onCandleOpen(pair.getLeft(), pair.getRight());
+								s.onCandleOpen(pair.getKey(), pair.getValue());
 							}
 						}
 					 
 					 /*
 					  * Call onCandle (completed candle) in the Order Manager 
 					  */
-					 orderManager.onCandle(pair.getLeft(), pair.getRight());
+					 orderManager.onCandle(pair.getKey(), pair.getValue());
 					 
 					/*
 					 * Call onCandle (completed candle) in the strategies
@@ -282,13 +283,39 @@ public class StrategyRunner implements InitializingBean{
 					 */ 
 					
 					for (IStrategy s : strategies.values()){
-						if (s.getMarket().contains(pair.getLeft())){
+						if (s.getMarket().contains(pair.getKey())){
 							
-							s.onCandle(pair.getLeft(), pair.getRight());
+							s.onCandle(pair.getKey(), pair.getValue());
 						}
 					}
-				}
-			}
+				} // end slice loop 
+			
+				//transfer the slice to the global Portfolio for marking to market and build the equity curve
+				globalPortfolio.markToMarket(dt, slice);
+				
+			}// End calendar loop 
+			
+			
+			/*
+			 * Compute and display statistics 
+			 */
+			PortfolioStatistics stats = new PortfolioStatistics(globalPortfolio);
+			logger.info("Simulation summary");
+			logger.info("-------------------------------------------------------");
+			logger.info("Initial Wealth \t" + stats.getInitialWealth());
+			logger.info("Final Wealth \t" + stats.getFinalWealth());
+			logger.info("Annual Return \t");
+			logger.info("Profit And Loss \t" + stats.getRealizedPnL());
+			logger.info("Max DrawDown  \t" );
+			logger.info("Max DrawDown % \t" + stats.getMaxDrawDown().getMaxDrawDown());
+			logger.info("Winning Trades \t" + stats.getWinningTrades());
+			logger.info("Losing Trades \t" + stats.getLosingTrades());
+			logger.info("Average Winning Trade \t" + stats.getAverageWinningTrade());
+			logger.info("Average Losing Trade \t" + stats.getAverageLosingTrade());
+			logger.info("Largest Winning Trade \t" + stats.getLargestWinningTrade());
+			logger.info("Largest Losing Trade \t" + stats.getLargestLosingTrade());
+			
+			
 		}else {
 			logger.error("No Strategies found, check the basePackage parameter");
 		}

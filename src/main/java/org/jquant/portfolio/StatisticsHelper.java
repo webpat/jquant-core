@@ -11,7 +11,7 @@ public class StatisticsHelper {
      * @param serie Equity value serie of a Fund/Portfolio
      * @return a {@link DrawDownData} transfer object containing the biggest Draw down informations 
      */
-    public DrawDownData getDrawDownsData(double[] serie) {
+    public static DrawDownData getDrawDownsData(double[] serie) {
 		double biggestDrawDown = 0.0;
 		int indiceSmallest = 0;
 		int fromIndex = 0;
@@ -100,71 +100,8 @@ public class StatisticsHelper {
 //        return topDrawDowns;
 //    }
     
-    /**
-     * Transfer Object with draw down properties 
-     * @author patrick.merheb
-     *
-     */
-    public class DrawDownData{
+    
     	
-    	private final double maxDrawDown;
-    	private final int timeInMaxDD;
-    	private final int timeToRecover;
-    	private final int fromIndex;
-    	private final int toIndex;
-		
-    	
-    	public DrawDownData(double maxDrawDown, int timeInMaxDD, int timeToRecover, int fromIndex, int toIndex) {
-			super();
-			this.maxDrawDown = maxDrawDown;
-			this.timeInMaxDD = timeInMaxDD;
-			this.timeToRecover = timeToRecover;
-			this.fromIndex = fromIndex;
-			this.toIndex = toIndex;
-		}
-
-		/**
-		 * 
-		 * @return The maximum dd value in the serie
-		 */
-    	public double getMaxDrawDown() {
-			return maxDrawDown;
-		}
-		
-    	/**
-    	 * 
-    	 * @return the number of elements in the serie during the dd
-    	 */
-		public int getTimeInMaxDD() {
-			return timeInMaxDD;
-		}
-		
-		/**
-		 * 
-		 * @return Number of elements for  recovery time in the DD 
-		 */
-		public int getTimeToRecover() {
-			return timeToRecover;
-		}
-		
-		/**
-		 * 
-		 * @return Index in the serie where the DD starts
-		 */
-		public int getFromIndex() {
-			return fromIndex;
-		}
-		
-		/**
-		 * 
-		 * @return index in the serie where the dd ends
-		 */
-		public int getToIndex() {
-			return toIndex;
-		}
-		
-    	
-    }
     
 	
 }

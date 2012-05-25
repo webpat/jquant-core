@@ -97,6 +97,14 @@ public class Trade {
 	}
 
 	/**
+	 * 
+	 * @return the unit price of the transaction
+	 */
+	public double getUnitPrice(){
+		return price/quantity;
+	}
+	
+	/**
 	 * {@link TradeSide#BUY} or {@link TradeSide#SELL}
 	 * @return the {@link TradeSide}
 	 */

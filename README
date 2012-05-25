@@ -1,0 +1,11 @@
+JQuant a Java Platform for simulation and backtesting.
+-------------------------------------------------------------
+
+Components
+- jquant-strategy (Strategy Layer, to define Investment/Trading Strategies)
+- jquant-core (core components and interfaces)
+- jquant-louxor (Louxor legacy database readers) 
+- jquant-bloomberg (Bloomberg Data Provider Feed) 
+
+Use maven as build system.
+Set up the M2_REPO variable to point towards your Maven Local Repository

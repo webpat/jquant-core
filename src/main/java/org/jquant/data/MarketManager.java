@@ -1,12 +1,9 @@
 package org.jquant.data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.jquant.exception.MarketDataReaderException;
@@ -112,11 +109,11 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 	 * @param timestamp a {@link DateTime}
 	 * @return The Collection of Candles in the market at a precise time 
 	 */
-	public List<Pair<InstrumentId,Candle>> getMarketSlice(DateTime timestamp){
-		List<Pair<InstrumentId,Candle>> slice = new ArrayList<Pair<InstrumentId,Candle>>(csMap.size());
+	public Map<InstrumentId,Candle> getMarketSlice(DateTime timestamp){
+		Map<InstrumentId,Candle> slice = new HashMap<InstrumentId, Candle>();
 		for (CandleSerie cs : csMap.values()){
 			if (cs.getValue(timestamp)!= null){
-				slice.add(new ImmutablePair<InstrumentId, Candle>(cs.getSymbol(), cs.getValue(timestamp)));
+				slice.put(cs.getSymbol(), cs.getValue(timestamp));
 			}
 			
 		}

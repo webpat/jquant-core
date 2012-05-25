@@ -7,7 +7,6 @@ import java.util.Observable;
 import java.util.TreeMap;
 
 import org.joda.time.DateTime;
-import org.jquant.exception.TimeSerieException;
 import org.jquant.model.InstrumentId;
 
 
@@ -66,10 +65,10 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
 	 * @see org.jquant.serie.ITimeSerie#get(int)
 	 */
     @Override
-	public T get(int index) throws TimeSerieException{
+	public T get(int index){
     	
     	if (index >size())
-    		throw new TimeSerieException("No Data",null);
+    		throw new IllegalArgumentException("Index is out of bounds",null);
     	Iterator<T> iter = map.values().iterator();
     	int i = index;
     	while(i>0 && iter.hasNext()){

@@ -3,6 +3,7 @@ package org.jquant.portfolio;
 import java.util.List;
 
 import org.jquant.portfolio.Trade.TradeStatus;
+import org.jquant.serie.DoubleSerie;
 
 /**
  * Wrapper around the Portfolio class, to compute strategy statistics and display the strategy 
@@ -17,6 +18,8 @@ public class PortfolioStatistics {
 	private final Portfolio ptf;
 	
 	private final List<Trade> transactions;
+	
+	private final DoubleSerie equityCurve;
 
 	private double realizedPnL;
 
@@ -39,11 +42,14 @@ public class PortfolioStatistics {
 	private double grossLoss;
 
 	private double grossProfit;
+
+	private DrawDownData ddStats;
 	
 	
 	public PortfolioStatistics(Portfolio ptf) {
 		this.ptf = ptf;
 		this.transactions = ptf.getTransactions();
+		this.equityCurve = ptf.getEquityCurve();
 		computeStatistics();
 	}
 
@@ -55,6 +61,10 @@ public class PortfolioStatistics {
 		largestWinningTrade = 0;
 		largestLosingTrade = 0;
 
+		/*
+		 * Trade statistics 
+		 */
+		
 		for (Trade tr : transactions){
 			if (TradeStatus.CLOSED.equals(tr.getStatus())){
 			
@@ -63,14 +73,14 @@ public class PortfolioStatistics {
 				nbTrades ++;
 				if (pnl>=0){
 					nbWinningTrades++;
-					averageWinningTrade = pnl;
+					averageWinningTrade += pnl;
 					if (pnl >largestWinningTrade){
 						largestWinningTrade = pnl;
 					}
 			
 				}else{
 					nbLosingTrades++;
-					averageLosingTrade = pnl;
+					averageLosingTrade += pnl;
 					if (pnl <largestLosingTrade){
 						largestLosingTrade = pnl;
 					}
@@ -83,6 +93,9 @@ public class PortfolioStatistics {
 		averageLosingTrade /= nbLosingTrades;
 		averageWinningTrade /= nbWinningTrades;
 		averageTrade = realizedPnL/nbTrades;
+		
+		
+		ddStats = StatisticsHelper.getDrawDownsData(equityCurve.getData());
 		
 	}
 
@@ -103,10 +116,10 @@ public class PortfolioStatistics {
 	 * @return CASH + Equity for the last day of 
 	 */
 	public double getFinalWealth(){
-		// TODO : Portfolio Equity 
-		double equity = 0;
 		
-		return ptf.getCash()+equity;
+		double equity = equityCurve.getLast()!=null?equityCurve.getLast().getValue():0;
+		
+		return equity;
 	}
 	
 	public double getGrossProfit(){
@@ -129,10 +142,7 @@ public class PortfolioStatistics {
 	}
 	
 	
-	public double getOpenPositionsPnL(){
-		return 0;
-		
-	}
+	
 	
 	public int getTotalTrades(){
 		return transactions.size();
@@ -144,7 +154,7 @@ public class PortfolioStatistics {
 		
 	}
 	
-	public int getLoosingTrades(){
+	public int getLosingTrades(){
 		return nbLosingTrades;
 		
 	}
@@ -173,6 +183,18 @@ public class PortfolioStatistics {
 		return largestLosingTrade;
 	}
 	
+	public DrawDownData getMaxDrawDown(){
+		return ddStats;
+	}
+	
+	
+	
+	/*
+	 * TODO : remaining stats 
+	 * 
+	 */
+	
+	
 	public int getMaxConsecutiveWinners(){
 		return 0;
 		
@@ -183,8 +205,10 @@ public class PortfolioStatistics {
 		
 	}
 	
-	public double getMaxDrawDown(){
+	public double getOpenPositionsPnL(){
 		return 0;
+		
 	}
+	
 	
 }

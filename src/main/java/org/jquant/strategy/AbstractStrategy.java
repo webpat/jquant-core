@@ -70,17 +70,17 @@ public abstract class AbstractStrategy implements IStrategy {
 		
 	@Override 
 	public void onPositionOpened(TradeSide side, InstrumentId instrumentId){
-		logger.info("Position opened for Instrument " + instrumentId );
+		logger.debug("Position opened for Instrument " + instrumentId );
 	}
 	
 	@Override
 	public void onCandleOpen(InstrumentId instrument, Candle candle){
-		logger.info("Candle opened for Instrument " + instrument );
+		logger.debug("Candle opened for Instrument " + instrument );
 	}
 	
 	@Override
 	public void onCandle(InstrumentId instrument, Candle candle){
-		logger.info("Candle closed for Instrument " + instrument );
+		logger.debug("Candle closed for Instrument " + instrument );
 	}
 	
 	/**

@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jquant.exception.TimeSerieException;
 import org.jquant.serie.Candle.CandleData;
 import org.jquant.serie.CandleSerie;
 
@@ -550,9 +549,8 @@ public class FinancialLibrary {
      * @param multiplier
      * @param position
      * @return <code>true</code> if there is a hammer
-     * @throws TimeSerieException 
      */
-    public static boolean isHammer(CandleSerie series, int filterPeriod, double multiplier, int position) throws TimeSerieException{
+    public static boolean isHammer(CandleSerie series, int filterPeriod, double multiplier, int position){
 		//
     	
     	// 

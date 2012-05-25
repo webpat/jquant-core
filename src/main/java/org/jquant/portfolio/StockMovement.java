@@ -27,13 +27,28 @@ public final class StockMovement {
 	}
 
 
-
+	/**
+	 * 
+	 * @return Total price of the movement
+	 */
 	public Double getPrice() {
 		return trade.getPrice();
 	}
 
+	/**
+	 * 
+	 * @return the unit price of the transaction
+	 */
+	public double getUnitPrice(){
+		return trade.getUnitPrice();
+	}
+	
+	
 
-
+	/**
+	 * 
+	 * @return The Instrument concerned by the movement
+	 */
 	public InstrumentId getInstrument() {
 		return trade.getInstrument();
 	}

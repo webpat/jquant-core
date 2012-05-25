@@ -7,12 +7,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import org.joda.time.DateTime;
 import org.jquant.model.Currency;
 import org.jquant.model.IInstrument;
 import org.jquant.model.InstrumentId;
 import org.jquant.portfolio.StockMovement.MovementType;
 import org.jquant.portfolio.Trade.TradeStatus;
+import org.jquant.serie.Candle;
+import org.jquant.serie.DoubleSerie;
 
 /**
  * A grouping of financial assets such as stocks, bonds and cash equivalents
@@ -21,17 +25,33 @@ import org.jquant.portfolio.Trade.TradeStatus;
  * <p>
  * The Portfolio is a stafull object, it store the trades and update its state as soon as trade are received
  * 
- * TODO : - AVERAGE Inventory valuation - getRealizedPnL() 
+ * TODO : 
+ * - AVERAGE Inventory valuation - getRealizedPnL()
+ * - Assert |quantity| > 0  
  * @author patrick.merheb
  *
  */
 public class Portfolio {
 	
+	/**
+	 * List of Trades 
+	 */
 	private final List<Trade> transactions;
 	
+	/**
+	 * Stock Movements History 
+	 */
 	private final Map<InstrumentId,Deque<StockMovement>> inventory;
 	
+	/**
+	 * Portfolio breakdown 
+	 */
 	private final Map<InstrumentId, Double> positions;
+	
+	/**
+	 * Portfolio Equity History
+	 */ 
+	private final DoubleSerie equityCurve;
 	
 	private final String name;
 	
@@ -58,6 +78,7 @@ public class Portfolio {
 		this.valuationMode = InventoryValuationMode.FIFO;
 		cash = initialCash;
 		initialWealth = initialCash;
+		equityCurve = new DoubleSerie();
 	}
 	
 	public Portfolio(String name, Currency currency,double initialCash,InventoryValuationMode mode) {
@@ -70,6 +91,7 @@ public class Portfolio {
 		this.valuationMode = mode;
 		cash = initialCash;
 		initialWealth = initialCash;
+		equityCurve = new DoubleSerie();
 		
 	}
 
@@ -146,6 +168,42 @@ public class Portfolio {
 	public void addCash(double cash) {
 		this.cash += cash;
 	}
+	
+	
+	
+	/**
+	 * Marking to market of the portfolio 
+	 * <p>Builds the equity curve 
+	 * <p>
+	 * TODO : Derivatives and exotic products
+	 * @param time the {@link DateTime} of the marking to market 
+	 * @param slice a "slice" of {@link InstrumentId} / {@link Candle}
+	 */
+	public void markToMarket(DateTime time,Map<InstrumentId, Candle> slice){
+		double total = 0;
+		
+		
+		if (positions.size()>0){
+
+			for(Entry<InstrumentId,Double> pos : positions.entrySet()){
+				if (slice.containsKey(pos.getKey())){
+					// Still listed instrument
+					total += pos.getValue()* slice.get(pos.getKey()).getClose();
+				}else {
+					// Unlisted instrument, take the last known valo from the StockMovements inventory
+					StockMovement sm = getLastStockMovement(pos.getKey());
+					if ( sm!=null ){
+						double lastVal = sm.getUnitPrice();
+						total += pos.getValue() * lastVal;
+					}
+				}
+			}
+			
+			
+		}
+		total += getCash();
+		equityCurve.add(time, total);
+	}
 
 	private void buy(Trade trade) throws PortfolioException{
 		
@@ -164,7 +222,11 @@ public class Portfolio {
 		// update positions
 		if (positions.containsKey(asset)){
 			double updatedPos = positions.get(asset) + quantity;
-			positions.put(asset, updatedPos);
+			if (updatedPos==0){
+				positions.remove(asset);
+			}else {
+				positions.put(asset, updatedPos);
+			}
 		}else{
 			positions.put(asset, quantity);
 		}
@@ -225,10 +287,14 @@ public class Portfolio {
 		//  update positions
 		if (positions.containsKey(asset)){
 			double updatedPos =  currentPos - quantity;
-			positions.put(trade.getInstrument(), updatedPos);
+			if (updatedPos==0){
+				positions.remove(asset);
+			}else {
+				positions.put(asset, updatedPos);
+			}
 
 		}else{
-			positions.put(trade.getInstrument(), - quantity);
+			positions.put(asset, - quantity);
 		}
 		
 		//update inventory 
@@ -236,7 +302,7 @@ public class Portfolio {
 			if (quantity > currentPos){
 				// long exit + short entry
 				
-				Trade longExitTrade = new Trade(trade.getSide(),trade.getInstrument(),currentPos,unitPrice*currentPos,trade.getTimestamp());
+				Trade longExitTrade = new Trade(trade.getSide(),asset,currentPos,unitPrice*currentPos,trade.getTimestamp());
 				double pnL = getPnL(asset, MovementType.LONG_ENTRY, quantity, unitPrice);
 				longExitTrade.setProfitAndLoss(pnL);
 				longExitTrade.setStatus(TradeStatus.CLOSED); // Débouclage
@@ -244,7 +310,7 @@ public class Portfolio {
 				addStockMovmentForAsset(asset, sm1);
 				
 				double delta = quantity - currentPos;
-				Trade shortEntryTrade = new Trade(trade.getSide(),trade.getInstrument(),delta,unitPrice*delta,trade.getTimestamp());
+				Trade shortEntryTrade = new Trade(trade.getSide(),asset,delta,unitPrice*delta,trade.getTimestamp());
 				StockMovement sm2 = new StockMovement(MovementType.SHORT_ENTRY,shortEntryTrade);
 				addStockMovmentForAsset(asset, sm2);
 				
@@ -336,7 +402,7 @@ public class Portfolio {
 		return pnL;	
 	}
 	/**
-	 * Return the Stock Movment List for an asset and a Movement type
+	 * Return the Stock Movement List for an asset and a Movement type
 	 * TODO : support the AVERAGE Inventory valuation Mode  
 	 * @param asset the {@link IInstrument}
 	 * @param mvt ENTRY or EXIT 
@@ -372,7 +438,15 @@ public class Portfolio {
 		
 	}
 	
-	
+	private StockMovement getLastStockMovement(InstrumentId asset){
+		
+		Deque<StockMovement> deq = inventory.get(asset);
+		
+		if (deq == null)
+			return null;
+		
+		return deq.peekLast();
+	}
 	
 	/**
 	 * 
@@ -381,7 +455,6 @@ public class Portfolio {
 	public InventoryValuationMode getValuationMode() {
 		return valuationMode;
 	}
-
 
 
 	/**
@@ -399,6 +472,13 @@ public class Portfolio {
 	 */
 	public List<Trade> getTransactions() {
 		return transactions;
+	}
+
+	
+
+
+	public DoubleSerie getEquityCurve() {
+		return equityCurve;
 	}
 
 
