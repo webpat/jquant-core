@@ -1,5 +1,6 @@
 package org.jquant.serie;
 
+import org.apache.commons.math3.stat.StatUtils;
 import org.joda.time.DateTime;
 
 
@@ -67,11 +68,11 @@ public class DoubleSerie extends TimeSerie<TimeValue> {
 	}
 	
 	/**
-	 *
+	 * Add two series (just the common time values)
 	 * @param addend
 	 * @return  S1(this) + S2 addend 
 	 */
-	public DoubleSerie add(DoubleSerie addend){
+	public DoubleSerie sum(DoubleSerie addend){
 		DoubleSerie sum = new DoubleSerie();
 		for (TimeValue tv:this){
 			TimeValue add = addend.getValue(tv.getDate());
@@ -82,5 +83,41 @@ public class DoubleSerie extends TimeSerie<TimeValue> {
 		
 		return sum;
 	}
+	
+	/**
+	 * Multiply Serie by a scalar 
+	 * @param scalar
+	 * @return S(this) x scalar
+	 */
+	public DoubleSerie product(double scalar){
+		DoubleSerie result = new DoubleSerie();
+		for (TimeValue tv:this){
+			TimeValue ntv = new TimeValue(tv.getDate(), tv.getValue()*scalar);
+			result.addValue(ntv);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Returns the arithmetic mean of the entries in the input array, or Double.NaN if the array is empty. 
+	 * <p>
+	 * Throws IllegalArgumentException if the array is null.
+	 * @return arithmetic mean 
+	 */
+	public double mean(){
+		return StatUtils.mean(getData());
+	}
+	
+	/**
+	 * Returns the variance of the entries in the input array, or Double.NaN if the array is empty. 
+	 * <p>This method returns the bias-corrected sample variance (using n - 1 in the denominator).
+	 * @return the variance
+	 */
+	public double variance(){
+		return StatUtils.variance(getData());
+	}
+	
+	 
 
 }
