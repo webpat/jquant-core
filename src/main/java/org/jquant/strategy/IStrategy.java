@@ -17,15 +17,13 @@ import org.jquant.serie.Candle;
  */
 public interface IStrategy {
 
-	
 	/**
-	 * Build the strategy universe using {@link AbstractStrategy#addInstrument(InstrumentId)}
-	 * <p>
-	 * Add the instruments 
+	 * 
+	 * @return The investment universe of the strategy
 	 */
-	public  void initMarket();
-	
-	
+	public List<InstrumentId> getMarket();
+
+
 	/**
 	 * Init the strategy 
 	 * <p>
@@ -56,13 +54,6 @@ public interface IStrategy {
 	 * @param instrumentId the {@link InstrumentId}
 	 */
 	public void onPositionOpened(TradeSide side,InstrumentId instrumentId);
-	
-
-	/**
-	 * 
-	 * @return The investment universe of the strategy
-	 */
-	public List<InstrumentId> getMarket();
 
 
 	

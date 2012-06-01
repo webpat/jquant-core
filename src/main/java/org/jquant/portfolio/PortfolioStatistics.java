@@ -2,6 +2,8 @@ package org.jquant.portfolio;
 
 import java.util.List;
 
+import org.apache.commons.math3.stat.StatUtils;
+import org.apache.commons.math3.util.FastMath;
 import org.jquant.portfolio.Trade.TradeStatus;
 import org.jquant.serie.DoubleSerie;
 
@@ -14,6 +16,8 @@ import org.jquant.serie.DoubleSerie;
  *@see Portfolio
  */
 public class PortfolioStatistics {
+
+	private static final int ANNUALIZER = 0;
 
 	private final Portfolio ptf;
 	
@@ -44,6 +48,8 @@ public class PortfolioStatistics {
 	private double grossProfit;
 
 	private DrawDownData ddStats;
+
+	private double annualizedReturn;
 	
 	
 	public PortfolioStatistics(Portfolio ptf) {
@@ -66,9 +72,9 @@ public class PortfolioStatistics {
 		 */
 		
 		for (Trade tr : transactions){
-			if (TradeStatus.CLOSED.equals(tr.getStatus())){
-			
-				double pnl = tr.getProfitAndLoss();
+			double pnl = tr.getProfitAndLoss();
+			if (TradeStatus.CLOSED.equals(tr.getStatus())&& !Double.isNaN(pnl)){
+				
 				realizedPnL+= pnl;
 				nbTrades ++;
 				if (pnl>=0){
@@ -96,6 +102,8 @@ public class PortfolioStatistics {
 		
 		
 		ddStats = StatisticsHelper.getDrawDownsData(equityCurve.getData());
+		
+		annualizedReturn = FastMath.pow(1.0 + StatUtils.mean(ptf.getEquityCurve().getReturns().getData()), ANNUALIZER) - 1;
 		
 	}
 
@@ -195,6 +203,10 @@ public class PortfolioStatistics {
 	 */
 	
 	
+	public double getAnnualizedReturn() {
+		return annualizedReturn;
+	}
+
 	public int getMaxConsecutiveWinners(){
 		return 0;
 		

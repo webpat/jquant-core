@@ -80,7 +80,15 @@ public class FinancialLibrary {
         return min(sublist);
     }
 
-	public static double[] bollinger(int n, int deviations, double[] vals,
+	/**
+	 * 
+	 * @param n depth 
+	 * @param deviations number of standard deviations spread 
+	 * @param vals input values 
+	 * @param skipdays 
+	 * @return [lower,center,upper]
+	 */
+    public static double[] bollinger(int n, int deviations, double[] vals,
 			int skipdays) {
 		double[] value = new double[3];
 

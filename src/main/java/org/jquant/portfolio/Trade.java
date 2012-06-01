@@ -38,8 +38,10 @@ public class Trade {
 	
 	/**
 	 * P&L if > 0 the trade is a Winning trade
+	 * <p>
+	 * if {@link Double#NaN} then the trade is an opening trade 
 	 */
-	private double profitAndLoss;
+	private double profitAndLoss = Double.NaN;
 	
 	/**
 	 * The date at wich the Trade takes place 

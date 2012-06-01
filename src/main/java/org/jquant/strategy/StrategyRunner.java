@@ -3,13 +3,13 @@ package org.jquant.strategy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.jquant.data.MarketManager;
+import org.jquant.exception.MarketDataReaderException;
 import org.jquant.model.Currency;
 import org.jquant.model.InstrumentId;
 import org.jquant.model.MarketDataPrecision;
@@ -22,9 +22,6 @@ import org.jquant.time.calendar.CalendarFactory;
 import org.jquant.time.calendar.IDateTimeCalendar;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 
 /**
@@ -109,89 +106,102 @@ public class StrategyRunner implements InitializingBean{
 		/*
 		 * Scan Phase
 		 */
-		strategies = new HashMap<String, AbstractStrategy>();
-		 
-		String root = getBasePackage();
-
-		if (StringUtils.isNotEmpty(root) && StringUtils.isNotEmpty(strategyClassName)){
-			throw new RuntimeException("Cannot define strategyClassName and basePackage at the same time.");
-		}
 		
-		if (StringUtils.isNotEmpty(root)){
-			/*
-			 *  If multi strategy scan mode, find all strategies
-			 */
-			ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-			provider.addIncludeFilter(new AnnotationTypeFilter(Strategy.class));
-			
-			Set<BeanDefinition> components = provider.findCandidateComponents(root);
-
-			for (BeanDefinition strategyBean : components){
-				// FIXME : ensure strategy inherits AbstractStrategy 
-				AbstractStrategy strategy = (AbstractStrategy) Class.forName(strategyBean.getBeanClassName()).newInstance();
-				strategies.put(strategy.getId(), strategy);
-			}
-		} else {
-			/*
-			 *  No detection Mode 
-			 */
-			AbstractStrategy strategy = (AbstractStrategy) Class.forName(strategyClassName).newInstance();
-			strategies.put(strategy.getId(), strategy);
+		 
+//		String root = getBasePackage();
+//
+//		if (StringUtils.isNotEmpty(root) && StringUtils.isNotEmpty(strategyClassName)){
+//			throw new RuntimeException("Cannot define strategyClassName and basePackage at the same time.");
+//		}
+//		
+//		if (StringUtils.isNotEmpty(root)){
+//			/*
+//			 *  If scan mode, find all strategies
+//			 */
+//			ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
+//			provider.addIncludeFilter(new AnnotationTypeFilter(Strategy.class));
+//			
+//			Set<BeanDefinition> components = provider.findCandidateComponents(root);
+//
+//			for (BeanDefinition strategyBean : components){
+//				// FIXME : ensure strategy inherits AbstractStrategy 
+//				AbstractStrategy strategy = (AbstractStrategy) Class.forName(strategyBean.getBeanClassName()).newInstance();
+//				strategies.put(strategy.getId(), strategy);
+//			}
+//		} else {
+//			/*
+//			 *  No detection Mode 
+//			 */
+//			AbstractStrategy strategy = (AbstractStrategy) Class.forName(strategyClassName).newInstance();
+//			strategies.put(strategy.getId(), strategy);
+//		}
+		
+		/*
+		 * TODO : Many Strategies 
+		 */
+		
+		strategies = new HashMap<String, AbstractStrategy>();
+		@SuppressWarnings("unchecked")
+		Class<? extends AbstractStrategy> stratClass = (Class<? extends AbstractStrategy>) Class.forName(getStrategyClassName());
+		if (stratClass.getSuperclass().equals(MonoStrategy.class)){
+			// MonoStrategy Mode;
+			initMonoStrategy(stratClass);
+		}else{
+			// MultiStrategy Mode
 		}
 		
 		/*
-		 *  TODO : Extract method for  this phase 
-		 *  Init market for all strategies (build the MarketDataHistory (market data timeline) 
+		 * Give the OrderManager access to the global Portfolio to turn filled orders into Trades 
 		 */
-		for (AbstractStrategy strategy : strategies.values()){
-			/*
-			 * Init Market for the strategy
-			 */
-			strategy.initMarket();
-			
-			for (InstrumentId symbol :strategy.getMarket()){
+		orderManager.setPortfolio(globalPortfolio);
+		
+		
+	}
+
+	private void initMonoStrategy(Class<? extends AbstractStrategy> stratClass) throws InstantiationException, IllegalAccessException, MarketDataReaderException {
+		/*
+		 * Get the market from the strategy class
+		 * Use one instance to do so (maybe a better way to do this) 
+		 */
+		MonoStrategy strategy = (MonoStrategy) stratClass.newInstance();
+
+
+		for (InstrumentId symbol :strategy.getMarket()){
+				
 				/*
 				 * Add to Market Manager
 				 */
 				marketMgr.addInstrument(symbol, precision, getEntryDate(), getExitDate());
+				
+				
 				/*
 				 * Add to the general instruments Map 
 				 */
 				if (!instruments.containsKey(symbol)){
 					instruments.put(symbol, new CandleSerie(symbol));
 				}
+				
+				/*
+				 * Instanciate a new strategy 
+				 * MonoStrategy mode = 1 instrument --> 1 strategy instance  
+				 */
+				MonoStrategy strat = (MonoStrategy) stratClass.newInstance();
+				
+				strat.setInstrument(symbol);
+				strat.setSerie(instruments.get(symbol));
+				strat.setOrderManager(orderManager);
+				strat.setPortfolio(globalPortfolio);
+				
+				/*
+				 * the strategies are listening to the Order Events
+				 */
+				orderManager.addStrategy(strat);
+				
+				strategies.put(strat.getId() + ":" + symbol.getCode(), strat);
 			}
-			
-			/*
-			 * Give the strategy a reference to the instruments table to manipulate market data series
-			 */
-			strategy.setCandleSerieMap(instruments);
-			
-			/*
-			 * Give the strategy a grab on the exec provider to pass order
-			 */
-			strategy.setOrderManager(orderManager);
-	
-			
-			/*
-			 * Give the strategy the access to the global Portfolio
-			 * TODO PortfolioManager ? 
-			 */
-			
-			strategy.setPortfolio(globalPortfolio);
-			
-			/*
-			 * Give the OrderManager access to the global Portfolio to turn filled orders into Trades 
-			 */
-			orderManager.setPortfolio(globalPortfolio);
-			
-			/*
-			 * the strategies are listening to the Order Events
-			 */
-			orderManager.addStrategy(strategy);
-		}
 		
-		
+		// We don not need this instance anymore
+		strategy = null;
 	}
 	
 	/**
@@ -251,10 +261,7 @@ public class StrategyRunner implements InitializingBean{
 					 }
 					 cs.addValue(pair.getValue());
 					 
-					 /*
-					  * Call onCandleOpen in OrderManager (execution of pending orders) 
-					  */
-					 orderManager.onCandleOpen(pair.getKey(), pair.getValue());
+					 
 					 
 					 /*
 					  * Call onCandleOpen in strategies 
@@ -267,7 +274,13 @@ public class StrategyRunner implements InitializingBean{
 						}
 					 
 					 /*
-					  * Call onCandle (completed candle) in the Order Manager 
+					  * Call onCandleOpen in OrderManager (execution of start of the day orders ) 
+					  */
+					 orderManager.onCandleOpen(pair.getKey(), pair.getValue());
+					 
+					 
+					 /*
+					  * Call onCandle (completed candle) in the Order Manager (intra day orders ) 
 					  */
 					 orderManager.onCandle(pair.getKey(), pair.getValue());
 					 
@@ -282,12 +295,16 @@ public class StrategyRunner implements InitializingBean{
 					 * exécuter la boucle dans les executors 
 					 */ 
 					
-					for (IStrategy s : strategies.values()){
+					for (AbstractStrategy s : strategies.values()){
+						s.setNow(dt);
 						if (s.getMarket().contains(pair.getKey())){
-							
 							s.onCandle(pair.getKey(), pair.getValue());
 						}
 					}
+					
+					// TODO : special end of the day Orders 
+					
+					
 				} // end slice loop 
 			
 				//transfer the slice to the global Portfolio for marking to market and build the equity curve
@@ -297,16 +314,15 @@ public class StrategyRunner implements InitializingBean{
 			
 			
 			/*
-			 * Compute and display statistics 
+			 * Compute and display simulation summary
 			 */
 			PortfolioStatistics stats = new PortfolioStatistics(globalPortfolio);
-			logger.info("Simulation summary");
+			logger.info("Simulation summary from " + cal.getStartDay().toString(DateTimeFormat.shortDate()) + " to " +  cal.getEndDay().toString(DateTimeFormat.shortDate()));
 			logger.info("-------------------------------------------------------");
 			logger.info("Initial Wealth \t" + stats.getInitialWealth());
 			logger.info("Final Wealth \t" + stats.getFinalWealth());
-			logger.info("Annual Return \t");
+			logger.info("Annualized Return \t" + stats.getAnnualizedReturn());
 			logger.info("Profit And Loss \t" + stats.getRealizedPnL());
-			logger.info("Max DrawDown  \t" );
 			logger.info("Max DrawDown % \t" + stats.getMaxDrawDown().getMaxDrawDown());
 			logger.info("Winning Trades \t" + stats.getWinningTrades());
 			logger.info("Losing Trades \t" + stats.getLosingTrades());

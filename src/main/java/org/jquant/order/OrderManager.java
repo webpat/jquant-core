@@ -303,7 +303,11 @@ public class OrderManager implements IOrderManager {
 		try {
 			ptf.addTransaction(tr);
 			
-			logger.info(order.getSide() + " order filled for quantity "+ order.getFilledQuantity()+ " of " + instrument.getCode() + " @ " + order.getFilledPrice()  + " on date " + order.getExecutionTime().toString("dd/MM/yyyy"));
+			logger.info(order.getSide() + " order filled for quantity " 
+					+ order.getFilledQuantity()+ " of " + instrument.getCode() 
+					+ " @ " + order.getFilledPrice()  
+					+ " on date " + order.getExecutionTime().toString("dd/MM/yyyy")
+					+" : (" + order.getText() + ")");
 			
 			/*
 			 * Tells the strategy position has opened  
@@ -318,7 +322,7 @@ public class OrderManager implements IOrderManager {
 			
 		} catch (PortfolioException e) {
 
-			logger.warn("Can not update Portfolio: " +e.getMessage());
+			logger.warn("Can not update Portfolio: " + e.getMessage());
 		}
 		
 		
@@ -328,13 +332,17 @@ public class OrderManager implements IOrderManager {
 
 	@Override
 	public void onOrderCancelled(Order order) {
-		// TODO Auto-generated method stub
+		logger.debug("Order " + order.getText() +" was cancelled");
 		
 	}
 
 	@Override
 	public void cancelOrder(Order order) {
-
+		
+		//TODO : send cancel signal to execution provider
+		pendingOrders.remove(order);
+		
+		this.onOrderCancelled(order);
 	}
 
 	public Portfolio getPtf() {

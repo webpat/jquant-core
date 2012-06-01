@@ -62,7 +62,7 @@ public class DoubleSerie extends TimeSerie<TimeValue> {
 		for(int i=1;i<size();i++){
 			TimeValue c0 = this.get(i-1);
 			TimeValue c1 = this.get(i);
-			returns.addValue(new TimeValue(c1.getDate(), c0.getValue() - c1.getValue() / c1.getValue()));
+			returns.addValue(new TimeValue(c1.getDate(), (c1.getValue()- c0.getValue()) / c1.getValue()));
 		}
 		return returns;
 	}

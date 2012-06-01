@@ -1,10 +1,9 @@
 package org.jquant.strategy;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateTime;
 import org.jquant.model.InstrumentId;
 import org.jquant.model.MarketDataPrecision;
 import org.jquant.order.IOrderManager;
@@ -18,7 +17,6 @@ import org.jquant.portfolio.Portfolio;
 import org.jquant.portfolio.Trade.TradeSide;
 import org.jquant.serie.Candle;
 import org.jquant.serie.Candle.CandleData;
-import org.jquant.serie.CandleSerie;
 
 /**
  * Base Class for a Strategy
@@ -39,14 +37,20 @@ public abstract class AbstractStrategy implements IStrategy {
 	private MarketDataPrecision frequency;
 	
 	/**
-	 * Reference to a Map of Growing CandleSeries 
+	 * Internal tick time of the strategy
 	 */
-	private Map<InstrumentId, CandleSerie> candleSeries;
+	private DateTime now;
+	
+	/**
+	 * The strategy universe
+	 */
+	private List<InstrumentId> market;
+	
 	
 	/**
 	 * The {@link IOrderManager}
 	 */
-	private IOrderManager orderManager;
+	protected IOrderManager orderManager;
 	
 	
 	/**
@@ -60,17 +64,12 @@ public abstract class AbstractStrategy implements IStrategy {
 	 */
 	private String id;
 	
-	/**
-	 * {@link #addInstrument(InstrumentId)}
-	 */
-	private final List<InstrumentId> market = new ArrayList<InstrumentId>();
+	
 
-	@Override
-	abstract public void initMarket();
-		
+
 	@Override 
-	public void onPositionOpened(TradeSide side, InstrumentId instrumentId){
-		logger.debug("Position opened for Instrument " + instrumentId );
+	public void onPositionOpened(TradeSide side, InstrumentId instrument){
+		logger.debug("Position opened for Instrument " + instrument );
 	}
 	
 	@Override
@@ -110,137 +109,84 @@ public abstract class AbstractStrategy implements IStrategy {
 	}
 	
 	/**
-	 * Add an instrument in the strategy market 
-	 * @param instrument {@link InstrumentId}
+	 * Return <code>true</code> If It Has an open position on this instrument
+	 * <code>false</code> otherwise 
+	 * @param instrument tn {@link InstrumentId}
+	 * @return boolean
 	 */
-	protected void addInstrument(InstrumentId instrument){
-		market.add(instrument);
+	protected boolean hasPosition(InstrumentId instrument){
+		return portfolio.getPosition(instrument)!=0;
 	}
+	
+	
 
 	/**
-	 * @return The Strategy market
-	 */
-	public List<InstrumentId> getMarket() {
-		return market;
-	}
-	
-	
-	
-	/**
-	 * Return the candleSerie for the given InstrumentId 
-	 * @param instrument a InstrumentId
-	 * @return a {@link CandleSerie}
-	 */
-	protected CandleSerie getCandleSerie(InstrumentId instrument){
-		return candleSeries.get(instrument);
-	}
-	
-	protected void setCandleSerieMap(Map<InstrumentId,CandleSerie> map){
-		this.candleSeries = map;
-	}
-
-
-	/**
-	 * 
-	 * @param instrument
-	 * @param side
-	 * @param qty
-	 * @param text
+	 * Convenience method : sends a Market Order to the OrderManager
+	 * @param instrument  The asset you want to trade {@link InstrumentId} 
+	 * @param side {@link OrderSide} BUY or SELL 
+	 * @param qty the qty you want to trade
+	 * @param data
+	 * <ul>
+	 * <li>if <code>CandleData.OPEN </code> is used then the order is executed at next day Opening (Next Day Open Market Order)</li> 
+	 * <li>if <code>CandleData.CLOSE </code> is used then the order is executed at the end of Today (EOD Market Order)</li>
+	 * </ul> 
+	 * @param text comments on the order 
 	 * @return The submitted {@link Order}
 	 */
 	protected Order sendMarketOrder(InstrumentId instrument, OrderSide side,double qty,CandleData data, String text){
 		
-		MarketOrder marketOrder;
-		CandleSerie cs = candleSeries.get(instrument);
-		if (cs != null){
-			// Simulation Order 
-			Candle last = cs.getLast();
-			marketOrder = new MarketOrder(side, instrument, qty, data,text,last.getDate());
-		}else {
-			// Live Order 
-			marketOrder = new MarketOrder(side, instrument, qty, text);
-		}
-		
+		MarketOrder marketOrder = new MarketOrder(side, instrument, qty, data,text,now);
 		orderManager.sendOrder(marketOrder);
 		return marketOrder;
 		
 	}
 	
 	/**
-	 * @param instrument
-	 * @param side
-	 * @param qty
-	 * @param price
-	 * @param text
+	 * Convenience method : sends a Limit Order to the OrderManager
+	 * @param instrument The asset you want to trade {@link InstrumentId} 
+	 * @param side {@link OrderSide} BUY or SELL 
+	 * @param qty the quantity you want to trade
+	 * @param price Limit price 
+	 * @param text comments on the order 
 	 * @return The submitted {@link Order}
 	 */
 	protected Order sendLimitOrder(InstrumentId instrument, OrderSide side,double qty,double price,String text){
-		LimitOrder limitOrder;
 		
-		CandleSerie cs = candleSeries.get(instrument);
-		if (cs != null){
-			// Simulation Order 
-			Candle last = cs.getLast();
-			limitOrder = new LimitOrder(side, instrument, qty,price, text,last.getDate());
-		}else {
-			// Live Order 
-			limitOrder = new LimitOrder(side, instrument, qty,price, text);
-		}
-		
-		
+
+		LimitOrder limitOrder = new LimitOrder(side, instrument, qty,price, text,now);
 		orderManager.sendOrder(limitOrder);
 		return limitOrder;
 		
 	}
 	
 	/**
-	 * @param instrument
-	 * @param side
-	 * @param qty
-	 * @param price
-	 * @param text
+	 * Convenience method : sends a Stop Order to the OrderManager
+	 * @param instrument The asset you want to trade {@link InstrumentId} 
+	 * @param side {@link OrderSide} BUY or SELL 
+	 * @param qty the quantity you want to trade
+	 * @param price STOP price
+	 * @param text comments on the order 
 	 * @return The submitted {@link Order}
 	 */
 	protected Order sendStopOrder(InstrumentId instrument, OrderSide side,double qty,double price,String text){
-		StopOrder stopOrder;
 		
-		CandleSerie cs = candleSeries.get(instrument);
-		if (cs != null){
-			// Simulation Order 
-			Candle last = cs.getLast();
-			stopOrder = new StopOrder(side, instrument, qty,price, text,last.getDate());
-		}else {
-			// Live Order 
-			stopOrder = new StopOrder(side, instrument, qty,price, text);
-		}
-		
-		
+		StopOrder stopOrder = new StopOrder(side, instrument, qty,price, text, now);
 		orderManager.sendOrder(stopOrder);
 		return stopOrder;
 		
 	}
 	
 	/**
-	 * @param instrument
-	 * @param side
-	 * @param qty
-	 * @param text
+	 * Convenience method : sends a Trailing Stop Order to the OrderManager
+	 * @param instrument The asset you want to trade {@link InstrumentId} 
+	 * @param side {@link OrderSide} BUY or SELL 
+	 * @param qty the quantity you want to trade
+	 * @param text comments on the order 
 	 * @return The submitted {@link Order}
 	 */
 	protected Order sendTrailingStopOrder(InstrumentId instrument, OrderSide side,double qty, double percentage,String text){
-		TrailingStopOrder stopOrder;
 		
-		CandleSerie cs = candleSeries.get(instrument);
-		if (cs != null){
-			// Simulation Order 
-			Candle last = cs.getLast();
-			stopOrder = new TrailingStopOrder(side, instrument, percentage,qty, text,last.getDate());
-		}else {
-			// Live Order 
-			stopOrder = new TrailingStopOrder(side, instrument, percentage,qty, text);
-		}
-		
-		
+		TrailingStopOrder stopOrder = new TrailingStopOrder(side, instrument, percentage,qty, text,now);
 		orderManager.sendOrder(stopOrder);
 		return stopOrder;
 		
@@ -258,9 +204,25 @@ public abstract class AbstractStrategy implements IStrategy {
 		this.portfolio = portfolio;
 	}
 	
-	protected boolean hasPosition(InstrumentId instrument){
-		return portfolio.getPosition(instrument)>0;
+	
+
+	/**
+	 * Returns the current trading system time 
+	 * @return {@link DateTime} 
+	 */
+	protected DateTime getNow() {
+		return now;
 	}
+
+	protected void setNow(DateTime now) {
+		this.now = now;
+	}
+
+	@Override
+	public List<InstrumentId> getMarket(){
+		return market;
+	}
+	
 	
 	
 }
