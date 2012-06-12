@@ -30,9 +30,13 @@ public abstract class MultiStrategy extends AbstractStrategy {
 		return candleSeries.get(instrument);
 	}
 	
-//	protected void setCandleSerieMap(Map<InstrumentId,CandleSerie> map){
-//		this.candleSeries = map;
-//	}
+	/**
+	 * Used by the Strategy Runner to initiate the CandleSerie Map 
+	 * @param map the Map<InstrumentId,CandleSerie> 
+	 */
+	protected void setCandleSerieMap(Map<InstrumentId,CandleSerie> map){
+		this.candleSeries = map;
+	}
 	
 	
 

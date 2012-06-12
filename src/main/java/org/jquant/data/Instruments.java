@@ -57,12 +57,11 @@ public interface Instruments {
 
 	
 	// index
-	InstrumentId DAX = new InstrumentId(JQuantDataProvider.LOUXOR,"DAX",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
-	InstrumentId SP500 = new InstrumentId(JQuantDataProvider.LOUXOR,"SP500",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
-	InstrumentId NASDAQ = new InstrumentId(JQuantDataProvider.LOUXOR,"NASDAQ",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
-	InstrumentId NIKKEI225 = new InstrumentId(JQuantDataProvider.LOUXOR,"NIKKEI225",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
-	InstrumentId CRB = new InstrumentId(JQuantDataProvider.LOUXOR,"CRB",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
-	InstrumentId CAC40 = new InstrumentId(JQuantDataProvider.LOUXOR,"CAC40",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
+	InstrumentId DAX = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_DAX_30",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
+	InstrumentId SP500 = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_S&P_500",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
+	InstrumentId NASDAQ = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_NASDAQ_COMPOSITE_INDEX",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
+	InstrumentId NIKKEI225 = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_NIKKEI_225",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
+	InstrumentId CAC40 = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_CAC_40",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
 	
 	// bonds
 	InstrumentId GERMANBUND = new InstrumentId(JQuantDataProvider.LOUXOR,"GERMANBUND",InstrumentType.BOND,MICMarketPlace.NO_MIC,Currency.EUR);
@@ -88,5 +87,10 @@ public interface Instruments {
 	InstrumentId IBM = new InstrumentId(JQuantDataProvider.LOUXOR,"US4592001014",InstrumentType.EQUITY, MICMarketPlace.XNYS,Currency.USD);
 	InstrumentId HEINZ = new InstrumentId(JQuantDataProvider.LOUXOR,"US4230741039",InstrumentType.EQUITY, MICMarketPlace.HDG_US,Currency.USD);
 	
+	//trackers 
+	InstrumentId LYXOR_TOPIX = new InstrumentId(JQuantDataProvider.LOUXOR,"FR0010245514",InstrumentType.TRACKER,MICMarketPlace.XPAR,Currency.EUR);
+	InstrumentId LYXOR_NASDAQ_100 = new InstrumentId(JQuantDataProvider.LOUXOR,"FR0007063177",InstrumentType.TRACKER,MICMarketPlace.XPAR,Currency.EUR);
 
+	
+	
 }
