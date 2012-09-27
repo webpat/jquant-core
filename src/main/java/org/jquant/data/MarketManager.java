@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.jquant.exception.MarketDataReaderException;
 import org.jquant.model.InstrumentId;
 import org.jquant.model.MarketDataPrecision;
+import org.jquant.model.StitchingMethod;
 import org.jquant.serie.Candle;
 import org.jquant.serie.CandleSerie;
 import org.springframework.beans.BeansException;
@@ -30,7 +31,7 @@ import org.springframework.stereotype.Component;
  *TODO: Gestion du cache avec une clé composite (InstrumentId:from:to)
  */
 @Component
-public class MarketManager implements InitializingBean, ApplicationContextAware {
+public class MarketManager implements IMarketManager, InitializingBean, ApplicationContextAware {
 
 	/** logger */
 	private static final Logger logger = Logger.getLogger(MarketManager.class);
@@ -50,59 +51,6 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 	private final Map<InstrumentId,CandleSerie> csMap = new HashMap<InstrumentId, CandleSerie>();
 	
 	
-	
-	/**
-	 *  Add an InstrumentId in the simulation scope
-	 *  <ul>
-	 *  <li>Load all Historical Data</li>
-	 *  <li>Subscribe for new Market Data Events concerning this instrument</li>
-	 *  </ul>
-	 * @param symbol the {@link InstrumentId} of the InstrumentId you want to add to the simulation  
-	 * @param precision The MarketData resolution (CANDLE,TRADE,QUOTE)
-	 * @param from begining of the historical data  
-	 * @param to end of the historical data  
-	 * @throws MarketDataReaderException 
-	 */
-	public void addInstrument(InstrumentId symbol,MarketDataPrecision precision,DateTime from, DateTime to) throws MarketDataReaderException{
-		
-		Object reader = findMarketDataReader(symbol.getProvider());
-		
-		if (reader == null ) throw new MarketDataReaderException("No MarketData reader for provider " + symbol.getProvider());
-		
-		IMarketDataProviderAdapter adapter = findReaderAdapter(reader);
-		
-		if (adapter == null ) throw new MarketDataReaderException("No MarketData adapter for provider " + symbol.getProvider());
-		
-		switch (precision){
-		case CANDLE: 
-			// Read historical market data
-			CandleSerie serie = adapter.readCandleSerie(symbol,from, to, reader);
-			if (serie != null && serie.size()>0) {
-				serie.setSymbol(symbol);
-			
-				// TODO: Manage Implied Volatility If Any
-			
-				// FIXME  : Cache with key (symbol,from,to)
-//				candleSeries.add(serie);
-				csMap.put(symbol, serie);
-			}else {
-				logger.warn("No market-data for InstrumentId"+ symbol.toString());
-			}
-			break;
-			
-		case QUOTE:
-			throw new UnsupportedOperationException() ;
-			// TODO : Read All historical market data 			
-			// TODO : Subscribe for new QuoteEvents
-			// TODO : Add Serie to the MarketMgr space
-			
-		case TRADE: 
-			throw new UnsupportedOperationException() ;
-		
-		}
-		
-		
-	}
 	
 	/**
 	 * 
@@ -209,6 +157,61 @@ public class MarketManager implements InitializingBean, ApplicationContextAware 
 			}
 		}
 		return null;
+	}
+
+	
+	/**
+	 *  Add an InstrumentId in the simulation scope
+	 *  <ul>
+	 *  <li>Load all Historical Data</li>
+	 *  <li>Subscribe for new Market Data Events concerning this instrument</li>
+	 *  </ul>
+	 * @param symbol the {@link InstrumentId} of the InstrumentId you want to add to the simulation  
+	 * @param from begining of the historical data  
+	 * @param to end of the historical data  
+	 * @throws MarketDataReaderException 
+	 */
+	@Override
+	public void addInstrument(InstrumentId symbol, DateTime from, DateTime to) throws MarketDataReaderException {
+	Object reader = findMarketDataReader(symbol.getProvider());
+		
+		if (reader == null ) throw new MarketDataReaderException("No MarketData reader for provider " + symbol.getProvider());
+		
+		IMarketDataProviderAdapter adapter = findReaderAdapter(reader);
+		
+		if (adapter == null ) throw new MarketDataReaderException("No MarketData adapter for provider " + symbol.getProvider());
+		
+		
+			// Read historical market data
+			CandleSerie serie = adapter.readCandleSerie(symbol,from, to, reader);
+			if (serie != null && serie.size()>0) {
+				serie.setSymbol(symbol);
+			
+				// TODO: Manage Implied Volatility If Any
+			
+				// FIXME  : Cache with key (symbol,from,to)
+//				candleSeries.add(serie);
+				csMap.put(symbol, serie);
+			}else {
+				logger.warn("No market-data for InstrumentId"+ symbol.toString());
+			}
+			
+		
+		
+		}
+		
+	
+
+	@Override
+	public void addGenericFuture(InstrumentId future, DateTime from, DateTime to, StitchingMethod method) throws MarketDataReaderException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addFuture(InstrumentId future, Integer deliveryMonth, Integer deliveryYear) throws MarketDataReaderException {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -1,5 +1,6 @@
 package org.jquant.strategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -44,13 +45,15 @@ public abstract class AbstractStrategy implements IStrategy {
 	/**
 	 * The strategy universe
 	 */
-	private List<InstrumentId> market;
+	private final List<InstrumentId> market =  new ArrayList<InstrumentId>();
 	
 	
 	/**
 	 * The {@link IOrderManager}
 	 */
 	protected IOrderManager orderManager;
+	
+
 	
 	
 	/**
@@ -223,6 +226,25 @@ public abstract class AbstractStrategy implements IStrategy {
 		return market;
 	}
 	
+	public void addInstrument(InstrumentId instrument){
+		market.add(instrument);
+//		try {
+//			getMarketManager().addInstrument(instrument, null, null);
+//		} catch (MarketDataReaderException e) {
+//			logger.warn("Can not add Instrument " + instrument + " to strategy market");
+//		}
+	}
+	
+//	@Override
+//	public abstract void initMarket();
+//
+//	public IMarketManager getMarketManager() {
+//		return marketManager;
+//	}
+//
+//	public void setMarketManager(IMarketManager marketManager) {
+//		this.marketManager = marketManager;
+//	}
 	
 	
 }

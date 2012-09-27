@@ -1,6 +1,7 @@
 package org.jquant.data;
 
 import org.joda.time.DateTime;
+import org.jquant.instrument.GenericFuture;
 import org.jquant.model.InstrumentId;
 import org.jquant.serie.CandleSerie;
 import org.jquant.serie.QuoteSerie;
@@ -53,10 +54,23 @@ public interface IMarketDataProviderAdapter {
 	
 	/**
 	 * 
+	 * @param future the {@link InstrumentId} of the Future  
+	 * @param start begining of the TimeSerie
+	 * @param end end of the TimeSerie
+	 * @param reader The legacy Market Data Reader
+	 * @return a time ordered  List of {@link CandleSerie}
+	 */
+	public GenericFuture readGenericFuture(InstrumentId future,DateTime start, DateTime end, Object reader);
+		
+	
+	/**
+	 * 
 	 * @param symbol
 	 * @param reader The legacy Market Data Reader
 	 * @return a {@link QuoteSerie}
 	 */
 	public QuoteSerie readQuoteSerie(InstrumentId symbol, Object reader);
+
+	
 	
 }

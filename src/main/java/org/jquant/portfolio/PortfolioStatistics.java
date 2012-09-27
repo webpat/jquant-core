@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.util.FastMath;
+import org.joda.time.DateTime;
 import org.jquant.portfolio.Trade.TradeStatus;
 import org.jquant.serie.DoubleSerie;
 
@@ -51,11 +52,17 @@ public class PortfolioStatistics {
 
 	private double annualizedReturn;
 	
+	private final DateTime start;
 	
-	public PortfolioStatistics(Portfolio ptf) {
+	private final DateTime end;
+	
+	
+	public PortfolioStatistics(Portfolio ptf,DateTime start,DateTime end) {
 		this.ptf = ptf;
 		this.transactions = ptf.getTransactions();
 		this.equityCurve = ptf.getEquityCurve();
+		this.start = start;
+		this.end = end;
 		computeStatistics();
 	}
 
@@ -220,6 +227,22 @@ public class PortfolioStatistics {
 	public double getOpenPositionsPnL(){
 		return 0;
 		
+	}
+
+	/**
+	 * 
+	 * @return {@link DateTime} Start of the Sampling/Simulation Period
+	 */
+	public DateTime getStart() {
+		return start;
+	}
+
+	/**
+	 * 
+	 * @return {@link DateTime} End of the Sampling/Simulation Period
+	 */
+	public DateTime getEnd() {
+		return end;
 	}
 	
 	

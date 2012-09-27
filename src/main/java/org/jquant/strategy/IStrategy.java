@@ -56,6 +56,12 @@ public interface IStrategy {
 	public void onPositionOpened(TradeSide side,InstrumentId instrumentId);
 
 
+	/**
+	 * Call to AddInstruments in the strategy 
+	 */
+	void initMarket();
+
+
 	
 	
 	

@@ -1,5 +1,13 @@
 package org.jquant.portfolio;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import junitx.framework.ListAssert;
+
 import org.joda.time.DateTime;
 import org.jquant.data.Instruments;
 import org.jquant.model.Currency;
@@ -341,5 +349,31 @@ public class PortfolioTest {
 		
 	}
 	
+	
+	@Test
+	public void testSerialization() throws IOException, ClassNotFoundException, PortfolioException{
+		
+		//Add some trades
+		Trade buy = new Trade(TradeSide.BUY,ibm, 10, 1000,  new DateTime());
+		ptf.addTransaction(buy);
+		Trade sale = new Trade(TradeSide.SELL,ibm, 10, 1100,  new DateTime());
+		ptf.addTransaction(sale);
+		
+		// Serialize Portfolio to a file 
+		FileOutputStream f = new FileOutputStream("tmp");
+		ObjectOutputStream s = new ObjectOutputStream(f);
+		s.writeObject(ptf);
+		
+		// Read Portfolio from file 
+		FileInputStream in = new FileInputStream("tmp");
+		ObjectInputStream is =  new ObjectInputStream(in);
+		Portfolio savedPtf = (Portfolio) is.readObject();
+		
+		Assert.assertEquals(ptf.getCash(),savedPtf.getCash(),0.0);
+		Assert.assertEquals(ptf.getInitialWealth(),savedPtf.getInitialWealth(),0.0);
+		Assert.assertEquals(ptf.getName(),savedPtf.getName());
+		ListAssert.assertEquals(ptf.getTransactions(),savedPtf.getTransactions());
+		
+	}
 
 }

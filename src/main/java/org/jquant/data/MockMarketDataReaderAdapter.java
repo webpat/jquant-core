@@ -1,6 +1,7 @@
 package org.jquant.data;
 
 import org.joda.time.DateTime;
+import org.jquant.instrument.GenericFuture;
 import org.jquant.math.ItoProcess;
 import org.jquant.model.InstrumentId;
 import org.jquant.serie.Candle;
@@ -57,6 +58,12 @@ public class MockMarketDataReaderAdapter implements IMarketDataProviderAdapter {
 
 	@Override
 	public QuoteSerie readQuoteSerie(InstrumentId symbol, Object reader) {
+		return null;
+	}
+
+	@Override
+	public GenericFuture readGenericFuture(InstrumentId future, DateTime start, DateTime end, Object reader) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

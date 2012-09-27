@@ -55,7 +55,6 @@ public class CandleSerie extends TimeSerie<Candle> {
 	@Override
 	public void addValue(Candle candle) {
 		super.addValue(candle);
-//		candle.setSerie(this);//Symetric binding
 	}
 	
 
@@ -77,6 +76,22 @@ public class CandleSerie extends TimeSerie<Candle> {
 			
 		}
 		return array;
+	}
+	
+	public DoubleSerie getDoubleSerie(CandleData data) {
+		DoubleSerie ds = new DoubleSerie();
+		for(Candle c:this){
+			switch (data){
+				case CLOSE : ds.add(c.getDate(), c.getClose());break;
+				case LOW : ds.add(c.getDate(), c.getLow());break;
+				case HIGH : ds.add(c.getDate(), c.getHigh());break;
+				case OPEN : ds.add(c.getDate(), c.getOpen());break;
+				
+				
+			}
+			
+		}
+		return ds;
 	}
 	
 	public double[] getClosesFromDateToDate(CandleData data, DateTime firstDate, DateTime lastDate) {
@@ -101,6 +116,8 @@ public class CandleSerie extends TimeSerie<Candle> {
 	public String toString() {
 		return "CandleSerie [size=" + size() + ", symbol=" + getSymbol() + "]";
 	}
+
+	
 	
 	
 

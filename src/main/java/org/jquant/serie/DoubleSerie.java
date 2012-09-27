@@ -31,6 +31,16 @@ public class DoubleSerie extends TimeSerie<TimeValue> {
 
 	/**
 	 * 
+	 * @param dt {@link DateTime}
+	 * @return a {@link Double}
+	 */
+	public double getDouble(DateTime dt){
+		return getValue(dt).getValue();
+		
+	}
+	
+	/**
+	 * 
 	 * @return an <code>array</code> containing the values of the output
 	 */
 	public double[] getData() {
@@ -62,7 +72,7 @@ public class DoubleSerie extends TimeSerie<TimeValue> {
 		for(int i=1;i<size();i++){
 			TimeValue c0 = this.get(i-1);
 			TimeValue c1 = this.get(i);
-			returns.addValue(new TimeValue(c1.getDate(), (c1.getValue()- c0.getValue()) / c1.getValue()));
+			returns.addValue(new TimeValue(c1.getDate(), (c1.getValue()- c0.getValue()) / c0.getValue()));
 		}
 		return returns;
 	}

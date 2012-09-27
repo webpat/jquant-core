@@ -1,9 +1,13 @@
 package org.jquant.serie;
 
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Observable;
+import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.joda.time.DateTime;
@@ -19,23 +23,26 @@ import org.jquant.model.InstrumentId;
  * @param <T> The content type of the TimeSerie
  * @see TimeValue
  */
-public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable implements Iterable<T>, ITimeSerie<T>  {
+public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable implements Iterable<T>, ITimeSerie<T>, Serializable  {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 751389787380655669L;
+
+
 	/**
 	 * {@link #isPercent()}
 	 */
 	protected boolean isPercent;   
     
-	
-	/**
-	 * Le contenu de la time-output
-	 */
-    protected final TreeMap<DateTime,T> map;
+
+    protected final SortedMap<DateTime,T> map;
     
      
     /**
-     * Le symbole de l'instrument associé à la Time Serie 
+     * {@link InstrumentId} linked to the Time Serie 
      * {@link #getSymbol()}
      */
     protected InstrumentId symbol;
@@ -47,11 +54,28 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
     }
     
   
+    /**
+     * @return Chronological Iterator on Values 
+     */
     public Iterator<T> iterator() {
         return map.values().iterator();
-   
+    
     }
-
+    
+    /**
+     *  
+     * @return Anti - Chronological iterator on values
+     */
+    public Iterator<T> reverseIterator(){
+		
+    	final SortedMap<DateTime, T> reverseMap= new TreeMap<DateTime,T>(Collections.reverseOrder());
+    	reverseMap.putAll(map);
+    	    	
+    	return reverseMap.values().iterator();
+    	
+    }
+    
+       
     
     /* (non-Javadoc)
 	 * @see org.jquant.serie.ITimeSerie#getValue(org.joda.time.DateTime)
@@ -79,11 +103,33 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
     	
     }
     
+    /**
+     * Add a TimeValue to this time serie
+     * @param value  a TimeValue 
+     */
     public void addValue(T value){
         map.put(value.getDate(),value);
         setChanged();
         notifyObservers(this);
         clearChanged();
+    }
+    
+    
+    /**
+     * Add all time values contained in ts in this TimeSerie 
+     * @param ts the other TimeSerie 
+     */
+    public void addAll(TimeSerie<T> ts){
+    	map.putAll(ts.map);
+    }
+    
+    
+    /**
+     * 
+     * @return an ordered List of all the {@link DateTime} in this TimeSerie
+     */
+    public Set<DateTime> getDateTimes(){
+    	return  map.keySet();
     }
     
     /**
@@ -172,7 +218,15 @@ public abstract class TimeSerie<T extends AbstractTimeValue> extends Observable 
 	 * @return the Last {@link AbstractTimeValue} of the Serie 
 	 */
 	public T getLast(){
-		return map.lastEntry().getValue();
+		return map.get(map.lastKey());
+	}
+	
+	/**
+	 * 
+	 * @return the First {@link AbstractTimeValue} of the Serie 
+	 */
+	public T getFirst(){
+		return map.get(map.firstKey());
 	}
 	
 

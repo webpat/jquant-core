@@ -12,7 +12,7 @@ import org.jquant.serie.CandleSerie;
  * @author patrick.merheb
  *
  */
-public abstract class MultiStrategy extends AbstractStrategy {
+public abstract class MultiAssetStrategy extends AbstractStrategy {
 
 	/**
 	 * Reference to a Map of Growing CandleSeries 

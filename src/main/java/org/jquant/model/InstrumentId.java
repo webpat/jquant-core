@@ -1,5 +1,7 @@
 package org.jquant.model;
 
+import java.io.Serializable;
+
 import org.jquant.data.JQuantDataProvider;
 
 
@@ -11,9 +13,13 @@ import org.jquant.data.JQuantDataProvider;
  * This class is immutable.
  *@author patrick.merheb
  */
-public final class InstrumentId implements Comparable<InstrumentId> {
+public final class InstrumentId implements Comparable<InstrumentId> , Serializable {
 	   
-    private final String code;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6325515730288865465L;
+	private final String code;
     private final JQuantDataProvider provider;
     private final InstrumentType type;
     private final MICMarketPlace exchange;

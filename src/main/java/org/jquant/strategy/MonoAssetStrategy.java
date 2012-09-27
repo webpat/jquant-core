@@ -3,7 +3,12 @@ package org.jquant.strategy;
 import org.jquant.model.InstrumentId;
 import org.jquant.serie.CandleSerie;
 
-public abstract class MonoStrategy extends AbstractStrategy {
+/**
+ * One Strategy class instance per instruments in the market 
+ * @author patrick.merheb
+ *
+ */
+public abstract class MonoAssetStrategy extends AbstractStrategy {
 
 	private CandleSerie serie;
 	
@@ -12,7 +17,7 @@ public abstract class MonoStrategy extends AbstractStrategy {
 	
 
 	/**
-	 * Returns the growing CandleSerie of the MonoStrategy instance's instrument 
+	 * Returns the growing CandleSerie of the MonoAssetStrategy instance's instrument 
 	 * @return {@link CandleSerie}
 	 */
 	public CandleSerie getSerie() {
@@ -24,7 +29,7 @@ public abstract class MonoStrategy extends AbstractStrategy {
 	}
 
 	/**
-	 * return the instrument of the {@link MonoStrategy} instance 
+	 * return the instrument of the {@link MonoAssetStrategy} instance 
 	 * @return {@link InstrumentId}
 	 */
 	public InstrumentId getInstrument() {
@@ -41,7 +46,6 @@ public abstract class MonoStrategy extends AbstractStrategy {
 	 * @return
 	 */
 	protected boolean hasPosition() {
-		// TODO Auto-generated method stub
 		return super.hasPosition(instrument);
 	}
 	

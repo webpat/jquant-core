@@ -1,5 +1,7 @@
 package org.jquant.serie;
 
+import java.io.Serializable;
+
 import org.joda.time.DateTime;
 
 
@@ -13,7 +15,12 @@ import org.joda.time.DateTime;
  *@see BBBA
  *
  */
-public class TimeValue extends AbstractTimeValue implements ITimeValue{
+public class TimeValue extends AbstractTimeValue implements ITimeValue, Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7774060574193157164L;
 
 	public TimeValue(DateTime date, double value) {
 		super(date);
