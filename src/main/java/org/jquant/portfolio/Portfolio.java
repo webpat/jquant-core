@@ -1,5 +1,6 @@
 package org.jquant.portfolio;
 
+import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -31,8 +32,13 @@ import org.jquant.serie.DoubleSerie;
  * @author patrick.merheb
  *
  */
-public class Portfolio {
+public class Portfolio implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8310475844581589964L;
+
 	/**
 	 * List of Trades 
 	 */

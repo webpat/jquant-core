@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.jquant.exception.MarketDataReaderException;
+import org.jquant.instrument.GenericFuture;
 import org.jquant.model.InstrumentId;
 import org.jquant.model.MarketDataPrecision;
 import org.jquant.model.StitchingMethod;
@@ -173,39 +174,58 @@ public class MarketManager implements IMarketManager, InitializingBean, Applicat
 	 */
 	@Override
 	public void addInstrument(InstrumentId symbol, DateTime from, DateTime to) throws MarketDataReaderException {
-	Object reader = findMarketDataReader(symbol.getProvider());
-		
+		Object reader = findMarketDataReader(symbol.getProvider());
+
 		if (reader == null ) throw new MarketDataReaderException("No MarketData reader for provider " + symbol.getProvider());
-		
+
 		IMarketDataProviderAdapter adapter = findReaderAdapter(reader);
-		
+
 		if (adapter == null ) throw new MarketDataReaderException("No MarketData adapter for provider " + symbol.getProvider());
-		
-		
-			// Read historical market data
-			CandleSerie serie = adapter.readCandleSerie(symbol,from, to, reader);
-			if (serie != null && serie.size()>0) {
-				serie.setSymbol(symbol);
-			
-				// TODO: Manage Implied Volatility If Any
-			
-				// FIXME  : Cache with key (symbol,from,to)
-//				candleSeries.add(serie);
-				csMap.put(symbol, serie);
-			}else {
-				logger.warn("No market-data for InstrumentId"+ symbol.toString());
-			}
-			
-		
-		
+
+
+		// Read historical market data
+		CandleSerie serie = adapter.readCandleSerie(symbol,from, to, reader);
+		if (serie != null && serie.size()>0) {
+			serie.setSymbol(symbol);
+
+			// TODO: Manage Implied Volatility If Any
+
+			// FIXME  : Cache with key (symbol,from,to)
+			//				candleSeries.add(serie);
+			csMap.put(symbol, serie);
+		}else {
+			logger.warn("No market-data for InstrumentId"+ symbol.toString());
+		}
+
+
+
 		}
 		
 	
 
 	@Override
-	public void addGenericFuture(InstrumentId future, DateTime from, DateTime to, StitchingMethod method) throws MarketDataReaderException {
-		// TODO Auto-generated method stub
+	public void addGenericFuture(InstrumentId future, DateTime from, DateTime end, StitchingMethod method) throws MarketDataReaderException {
+		Object reader = findMarketDataReader(future.getProvider());
+		if (reader == null ) throw new MarketDataReaderException("No MarketData reader for provider " + future.getProvider());
+
+		IMarketDataProviderAdapter adapter = findReaderAdapter(reader);
+
+		if (adapter == null ) throw new MarketDataReaderException("No MarketData adapter for provider " + future.getProvider());
 		
+		GenericFuture gf = adapter.readGenericFuture(future, from, end, reader);
+		CandleSerie serie = gf.getSerie();
+		if (serie != null && serie.size()>0) {
+			serie.setSymbol(gf.getId());
+
+			// TODO: Manage Implied Volatility If Any
+
+			// FIXME  : Cache with key (symbol,from,to)
+			//				candleSeries.add(serie);
+			csMap.put(gf.getId(), serie);
+		}else {
+			logger.warn("No market-data for InstrumentId"+ future.toString());
+		}
+
 	}
 
 	@Override

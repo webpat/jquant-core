@@ -15,8 +15,6 @@ public class MICMarketPlace {
 	 * Marchés Composites ou fictifs
 	 */
 	public final static MICMarketPlace NO_MIC=new MICMarketPlace("NO_MIC","EARTH");
-	public final static MICMarketPlace HDG_JP=new MICMarketPlace("HDG_JP","JP");
-	public final static MICMarketPlace HDG_US=new MICMarketPlace("HDG_US","US");
 	
     /**
      * Well known Market Places
@@ -26,6 +24,7 @@ public class MICMarketPlace {
     public final static MICMarketPlace XNMS=new MICMarketPlace("XNMS","US");
     public static final MICMarketPlace XNYS = new MICMarketPlace("XNYS","US");
     public final static MICMarketPlace XLON=new MICMarketPlace("XLON","GB");
+    public final static MICMarketPlace XLME=new MICMarketPlace("XLME","GB");
     public final static MICMarketPlace XCME=new MICMarketPlace("XCME","US");
     public final static MICMarketPlace XCEC=new MICMarketPlace("XCEC","US");
     public final static MICMarketPlace XEUR=new MICMarketPlace("XEUR","DE");
@@ -66,8 +65,10 @@ public class MICMarketPlace {
     public void setAcronym(String acronym) {
         this.acronym = acronym;
     }
-	/** Constructeur 
-	 * @throws InstrumentException */
+	/***
+	 *  Constructeur 
+	 * @param MICCode
+	 */
 	public MICMarketPlace(String MICCode)  {
           
 		this.MICCode = MICCode;

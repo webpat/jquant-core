@@ -14,6 +14,11 @@ public class DoubleSerie extends TimeSerie<TimeValue> {
 	
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4606211240416864648L;
+
 	@Override
 	protected Class<TimeValue> getChildClass() {
 		return TimeValue.class;
@@ -72,7 +77,7 @@ public class DoubleSerie extends TimeSerie<TimeValue> {
 		for(int i=1;i<size();i++){
 			TimeValue c0 = this.get(i-1);
 			TimeValue c1 = this.get(i);
-			returns.addValue(new TimeValue(c1.getDate(), (c1.getValue()- c0.getValue()) / c0.getValue()));
+			returns.addValue(new TimeValue(c0.getDate(), (c1.getValue()- c0.getValue()) / c0.getValue()));
 		}
 		return returns;
 	}

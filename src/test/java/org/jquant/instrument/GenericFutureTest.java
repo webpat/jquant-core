@@ -1,7 +1,6 @@
 package org.jquant.instrument;
 
 
-import java.util.concurrent.Future;
 
 import junit.framework.Assert;
 

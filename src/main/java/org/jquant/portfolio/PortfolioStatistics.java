@@ -1,5 +1,6 @@
 package org.jquant.portfolio;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.math3.stat.StatUtils;
@@ -16,7 +17,12 @@ import org.jquant.serie.DoubleSerie;
  * @author patrick.merheb
  *@see Portfolio
  */
-public class PortfolioStatistics {
+public class PortfolioStatistics implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -450762341392157243L;
 
 	private static final int ANNUALIZER = 0;
 

@@ -84,13 +84,6 @@ public class StrategyRunner {
 	
 	private boolean monoStrategyMode = false;
 	
-
-	/**
-	 * {@link StrategyRunner#getStrategyClassName()}
-	 */
-	private String[] strategyClassNames;
-
-	
 	
 	public StrategyRunner() {
 		super();

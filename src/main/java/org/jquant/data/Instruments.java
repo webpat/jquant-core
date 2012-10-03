@@ -31,7 +31,7 @@ import org.jquant.model.MICMarketPlace;
 
 
 /**
- * <b>Description :</b> Un ensemble de symboles pré-remplis 
+ * <b>Description :</b> Un ensemble de symboles pré-remplis valides sur LOUXOR 
  * <br>
  * <b>History:</b>
  * 
@@ -63,29 +63,32 @@ public interface Instruments {
 	InstrumentId NIKKEI225 = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_NIKKEI_225",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
 	InstrumentId CAC40 = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_CAC_40",InstrumentType.INDEX,MICMarketPlace.NO_MIC,null);
 	
-	// bonds
-	InstrumentId GERMANBUND = new InstrumentId(JQuantDataProvider.LOUXOR,"GERMANBUND",InstrumentType.BOND,MICMarketPlace.NO_MIC,Currency.EUR);
-	InstrumentId TNOTES = new InstrumentId(JQuantDataProvider.LOUXOR,"TNOTES",InstrumentType.BOND,MICMarketPlace.NO_MIC,Currency.USD);
+	// Future sur bonds
+	InstrumentId US_30Y = new InstrumentId(JQuantDataProvider.LOUXOR,"US 30Y BOND",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XCBT,Currency.USD);
+	InstrumentId US_10Y = new InstrumentId(JQuantDataProvider.LOUXOR,"US 10Y NOTE",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XCBT,Currency.USD);
+	InstrumentId US_5Y = new InstrumentId(JQuantDataProvider.LOUXOR,"US 5Y NOTE",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XCBT,Currency.USD);
+	InstrumentId BUND = new InstrumentId(JQuantDataProvider.LOUXOR,"EURO BUND",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XEUR,Currency.EUR);
+	InstrumentId BOBL = new InstrumentId(JQuantDataProvider.LOUXOR,"EURO BOBL",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XEUR,Currency.EUR);
+	InstrumentId SCHATZ = new InstrumentId(JQuantDataProvider.LOUXOR,"EURO SCHATZ",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XEUR,Currency.EUR);
 	
-	// commodity
-	InstrumentId CRUDEOIL = new InstrumentId(JQuantDataProvider.LOUXOR,"CRUDEOIL",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
-	InstrumentId NATURALGAS = new InstrumentId(JQuantDataProvider.LOUXOR,"NATURALGAS",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
-	InstrumentId COFFEE = new InstrumentId(JQuantDataProvider.LOUXOR,"COFFEE",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
-	InstrumentId AMGEN = new InstrumentId(JQuantDataProvider.LOUXOR,"AMGEN",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
-	InstrumentId MERCK = new InstrumentId(JQuantDataProvider.LOUXOR,"MERCK",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
-	InstrumentId SOYBEANS = new InstrumentId(JQuantDataProvider.LOUXOR,"SOYBEANS",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
-	InstrumentId LUMBER = new InstrumentId(JQuantDataProvider.LOUXOR,"LUMBER",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
-	InstrumentId GOLD = new InstrumentId(JQuantDataProvider.LOUXOR,"GOLD",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
-	InstrumentId SILVER = new InstrumentId(JQuantDataProvider.LOUXOR,"SILVER",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
-	InstrumentId OIL = new InstrumentId(JQuantDataProvider.LOUXOR,"OIL",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
-	InstrumentId GAS = new InstrumentId(JQuantDataProvider.LOUXOR,"GAS",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
-	InstrumentId COPPER = new InstrumentId(JQuantDataProvider.LOUXOR,"COPPER",InstrumentType.FUTURE,MICMarketPlace.XCBT,Currency.USD);
+	// Generic Futures sur commodity
+	InstrumentId CRUDEOIL = new InstrumentId(JQuantDataProvider.LOUXOR,"CRUDE OIL",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XNYM,Currency.USD);
+	InstrumentId NATURALGAS = new InstrumentId(JQuantDataProvider.LOUXOR,"NATURAL GAS",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XNYM,Currency.USD);
+	InstrumentId COFFEE = new InstrumentId(JQuantDataProvider.LOUXOR,"COFFEE",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XNYF,Currency.USD);
+	InstrumentId SOYBEAN = new InstrumentId(JQuantDataProvider.LOUXOR,"SOYBEAN",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XCBT,Currency.USD);
+	InstrumentId SOYBEAN_OIL = new InstrumentId(JQuantDataProvider.LOUXOR,"SOYBEAN OIL",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XCBT,Currency.USD);
+	InstrumentId SOYBEAN_MEAL = new InstrumentId(JQuantDataProvider.LOUXOR,"SOYBEAN MEAL",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XCBT,Currency.USD);
+	InstrumentId LUMBER = new InstrumentId(JQuantDataProvider.LOUXOR,"LUMBER",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XCME,Currency.USD);
+	InstrumentId GOLD = new InstrumentId(JQuantDataProvider.LOUXOR,"GOLD 100",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XCEC,Currency.USD);
+	InstrumentId SILVER = new InstrumentId(JQuantDataProvider.LOUXOR,"SILVER",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XCEC,Currency.USD);
+	InstrumentId NICKEL = new InstrumentId(JQuantDataProvider.LOUXOR,"NICKEL",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XLME,Currency.USD);
+	InstrumentId COPPER = new InstrumentId(JQuantDataProvider.LOUXOR,"COPPER",InstrumentType.GENERIC_FUTURE,MICMarketPlace.XCEC,Currency.USD);
 
 	// stocks
 	InstrumentId MSFT = new InstrumentId(JQuantDataProvider.LOUXOR,"US5949181045",InstrumentType.EQUITY,MICMarketPlace.XFRA,Currency.EUR);
 	InstrumentId GOOG = new InstrumentId(JQuantDataProvider.LOUXOR,"US38259P5089",InstrumentType.EQUITY,MICMarketPlace.XNMS,Currency.USD);
 	InstrumentId IBM = new InstrumentId(JQuantDataProvider.LOUXOR,"US4592001014",InstrumentType.EQUITY, MICMarketPlace.XNYS,Currency.USD);
-	InstrumentId HEINZ = new InstrumentId(JQuantDataProvider.LOUXOR,"US4230741039",InstrumentType.EQUITY, MICMarketPlace.HDG_US,Currency.USD);
+	InstrumentId HEINZ = new InstrumentId(JQuantDataProvider.LOUXOR,"US4230741039",InstrumentType.EQUITY, MICMarketPlace.XNYM,Currency.USD);
 	
 	//trackers 
 	InstrumentId LYXOR_TOPIX = new InstrumentId(JQuantDataProvider.LOUXOR,"FR0010245514",InstrumentType.TRACKER,MICMarketPlace.XPAR,Currency.EUR);

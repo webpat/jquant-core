@@ -58,12 +58,12 @@ public class DoubleSerieTest {
 		DoubleSerie returns = ds.getReturns();
 		Assert.assertEquals(returns.size(), ds.size()-1);
 		Iterator<DateTime> it = cal.iterator();
-		DateTime previous = it.next();
+		DateTime dt1 = it.next();
 		while (it.hasNext()){
-			DateTime dt = it.next();
-			double rendement = (ds.getDouble(dt)-ds.getDouble(previous))/ds.getDouble(previous);
-			Assert.assertEquals(rendement, returns.getDouble(dt));
-			previous = dt;
+			DateTime dt2 = it.next();
+			double rendement = (ds.getDouble(dt2)-ds.getDouble(dt1))/ds.getDouble(dt1);
+			Assert.assertEquals(rendement, returns.getDouble(dt1));
+			dt1 = dt2;
 		}
 		
 	}
