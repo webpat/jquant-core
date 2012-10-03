@@ -70,7 +70,7 @@ public interface Instruments {
 	InstrumentId BUND = new InstrumentId(JQuantDataProvider.LOUXOR,"EURO BUND",InstrumentType.GENERIC_FUTURE,MarketIdentifierCode.XEUR,Currency.EUR);
 	InstrumentId BOBL = new InstrumentId(JQuantDataProvider.LOUXOR,"EURO BOBL",InstrumentType.GENERIC_FUTURE,MarketIdentifierCode.XEUR,Currency.EUR);
 	InstrumentId SCHATZ = new InstrumentId(JQuantDataProvider.LOUXOR,"EURO SCHATZ",InstrumentType.GENERIC_FUTURE,MarketIdentifierCode.XEUR,Currency.EUR);
-	
+
 	// Generic Futures sur commodity
 	InstrumentId CRUDEOIL = new InstrumentId(JQuantDataProvider.LOUXOR,"CRUDE OIL",InstrumentType.GENERIC_FUTURE,MarketIdentifierCode.XNYM,Currency.USD);
 	InstrumentId NATURALGAS = new InstrumentId(JQuantDataProvider.LOUXOR,"NATURAL GAS",InstrumentType.GENERIC_FUTURE,MarketIdentifierCode.XNYM,Currency.USD);
@@ -84,12 +84,13 @@ public interface Instruments {
 	InstrumentId NICKEL = new InstrumentId(JQuantDataProvider.LOUXOR,"NICKEL",InstrumentType.GENERIC_FUTURE,MarketIdentifierCode.XLME,Currency.USD);
 	InstrumentId COPPER = new InstrumentId(JQuantDataProvider.LOUXOR,"COPPER",InstrumentType.GENERIC_FUTURE,MarketIdentifierCode.XCEC,Currency.USD);
 
+
 	// stocks
 	InstrumentId MSFT = new InstrumentId(JQuantDataProvider.LOUXOR,"US5949181045",InstrumentType.EQUITY,MarketIdentifierCode.XFRA,Currency.EUR);
 	InstrumentId GOOG = new InstrumentId(JQuantDataProvider.LOUXOR,"US38259P5089",InstrumentType.EQUITY,MarketIdentifierCode.XNMS,Currency.USD);
 	InstrumentId IBM = new InstrumentId(JQuantDataProvider.LOUXOR,"US4592001014",InstrumentType.EQUITY, MarketIdentifierCode.XNYS,Currency.USD);
 	InstrumentId HEINZ = new InstrumentId(JQuantDataProvider.LOUXOR,"US4230741039",InstrumentType.EQUITY, MarketIdentifierCode.XNYM,Currency.USD);
-	
+
 	//trackers 
 	InstrumentId LYXOR_TOPIX = new InstrumentId(JQuantDataProvider.LOUXOR,"FR0010245514",InstrumentType.TRACKER,MarketIdentifierCode.XPAR,Currency.EUR);
 	InstrumentId LYXOR_NASDAQ_100 = new InstrumentId(JQuantDataProvider.LOUXOR,"FR0007063177",InstrumentType.TRACKER,MarketIdentifierCode.XPAR,Currency.EUR);

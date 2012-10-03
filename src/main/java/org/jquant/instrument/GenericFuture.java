@@ -47,6 +47,7 @@ public class GenericFuture extends Derivative {
 	}
 
 	public void stitch(StitchingMethod method) {
+
 		
 		if (strips.size()>0){
 
