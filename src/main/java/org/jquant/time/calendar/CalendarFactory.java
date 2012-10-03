@@ -1,7 +1,7 @@
 package org.jquant.time.calendar;
 
 import org.joda.time.DateTime;
-import org.jquant.model.MICMarketPlace;
+import org.jquant.model.MarketIdentifierCode;
 
 
 /**
@@ -25,11 +25,11 @@ public abstract class CalendarFactory {
 	 * Return a daily calendar with the holidays and the week ends off 
 	 * @param from start Date
 	 * @param to end Date
-	 * @param mic a {@link MICMarketPlace}
+	 * @param mic a {@link MarketIdentifierCode}
 	 * @return a Daily calendar of the trading days, If mic is <code>null</code> week-ends are skipped
 	 */
 	public static IDateTimeCalendar getDailyTradingDayBrowser(DateTime from, DateTime to,
-            MICMarketPlace mic) {
+            MarketIdentifierCode mic) {
         return new DailyTradingDayCalendar(from, to, mic);
     }
 	
@@ -141,7 +141,7 @@ public abstract class CalendarFactory {
      *       
      */
     public static IDateTimeCalendar getEndOfMonthWorkDayBrowser(DateTime from, DateTime to,
-           MICMarketPlace mic) {
+           MarketIdentifierCode mic) {
         return new EndOfMonthWorkDayCalendar(from, to, mic);
     }
     

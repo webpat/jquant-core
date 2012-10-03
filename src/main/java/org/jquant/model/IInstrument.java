@@ -13,7 +13,7 @@ package org.jquant.model;
  *
  *@author Patrick Merheb 
  *@see Currency
- *@see MICMarketPlace
+ *@see MarketIdentifierCode
  *@see InstrumentId
  */
 public interface IInstrument {

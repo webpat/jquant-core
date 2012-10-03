@@ -1,12 +1,19 @@
 package org.jquant.portfolio;
 
+import java.io.Serializable;
+
 /**
  * Transfer Object with draw down properties 
  * @author patrick.merheb
  *
  */
-public class DrawDownData {
+public class DrawDownData implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4992387532439377102L;
+
 	public final double maxDrawDown;
 
 	public final int timeInMaxDD;

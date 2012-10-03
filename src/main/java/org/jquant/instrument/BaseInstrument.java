@@ -3,7 +3,7 @@ package org.jquant.instrument;
 import org.jquant.model.Currency;
 import org.jquant.model.IInstrument;
 import org.jquant.model.InstrumentId;
-import org.jquant.model.MICMarketPlace;
+import org.jquant.model.MarketIdentifierCode;
 
 
 
@@ -15,7 +15,7 @@ import org.jquant.model.MICMarketPlace;
  * <b>History:</b><br>
  * @author patrick.merheb
  * @see InstrumentId
- * @see MICMarketPlace
+ * @see MarketIdentifierCode
  * @see Currency
  */
 public abstract class BaseInstrument implements IInstrument {
@@ -37,7 +37,7 @@ public abstract class BaseInstrument implements IInstrument {
 	}
 	
 	
-	public MICMarketPlace getMarket() {
+	public MarketIdentifierCode getMarket() {
 		return symbol.getExchange();
 	}		
 	

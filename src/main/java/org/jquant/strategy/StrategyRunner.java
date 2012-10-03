@@ -13,7 +13,7 @@ import org.jquant.exception.MarketDataReaderException;
 import org.jquant.model.Currency;
 import org.jquant.model.InstrumentId;
 import org.jquant.model.InstrumentType;
-import org.jquant.model.MICMarketPlace;
+import org.jquant.model.MarketIdentifierCode;
 import org.jquant.model.StitchingMethod;
 import org.jquant.order.IOrderManager;
 import org.jquant.portfolio.Portfolio;
@@ -315,7 +315,7 @@ public class StrategyRunner {
 				s.init();
 			}
 
-			IDateTimeCalendar cal = CalendarFactory.getDailyTradingDayBrowser(entryDate, exitDate, MICMarketPlace.NO_MIC);
+			IDateTimeCalendar cal = CalendarFactory.getDailyTradingDayBrowser(entryDate, exitDate, MarketIdentifierCode.NO_MIC);
 			
 
 			/* 

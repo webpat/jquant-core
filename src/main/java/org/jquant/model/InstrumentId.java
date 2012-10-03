@@ -22,10 +22,10 @@ public final class InstrumentId implements Comparable<InstrumentId> , Serializab
 	private final String code;
     private final JQuantDataProvider provider;
     private final InstrumentType type;
-    private final MICMarketPlace exchange;
+    private final MarketIdentifierCode exchange;
     private final Currency currency;
     
-    public InstrumentId(JQuantDataProvider provider, String code, InstrumentType type, MICMarketPlace exchange,Currency currency) {
+    public InstrumentId(JQuantDataProvider provider, String code, InstrumentType type, MarketIdentifierCode exchange,Currency currency) {
     	this.type = type;
     	this.code = code;
     	this.provider = provider;
@@ -96,9 +96,9 @@ public final class InstrumentId implements Comparable<InstrumentId> , Serializab
 	
 	/**
 	 * The exchange place 
-	 * @return The {@link MICMarketPlace} where the equity is traded 
+	 * @return The {@link MarketIdentifierCode} where the equity is traded 
 	 */
-	public MICMarketPlace getExchange() {
+	public MarketIdentifierCode getExchange() {
 		return exchange;
 	}
 

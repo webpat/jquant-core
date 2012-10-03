@@ -11,7 +11,7 @@ import net.objectlab.kit.datecalc.joda.LocalDateKitCalculatorsFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.jquant.model.MICMarketPlace;
+import org.jquant.model.MarketIdentifierCode;
 
 
 /**
@@ -44,7 +44,7 @@ class DailyTradingDayCalendar implements IDateTimeCalendar {
      * If there is no set of holidays with that name, 
      * it will return a DateCalculator with an empty holiday set (Only Week end will be strip off).
      */
-    DailyTradingDayCalendar(DateTime from, DateTime to,MICMarketPlace mic) {
+    DailyTradingDayCalendar(DateTime from, DateTime to,MarketIdentifierCode mic) {
         this.from = from;
         this.to = to;
 		if (to == null) {

@@ -10,7 +10,7 @@ import net.objectlab.kit.datecalc.joda.LocalDateCalculator;
 import net.objectlab.kit.datecalc.joda.LocalDateKitCalculatorsFactory;
 
 import org.joda.time.DateTime;
-import org.jquant.model.MICMarketPlace;
+import org.jquant.model.MarketIdentifierCode;
 
 
 /**
@@ -46,7 +46,7 @@ class EndOfMonthWorkDayCalendar implements IDateTimeCalendar {
      * If there is set of holidays with that name, 
      * it will return a DateCalculator with an empty holiday set (will work on Weekend only).
      */
-    public EndOfMonthWorkDayCalendar(DateTime from, DateTime to,MICMarketPlace market) {
+    public EndOfMonthWorkDayCalendar(DateTime from, DateTime to,MarketIdentifierCode market) {
         super();
         this.from = from;
         this.to = to;

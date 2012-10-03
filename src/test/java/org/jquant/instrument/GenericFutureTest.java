@@ -10,7 +10,7 @@ import org.jquant.data.JQuantDataProvider;
 import org.jquant.model.Currency;
 import org.jquant.model.InstrumentId;
 import org.jquant.model.InstrumentType;
-import org.jquant.model.MICMarketPlace;
+import org.jquant.model.MarketIdentifierCode;
 import org.jquant.model.StitchingMethod;
 import org.jquant.serie.Candle;
 import org.jquant.serie.Candle.CandleData;
@@ -83,11 +83,11 @@ public class GenericFutureTest {
 			value *= 1.1;
 		}
 
-		Future f1 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip1", InstrumentType.FUTURE, MICMarketPlace.XCBT, Currency.USD));
+		Future f1 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip1", InstrumentType.FUTURE, MarketIdentifierCode.XCBT, Currency.USD));
 		f1.setLastDeliveryDate(new DateTime().plusMonths(3).toDateMidnight().toDate());
-		Future f2 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip2", InstrumentType.FUTURE, MICMarketPlace.XCBT, Currency.USD));
+		Future f2 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip2", InstrumentType.FUTURE, MarketIdentifierCode.XCBT, Currency.USD));
 		f2.setLastDeliveryDate(new DateTime().plusMonths(6).toDateMidnight().toDate());
-		Future f3 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip3", InstrumentType.FUTURE, MICMarketPlace.XCBT, Currency.USD));
+		Future f3 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip3", InstrumentType.FUTURE, MarketIdentifierCode.XCBT, Currency.USD));
 		f3.setLastDeliveryDate(new DateTime().plusMonths(9).toDateMidnight().toDate());
 		
 		gf.add(f1, cs1);
@@ -154,11 +154,11 @@ public class GenericFutureTest {
 			value *= 1.1;
 		}
 
-		Future f1 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip1", InstrumentType.FUTURE, MICMarketPlace.XCBT, Currency.USD));
+		Future f1 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip1", InstrumentType.FUTURE, MarketIdentifierCode.XCBT, Currency.USD));
 		f1.setLastDeliveryDate(new DateTime().plusMonths(3).toDateMidnight().toDate());
-		Future f2 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip2", InstrumentType.FUTURE, MICMarketPlace.XCBT, Currency.USD));
+		Future f2 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip2", InstrumentType.FUTURE, MarketIdentifierCode.XCBT, Currency.USD));
 		f2.setLastDeliveryDate(new DateTime().plusMonths(6).toDateMidnight().toDate());
-		Future f3 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip3", InstrumentType.FUTURE, MICMarketPlace.XCBT, Currency.USD));
+		Future f3 = new Future(new InstrumentId(JQuantDataProvider.LOUXOR, "strip3", InstrumentType.FUTURE, MarketIdentifierCode.XCBT, Currency.USD));
 		f3.setLastDeliveryDate(new DateTime().plusMonths(9).toDateMidnight().toDate());
 		
 		gf.add(f1, cs1);

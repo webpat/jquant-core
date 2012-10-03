@@ -1,5 +1,7 @@
 package org.jquant.portfolio;
 
+import java.io.Serializable;
+
 import org.joda.time.DateTime;
 import org.jquant.model.InstrumentId;
 
@@ -11,8 +13,13 @@ import org.jquant.model.InstrumentId;
  * @author patrick.merheb
  *
  */
-public class Trade {
+public class Trade implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9173239730375062100L;
+
 	private final InstrumentId instrument;
 	
 	/**

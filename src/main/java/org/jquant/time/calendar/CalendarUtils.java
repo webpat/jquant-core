@@ -6,7 +6,7 @@ import net.objectlab.kit.datecalc.joda.LocalDateKitCalculatorsFactory;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.jquant.model.MICMarketPlace;
+import org.jquant.model.MarketIdentifierCode;
 
 
 /**
@@ -17,7 +17,7 @@ import org.jquant.model.MICMarketPlace;
 public final class CalendarUtils {
 
 	// TODO create and manage for a market place (EX: UK, US, ...)
-	public static DateTime getBusinessDayGoingBackward(DateTime aDate, MICMarketPlace marketPlace) {
+	public static DateTime getBusinessDayGoingBackward(DateTime aDate, MarketIdentifierCode marketPlace) {
 		// create or get the Holidays
 		// final Set<DateTime> holidays = new HashSet<DateTime>();
 		// holidays.add(new DateTime("2006-08-28"));
@@ -28,7 +28,7 @@ public final class CalendarUtils {
 		// holidays);
 
 		if (marketPlace == null) {
-			marketPlace = MICMarketPlace.NO_MIC;
+			marketPlace = MarketIdentifierCode.NO_MIC;
 		}
 		
 		// ask for a DateTime calculator for "UK" (even if a new set of
@@ -41,7 +41,7 @@ public final class CalendarUtils {
 	}
 
 	// TODO create and manage for a market place (EX: UK, US, ...)
-	public static DateTime getBusinessDayGoingForward(DateTime aDate, MICMarketPlace marketPlace) {
+	public static DateTime getBusinessDayGoingForward(DateTime aDate, MarketIdentifierCode marketPlace) {
 		// create or get the Holidays
 		// final Set<DateTime> holidays = new HashSet<DateTime>();
 		// holidays.add(new DateTime("2006-08-28"));
@@ -52,7 +52,7 @@ public final class CalendarUtils {
 		// holidays);
 
 		if (marketPlace == null) {
-			marketPlace = MICMarketPlace.NO_MIC;
+			marketPlace = MarketIdentifierCode.NO_MIC;
 		}
 		
 		// ask for a DateTime calculator for "UK" (even if a new set of
@@ -151,11 +151,11 @@ public final class CalendarUtils {
 	}
     
 	
-//    public static DateTime getPreviousWorkDay(DateTime endDate,Period period, MICMarketPlace marketPlace) {
+//    public static DateTime getPreviousWorkDay(DateTime endDate,Period period, MarketIdentifierCode marketPlace) {
 //    	
 //    	DateTime previousWorkDay = null;
 //		if (marketPlace == null) {
-//			marketPlace = MICMarketPlace.NO_MIC;
+//			marketPlace = MarketIdentifierCode.NO_MIC;
 //		}
 //		
 //		if (durationType.equals(DurationFieldType.days()))
@@ -195,11 +195,11 @@ public final class CalendarUtils {
 	 *
 	 * @return Last day of the period  
 	 */
-//    public static DateTime getLastWorkDay(DateTime startDate, TimeFrame period, MICMarketPlace marketPlace) {
+//    public static DateTime getLastWorkDay(DateTime startDate, TimeFrame period, MarketIdentifierCode marketPlace) {
 //    	
 //    	DateTime lastWorkDay = null;
 //		if (marketPlace == null) {
-//			marketPlace = MICMarketPlace.NO_MIC;
+//			marketPlace = MarketIdentifierCode.NO_MIC;
 //		}
 //
 //		switch (period.unit)
@@ -266,7 +266,7 @@ public final class CalendarUtils {
 		return youngestDate;
 	}
 	
-	public static int getNbBusinessDays(DateTime startDate, DateTime lastDate, MICMarketPlace marketPlace) {
+	public static int getNbBusinessDays(DateTime startDate, DateTime lastDate, MarketIdentifierCode marketPlace) {
 		int nbBusinessDays = 0;
 		DateTime tmpDate = startDate;
 		while (tmpDate.compareTo(lastDate)<0) {

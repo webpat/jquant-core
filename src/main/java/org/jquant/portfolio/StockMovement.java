@@ -1,5 +1,7 @@
 package org.jquant.portfolio;
 
+import java.io.Serializable;
+
 import org.jquant.model.InstrumentId;
 
 /**
@@ -8,8 +10,13 @@ import org.jquant.model.InstrumentId;
  * natural key is asset/price/movementType
  * @author patrick.merheb
  */
-public final class StockMovement {
+public final class StockMovement implements Serializable{
 
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7208871180291893219L;
 
 	private final Trade trade;
 	
