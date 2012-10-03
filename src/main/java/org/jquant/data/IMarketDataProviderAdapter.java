@@ -34,15 +34,7 @@ public interface IMarketDataProviderAdapter {
 	 */
 	public CandleSerie readCandleSerie(InstrumentId symbol,DateTime start, DateTime end, Object reader);
 	
-	/**
-	 * 
-	 * @param symbol
-	 * @param start
-	 * @param end
-	 * @param reader The legacy Market Data Reader
-	 * @return a {@link QuoteSerie} from the InstrumentId {@link InstrumentId}
-	 */
-	public QuoteSerie readQuoteSerie(InstrumentId symbol,DateTime start, DateTime end, Object reader);
+	
 	
 	/**
 	 * 
@@ -53,12 +45,12 @@ public interface IMarketDataProviderAdapter {
 	public CandleSerie readCandleSerie(InstrumentId symbol, Object reader);
 	
 	/**
-	 * 
+	 * Read all the futures betweeb start and end with the given shortName ex 'US 30Y BOND' and builds a GenericFuture
 	 * @param future the {@link InstrumentId} of the Future  
-	 * @param start begining of the TimeSerie
-	 * @param end end of the TimeSerie
+	 * @param start begining of the strip period
+	 * @param end end of the strip period 
 	 * @param reader The legacy Market Data Reader
-	 * @return a time ordered  List of {@link CandleSerie}
+	 * @return {@link GenericFuture} 
 	 */
 	public GenericFuture readGenericFuture(InstrumentId future,DateTime start, DateTime end, Object reader);
 		
@@ -71,6 +63,14 @@ public interface IMarketDataProviderAdapter {
 	 */
 	public QuoteSerie readQuoteSerie(InstrumentId symbol, Object reader);
 
-	
+	/**
+	 * 
+	 * @param symbol
+	 * @param start
+	 * @param end
+	 * @param reader The legacy Market Data Reader
+	 * @return a {@link QuoteSerie} from the InstrumentId {@link InstrumentId}
+	 */
+	public QuoteSerie readQuoteSerie(InstrumentId symbol,DateTime start, DateTime end, Object reader);
 	
 }
