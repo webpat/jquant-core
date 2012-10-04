@@ -1,26 +1,3 @@
-/****
-
-    activequant - activestocks.eu
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License along
-    with this program; if not, write to the Free Software Foundation, Inc.,
-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
-	
-	contact  : contact@activestocks.eu
-    homepage : http://www.activestocks.eu
-
-****/
 package org.jquant.data;
 
 import org.jquant.model.Currency;
@@ -35,8 +12,8 @@ import org.jquant.model.MarketIdentifierCode;
  * <br>
  * <b>History:</b>
  * 
- * <br>
- *
+ * <p>
+ * TODO : Move into Louxor Module
  *  @author Patrick Merheb
  */
 public interface Instruments {
@@ -94,7 +71,10 @@ public interface Instruments {
 	//trackers 
 	InstrumentId LYXOR_TOPIX = new InstrumentId(JQuantDataProvider.LOUXOR,"FR0010245514",InstrumentType.TRACKER,MarketIdentifierCode.XPAR,Currency.EUR);
 	InstrumentId LYXOR_NASDAQ_100 = new InstrumentId(JQuantDataProvider.LOUXOR,"FR0007063177",InstrumentType.TRACKER,MarketIdentifierCode.XPAR,Currency.EUR);
+	InstrumentId LYXOR_EUROSTOXX_50 = new InstrumentId(JQuantDataProvider.LOUXOR,"FR0007054358",InstrumentType.TRACKER,MarketIdentifierCode.XPAR,Currency.EUR);
+	InstrumentId ISHARES_DJ_US_REAL_ESTATE = new InstrumentId(JQuantDataProvider.LOUXOR,"US4642877397",InstrumentType.TRACKER,MarketIdentifierCode.XPAR,Currency.EUR);
 
 	
+
 	
 }
