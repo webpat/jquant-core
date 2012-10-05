@@ -23,6 +23,8 @@ public class MarketIdentifierCode implements Serializable{
 	 * Marchés Composites ou fictifs
 	 */
 	public final static MarketIdentifierCode NO_MIC=new MarketIdentifierCode("NO_MIC","EARTH");
+	public final static MarketIdentifierCode HDG_US=new MarketIdentifierCode("HDG_US","US");
+	public final static MarketIdentifierCode HDG_JP=new MarketIdentifierCode("HDG_JP","JP");
 	
     /**
      * Well known Market Places

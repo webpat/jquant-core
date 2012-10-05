@@ -34,11 +34,11 @@ public interface Instruments {
 
 	
 	// index
-	InstrumentId DAX = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_DAX_30",InstrumentType.INDEX,MarketIdentifierCode.NO_MIC,null);
-	InstrumentId SP500 = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_S&P_500",InstrumentType.INDEX,MarketIdentifierCode.NO_MIC,null);
-	InstrumentId NASDAQ = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_NASDAQ_COMPOSITE_INDEX",InstrumentType.INDEX,MarketIdentifierCode.NO_MIC,null);
-	InstrumentId NIKKEI225 = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_NIKKEI_225",InstrumentType.INDEX,MarketIdentifierCode.NO_MIC,null);
-	InstrumentId CAC40 = new InstrumentId(JQuantDataProvider.LOUXOR,"IND_CAC_40",InstrumentType.INDEX,MarketIdentifierCode.NO_MIC,null);
+	InstrumentId DAX = new InstrumentId(JQuantDataProvider.LOUXOR,"DAX 30",InstrumentType.INDEX,MarketIdentifierCode.NO_MIC,null);
+	InstrumentId SP500 = new InstrumentId(JQuantDataProvider.LOUXOR,"S&P 500",InstrumentType.INDEX,MarketIdentifierCode.NO_MIC,null);
+	InstrumentId NASDAQ = new InstrumentId(JQuantDataProvider.LOUXOR,"NASDAQ COMPOSITE INDEX",InstrumentType.INDEX,MarketIdentifierCode.NO_MIC,null);
+	InstrumentId NIKKEI225 = new InstrumentId(JQuantDataProvider.LOUXOR,"NIKKEI 225",InstrumentType.INDEX,MarketIdentifierCode.NO_MIC,null);
+	InstrumentId CAC40 = new InstrumentId(JQuantDataProvider.LOUXOR,"CAC 40",InstrumentType.INDEX,MarketIdentifierCode.NO_MIC,null);
 	
 	// Future sur bonds
 	InstrumentId US_30Y = new InstrumentId(JQuantDataProvider.LOUXOR,"US 30Y BOND",InstrumentType.GENERIC_FUTURE,MarketIdentifierCode.XCBT,Currency.USD);
@@ -66,7 +66,7 @@ public interface Instruments {
 	InstrumentId MSFT = new InstrumentId(JQuantDataProvider.LOUXOR,"US5949181045",InstrumentType.EQUITY,MarketIdentifierCode.XFRA,Currency.EUR);
 	InstrumentId GOOG = new InstrumentId(JQuantDataProvider.LOUXOR,"US38259P5089",InstrumentType.EQUITY,MarketIdentifierCode.XNMS,Currency.USD);
 	InstrumentId IBM = new InstrumentId(JQuantDataProvider.LOUXOR,"US4592001014",InstrumentType.EQUITY, MarketIdentifierCode.XNYS,Currency.USD);
-	InstrumentId HEINZ = new InstrumentId(JQuantDataProvider.LOUXOR,"US4230741039",InstrumentType.EQUITY, MarketIdentifierCode.XNYM,Currency.USD);
+	InstrumentId HEINZ = new InstrumentId(JQuantDataProvider.LOUXOR,"US4230741039",InstrumentType.EQUITY, MarketIdentifierCode.HDG_US,Currency.USD);
 
 	//trackers 
 	InstrumentId LYXOR_TOPIX = new InstrumentId(JQuantDataProvider.LOUXOR,"FR0010245514",InstrumentType.TRACKER,MarketIdentifierCode.XPAR,Currency.EUR);
