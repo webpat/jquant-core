@@ -1,14 +1,15 @@
 package org.jquant;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 import org.jquant.model.Currency;
 import org.jquant.portfolio.Portfolio;
 import org.jquant.portfolio.PortfolioStatistics;
@@ -71,7 +72,9 @@ public class Bootstrap {
 		 * Serialize PortfolioStatistics
 		 */
 		 try {
-			ObjectOutput out = new ObjectOutputStream(new FileOutputStream("simulation.bin"));
+			 String tempDir = System.getProperty("java.io.tmpdir");
+			 
+			 ObjectOutput out = new ObjectOutputStream(new FileOutputStream(tempDir+File.separator+"simulation.bin"));
 			 out.writeObject(stats);
 			 out.close();
 		} catch (IOException e) {
@@ -85,13 +88,13 @@ public class Bootstrap {
 		/*
 		 * Compute and display simulation summary
 		 */
-		logger.info("Simulation summary from " + stats.getStart().toString(DateTimeFormat.shortDate()) + " to " +  stats.getEnd().toString(DateTimeFormat.shortDate()));
+		logger.info("Simulation summary from " + DateFormatUtils.format(stats.getStart(),"dd/MM/yyyy") + " to " +  DateFormatUtils.format(stats.getEnd(),"dd/MM/yyyy"));
 		logger.info("-------------------------------------------------------");
 		logger.info("Initial Wealth \t" + stats.getInitialWealth());
 		logger.info("Final Wealth \t" + stats.getFinalWealth());
 		logger.info("Annualized Return \t" + stats.getAnnualizedReturn());
 		logger.info("Profit And Loss \t" + stats.getRealizedPnL());
-		logger.info("Max DrawDown % \t" + stats.getMaxDrawDown().getMaxDrawDown());
+		logger.info("Max DrawDown % \t" + stats.getMaxDrawDownData().getMaxDrawDown());
 		logger.info("Winning Trades \t" + stats.getWinningTrades());
 		logger.info("Losing Trades \t" + stats.getLosingTrades());
 		logger.info("Average Winning Trade \t" + stats.getAverageWinningTrade());

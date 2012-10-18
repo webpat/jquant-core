@@ -380,7 +380,7 @@ public class StrategyRunner {
 
 			}// End calendar loop 
 
-			PortfolioStatistics stats = new PortfolioStatistics(getGlobalPortfolio(),entryDate,exitDate);
+			PortfolioStatistics stats = new PortfolioStatistics(getGlobalPortfolio(),entryDate.toDate(),exitDate.toDate());
 			
 			final long end = System.nanoTime();
 			

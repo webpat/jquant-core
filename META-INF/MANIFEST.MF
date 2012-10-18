@@ -22,3 +22,5 @@ Export-Package: org.jquant,
  org.jquant.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: target/classes/
+Require-Bundle: org.jquant.plugin.libs;bundle-version="1.0.0"
+

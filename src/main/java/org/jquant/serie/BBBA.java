@@ -6,8 +6,8 @@ import org.joda.time.DateTime;
 /**
  * Best Bid Best Ask  for a particular {@link DateTime}
  * <p>
- * <b>Ask</b> The price a seller is willing to accept for a security, also known as the offer price.
- * <b>Bid</b> An offer made by an investor, a trader or a dealer to buy a security.
+ * <b>Ask</b> The price a <b>seller</b> is willing to accept for a security, also known as the offer price.
+ * <b>Bid</b> An offer made by an investor, a trader or a dealer to <b>buy</b> a security.
  * 
  * <p> This class is immutable
  * @author patrick.merheb

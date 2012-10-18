@@ -1,22 +1,23 @@
 package org.jquant.data;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MarketManagerTest {
 
-	@Test
+	@Test@Ignore
 	public void testGetMarketSlice() {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	@Test@Ignore
 	public void testGetCandle() {
 		fail("Not yet implemented");
 	}
 
-	@Test
+	@Test@Ignore
 	public void testGetFirstLast() {
 		fail("Not yet implemented");
 	}

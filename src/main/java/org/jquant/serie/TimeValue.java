@@ -22,6 +22,9 @@ public class TimeValue extends AbstractTimeValue implements ITimeValue, Serializ
 	 */
 	private static final long serialVersionUID = 7774060574193157164L;
 
+	
+	
+	
 	public TimeValue(DateTime date, double value) {
 		super(date);
 		this.value = value;

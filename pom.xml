@@ -12,10 +12,9 @@
   <parent>
   	<groupId>org.jquant</groupId>
   	<artifactId>jquant-parent</artifactId>
-  	<version>1.0b1</version>
+  	<version>1.0-b1</version>
   </parent>
   <name>jquant-core</name>
-  <version>${project.version}</version>
  
   
   <dependencies>

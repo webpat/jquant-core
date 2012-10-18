@@ -14,15 +14,15 @@ public class DrawDownData implements Serializable{
 	 */
 	private static final long serialVersionUID = 4992387532439377102L;
 
-	public final double maxDrawDown;
+	private final double maxDrawDown;
 
-	public final int timeInMaxDD;
+	private final int timeInMaxDD;
 
-	public final int timeToRecover;
+	private final int timeToRecover;
 
-	public final int fromIndex;
+	private final int fromIndex;
 
-	public final int toIndex;
+	private final int toIndex;
 
 	
 

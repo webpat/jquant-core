@@ -11,6 +11,12 @@ public abstract class AbstractTimeValue implements ITimeValue {
 
 	protected DateTime date;
 
+	/*
+	 * Default constructor provided for serialization
+	 */
+	public AbstractTimeValue() {
+	
+	}
 
 	public AbstractTimeValue(DateTime date) {
 		super();

@@ -1,6 +1,7 @@
 package org.jquant.portfolio;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.math3.stat.StatUtils;
@@ -58,12 +59,12 @@ public class PortfolioStatistics implements Serializable {
 
 	private double annualizedReturn;
 	
-	private final DateTime start;
+	private final Date start;
 	
-	private final DateTime end;
+	private final Date end;
 	
 	
-	public PortfolioStatistics(Portfolio ptf,DateTime start,DateTime end) {
+	public PortfolioStatistics(Portfolio ptf,Date start,Date end) {
 		this.ptf = ptf;
 		this.transactions = ptf.getTransactions();
 		this.equityCurve = ptf.getEquityCurve();
@@ -204,7 +205,7 @@ public class PortfolioStatistics implements Serializable {
 		return largestLosingTrade;
 	}
 	
-	public DrawDownData getMaxDrawDown(){
+	public DrawDownData getMaxDrawDownData(){
 		return ddStats;
 	}
 	
@@ -239,7 +240,7 @@ public class PortfolioStatistics implements Serializable {
 	 * 
 	 * @return {@link DateTime} Start of the Sampling/Simulation Period
 	 */
-	public DateTime getStart() {
+	public Date getStart() {
 		return start;
 	}
 
@@ -247,7 +248,7 @@ public class PortfolioStatistics implements Serializable {
 	 * 
 	 * @return {@link DateTime} End of the Sampling/Simulation Period
 	 */
-	public DateTime getEnd() {
+	public Date getEnd() {
 		return end;
 	}
 	
